@@ -6,10 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.AccountActivity">
 
-    <!--Ovo ispod morate da prepisujete u svoje aktivnosti da bi bio toolbar i navigacija
-    Samo ne mora TextView-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="Account"
             android:layout_gravity="center"
             android:layout_marginTop="280dp"
             android:textSize="36sp"/>

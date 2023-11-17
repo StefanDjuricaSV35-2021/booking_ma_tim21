@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">booking_ma_tim21</string>
+    <string name="booking">Booʞing</string>
+    <string name="password_input_field">Enter your password</string>
+    <string name="repeat_password_input_field">Repeat your password</string>
+    <string name="email_input_field">Enter your email</string>
+    <string name="phone_input_field">Enter your phone number</string>
+    <string name="street_input_field">Enter your street</string>
+    <string name="city_input_field">Enter your city</string>
+    <string name="country_input_field">Enter your country</string>
+    <string name="name_input_field">Enter your name</string>
+    <string name="surname_input_field">Enter your surname</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>
