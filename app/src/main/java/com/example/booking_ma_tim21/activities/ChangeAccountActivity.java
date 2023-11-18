@@ -22,9 +22,7 @@ public class ChangeAccountActivity extends AppCompatActivity {
         saveChangesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChangeAccountActivity.this, AccountActivity.class);
-                startActivity(intent);
-
+                finish();
             }
         });
     }
