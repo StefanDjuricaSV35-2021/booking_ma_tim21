@@ -13,59 +13,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
         <include
             layout="@layout/toolbar"/>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="30dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-
-            <Button
-                android:id="@+id/search"
-                android:layout_width="168dp"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_btn"
-                android:text="Search"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.39"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:backgroundTint="@null"/>
-
-            <Button
-                app:backgroundTint="@null"
-                android:id="@+id/button2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/ic_filter"
-                android:hint="filter"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.27"
-                app:layout_constraintStart_toEndOf="@+id/search"
-                app:layout_constraintTop_toTopOf="parent" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="20dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/preview_recycler"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search" />
-
+            android:text="Home"
+            android:layout_gravity="center"
+            android:layout_marginTop="280dp"
+            android:textSize="36sp"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -78,56 +36,3 @@
     </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
-<!--=======-->
-<!--    android:paddingLeft="16dp"-->
-<!--    android:paddingRight="16dp"-->
-<!--    android:orientation="vertical"-->
-<!--    android:gravity="center_horizontal"-->
-<!--    android:paddingTop="70dp"-->
-<!--    >-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:gravity="center">-->
-
-
-<!--        <Button-->
-<!--            android:id="@+id/search"-->
-<!--            android:layout_width="168dp"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:background="@drawable/bg_white_rounded"-->
-<!--            android:text="Search"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.39"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:queryBackground="@drawable/bg_white_rounded"-->
-<!--            app:submitBackground="@drawable/bg_white_rounded" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/button2"-->
-<!--            android:layout_width="48dp"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:background="@drawable/baseline_filter_alt_24"-->
-<!--            android:hint="filter"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.27"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/search"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-<!--    </LinearLayout>-->
-
-<!--    <Space-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="50dp" />-->
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/preview_recycler"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/search" />-->
-<!--</LinearLayout>-->
-<!--&gt;>>>>>> Stashed changes-->
