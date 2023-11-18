@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
-    tools:context=".activities.RegisterActivity">
+    tools:context=".activities.ChangeAccountActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/street_input_field"
+                    android:hint="21st street no. 225"
                     android:inputType="text"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="text"
-                    android:hint="@string/city_input_field"
+                    android:hint="New York"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="text"
-                    android:hint="@string/country_input_field"
+                    android:hint="USA"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -103,7 +103,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/name_input_field"
+                    android:hint="John"
                     android:inputType="textEmailAddress"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
@@ -118,7 +118,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:hint="@string/surname_input_field"
+                    android:hint="Doe"
                     android:inputType="textPassword" />
             </LinearLayout>
 
@@ -144,7 +144,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/phone_input_field"
+                    android:hint="+38206123456"
                     android:inputType="phone"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
@@ -174,7 +174,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/email_input_field"
+                    android:hint="example@email.com"
                     android:inputType="textEmailAddress"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="textPassword"
-                    android:hint="@string/password_input_field"
+                    android:hint="**********"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -197,62 +197,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="textPassword"
-                    android:hint="@string/repeat_password_input_field"
+                    android:hint="**********"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Wanted Role"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
-                    <RadioGroup
-                        android:id="@+id/role_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radio_button_user"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="50dp"
-                            android:text="User"
-                            android:checked="true"/>
-
-                        <RadioButton
-                            android:id="@+id/radio_button_owner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="50dp"
-                            android:text="Owner"/>
-
-                    </RadioGroup>
-                </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -266,12 +215,12 @@
                 >
 
                 <Button
-                    android:id="@+id/button_register"
+                    android:id="@+id/button_save_account_changes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/register"
+                    android:text="@string/save_changes"
                     tools:ignore="TextContrastCheck" />
             </LinearLayout>
 

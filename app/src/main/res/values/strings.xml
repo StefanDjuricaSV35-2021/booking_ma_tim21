@@ -15,4 +15,6 @@
     <string name="account">Account</string>
     <string name="main">Main</string>
     <string name="booking_app">Booʞing app</string>
+    <string name="change_account">Change account</string>
+    <string name="save_changes">Save changes</string>
 </resources>
