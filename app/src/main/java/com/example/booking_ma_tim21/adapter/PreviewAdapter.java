@@ -28,7 +28,7 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
     @Override
     public PreviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view= LayoutInflater.from(context).inflate(R.layout.layout_accommodation_preview,parent,false);
+        View view= LayoutInflater.from(context).inflate(R.layout.cl_accommodation_preview,parent,false);
         return new PreviewViewHolder(view);
 
     }
