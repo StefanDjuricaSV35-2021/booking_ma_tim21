@@ -12,4 +12,10 @@
     <string name="surname_input_field">Enter your surname</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="account">Account</string>
+    <string name="main">Main</string>
+    <string name="booking_app">Booʞing app</string>
+    <string name="change_account">Change account</string>
+    <string name="save_changes">Save changes</string>
+    <string name="log_out">Log out</string>
 </resources>

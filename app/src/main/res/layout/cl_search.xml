@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_ll"
+    android:layout_width="370dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_search"
+    android:orientation="vertical"
+    android:padding="7dp"
+
+    >
+
+
+        <EditText
+            android:id="@+id/location_et"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:background="@color/softgrey"
+            android:gravity="center"
+            android:hint="Lokacija"
+
+            />
+
+        <EditText
+            android:id="@+id/guests_et"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/softgrey"
+            android:gravity="center"
+            android:hint="Broj gostiju"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+
+            android:id="@+id/appCompatButton"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:background="@color/softgrey"
+            android:layout_marginTop="5dp"
+            android:hint="Datum"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+
+            android:id="@+id/search_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightblue"
+            android:text="search"
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"
+
+
+            />
+
+
+
+</LinearLayout>

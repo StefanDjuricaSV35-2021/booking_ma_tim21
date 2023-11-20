@@ -3,6 +3,9 @@
     <style name="Base.Theme.Booking_ma_tim21" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/lightblue</item>
+        <item name="colorPrimaryVariant">@color/lightblue</item>
+        <item name="colorSecondary">@color/softgrey</item>
     </style>
 
     <style name="Theme.Booking_ma_tim21" parent="Base.Theme.Booking_ma_tim21" />
