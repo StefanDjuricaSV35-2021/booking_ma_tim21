@@ -11,6 +11,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccountActivity;
+import com.example.booking_ma_tim21.activities.LoginActivity;
 import com.example.booking_ma_tim21.activities.MainActivity;
 
 public class NavigationSetup {
@@ -21,6 +22,7 @@ public class NavigationSetup {
 
         LinearLayout main = activity.findViewById(R.id.mainScreen);
         LinearLayout account = activity.findViewById(R.id.accountScreen);
+        LinearLayout logout = activity.findViewById(R.id.loginScreen);
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +41,13 @@ public class NavigationSetup {
             @Override
             public void onClick(View v) {
                 redirectActivity(activity, AccountActivity.class);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirectActivity(activity, LoginActivity.class);
             }
         });
     }

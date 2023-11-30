@@ -16,12 +16,13 @@ import com.example.booking_ma_tim21.model.AccommodationPreview;
 public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
 
     Context context;
-
     List<AccommodationPreview> accommodationPreviews;
+    private ItemClickListener itemListener;
 
-    public PreviewAdapter(Context context, List<AccommodationPreview> accommodationPreviews) {
+    public PreviewAdapter(Context context, List<AccommodationPreview> accommodationPreviews,ItemClickListener itemListener) {
         this.context = context;
         this.accommodationPreviews = accommodationPreviews;
+        this.itemListener=itemListener;
     }
 
     @NonNull
@@ -41,6 +42,14 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
         holder.image.setImageResource(accommodationPreviews.get(position).getImageUrl());
         holder.price.setText(accommodationPreviews.get(position).getPrice());
 
+        holder.itemView.setOnClickListener(view -> {
+            itemListener.onItemClick(accommodationPreviews.get(position));
+        });
+
+    }
+
+    public interface ItemClickListener{
+        void onItemClick(AccommodationPreview previews);
     }
 
     @Override

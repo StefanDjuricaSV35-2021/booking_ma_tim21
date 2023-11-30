@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String surname = surname_field.getText().toString();
                 String repeat_password = repeat_password_field.getText().toString();
 
-                if(email.isEmpty() || password.isEmpty() || phone.isEmpty() || street.isEmpty() || city.isEmpty() || country.isEmpty() || name.isEmpty() || surname.isEmpty() || repeat_password.isEmpty() || role_group.getCheckedRadioButtonId() != -1){
+                if(email.isEmpty() || password.isEmpty() || phone.isEmpty() || street.isEmpty() || city.isEmpty() || country.isEmpty() || name.isEmpty() || surname.isEmpty() || repeat_password.isEmpty()){
                     Toast.makeText(RegisterActivity.this, "Fill out all the fields to register!", Toast.LENGTH_SHORT).show();
                 }else{
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
