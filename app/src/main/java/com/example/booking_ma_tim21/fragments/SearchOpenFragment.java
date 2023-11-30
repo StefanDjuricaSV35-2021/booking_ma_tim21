@@ -5,8 +5,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,45 +18,56 @@ import android.widget.EditText;
 
 import com.example.booking_ma_tim21.R;
 import com.google.android.material.datepicker.CalendarConstraints;
-import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
-public class SearchFragment extends Fragment {
+public class SearchOpenFragment extends Fragment {
 
     Button date;
     Button search;
     EditText location;
     EditText guests;
 
+    MaterialDatePicker datePicker;
 
-    public SearchFragment() {
+
+    public SearchOpenFragment() {
         // Required empty public constructor
     }
 
 
-    public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
+    public static SearchOpenFragment newInstance() {
+        SearchOpenFragment fragment = new SearchOpenFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Transition transition = TransitionInflater.from(requireContext())
+                .inflateTransition(R.transition.aaa);
+        setSharedElementEnterTransition(transition);
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View view= inflater.inflate(R.layout.fragment_search_open, container, false);
+        return view;
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        createPicker();
+
+        setTransitionComponents(view);
         initalizeFields(view);
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +81,12 @@ public class SearchFragment extends Fragment {
             }
         });
 
+    }
+
+    void setTransitionComponents(View view){
+
+        ViewCompat.setTransitionName(view.findViewById(R.id.search_bg_ll), "openBg");
+        ViewCompat.setTransitionName(view.findViewById(R.id.search_btn), "openSearch");
     }
 
     MaterialDatePicker createPicker(){

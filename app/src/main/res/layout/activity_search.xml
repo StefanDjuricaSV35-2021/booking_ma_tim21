@@ -25,8 +25,8 @@
             android:layout_height="match_parent">
 
 
-
             <LinearLayout
+                android:id="@+id/idid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -35,10 +35,10 @@
                 android:paddingTop="30dp">
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:name="com.example.booking_ma_tim21.fragments.SearchOpenFragment"
+                    android:name="com.example.booking_ma_tim21.fragments.SearchClosedFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/search_open_fragment"
+                    android:id="@+id/search_fragment"
                     />
 
                 <Space
@@ -69,4 +69,3 @@
     </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
-

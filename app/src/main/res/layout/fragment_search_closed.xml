@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_closed_bg_ll"
+    android:layout_width="370dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_search"
+    android:orientation="vertical"
+    android:padding="7dp"
+
+    >
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+
+
+        android:id="@+id/search_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightblue"
+        android:text="Location | Guests | Date"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textAllCaps="false"
+        />
+
+
+
+</LinearLayout>
