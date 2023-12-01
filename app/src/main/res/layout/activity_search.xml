@@ -35,7 +35,6 @@
                 android:paddingTop="30dp">
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:name="com.example.booking_ma_tim21.fragments.SearchClosedFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/search_fragment"
@@ -45,13 +44,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/preview_recycler"
+                <androidx.fragment.app.FragmentContainerView
+                    android:name="com.example.booking_ma_tim21.fragments.AccommodatioPreviewRecycleViewFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/search"/>
+                    android:id="@+id/preview_recycler_fragment"
+                    />
 
             </LinearLayout>
 

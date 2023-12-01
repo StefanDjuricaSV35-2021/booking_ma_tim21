@@ -31,17 +31,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
 
-    RecyclerView previewRecycler;
-    PreviewAdapter previewAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         NavigationSetup.setupNavigation(this);
-
-        initializePreviews();
-
 
 
     }
@@ -52,58 +48,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationSetup.closeDrawer(findViewById(R.id.drawerLayout));
     }
 
-
-    private void initializePreviews(){
-        List<AccommodationPreview> previews=new ArrayList<>();
-
-        previews.add(new AccommodationPreview("AAA","Beograd","1",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("BBB","Novi Sad","2",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("CCC","Nis","3",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("DDD","Kragujevac","4",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("EEE","Leskovac","5",R.drawable.apt_img));
-
-        setPreviewRecycler(previews);
-    }
-
-
-
-
-    private void setPreviewRecycler(List<AccommodationPreview> accommodationPreview){
-
-        previewRecycler = findViewById(R.id.preview_recycler);
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
-        previewRecycler.setLayoutManager(layoutManager);
-        previewAdapter= new PreviewAdapter(this, accommodationPreview, new PreviewAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(AccommodationPreview preview) {
-
-                Intent intent=createIntent(preview);
-
-                startActivity(intent);
-
-            }
-        });
-        previewRecycler.setAdapter(previewAdapter);
-
-    }
-
-    Intent createIntent(AccommodationPreview preview){
-
-        String name=preview.getName();
-        String price=preview.getPrice();
-        String location=preview.getLocation();
-        int imageUrl=preview.getImageUrl();
-
-        Intent intent=new Intent(MainActivity.this,AccommodationActivity.class);
-
-        intent.putExtra("name",name);
-        intent.putExtra("price",price);
-        intent.putExtra("location",location);
-        intent.putExtra("image",imageUrl);
-
-        return intent;
-
-    }
 
 
     private void showToast(String message){

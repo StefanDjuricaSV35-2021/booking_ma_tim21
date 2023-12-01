@@ -1,5 +1,6 @@
 package com.example.booking_ma_tim21.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.activities.AccommodationActivity;
+import com.example.booking_ma_tim21.activities.MainActivity;
+import com.example.booking_ma_tim21.activities.SearchActivity;
+import com.example.booking_ma_tim21.activities.SplashScreenActivity;
+import com.example.booking_ma_tim21.model.AccommodationPreview;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -66,7 +72,6 @@ public class SearchOpenFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         createPicker();
-
         setTransitionComponents(view);
         initalizeFields(view);
 
@@ -78,6 +83,14 @@ public class SearchOpenFragment extends Fragment {
 
                 picker.show(getActivity().getSupportFragmentManager(),"TAG");
 
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = createIntent();
+                startActivity(intent);
             }
         });
 
@@ -122,6 +135,22 @@ public class SearchOpenFragment extends Fragment {
         search=view.findViewById(R.id.search_btn);
         location=view.findViewById(R.id.location_et);
         guests=view.findViewById(R.id.guests_et);
+
+    }
+
+    Intent createIntent( ){
+
+        String guests=this.guests.getText().toString();
+        String date=this.date.getText().toString();
+        String location=this.location.getText().toString();
+
+        Intent intent=new Intent(getActivity(), SearchActivity.class);
+
+        intent.putExtra("guests",guests);
+        intent.putExtra("date",date);
+        intent.putExtra("location",location);
+
+        return intent;
 
     }
 }

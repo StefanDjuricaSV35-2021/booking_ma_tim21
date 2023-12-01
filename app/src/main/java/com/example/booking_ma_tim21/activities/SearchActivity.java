@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Scene;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
@@ -28,30 +31,24 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        initializePreviews();
+        initiateClosedSearchFragment();
 
     }
 
-    private void initializePreviews(){
-        List<AccommodationPreview> previews=new ArrayList<>();
+    void initiateClosedSearchFragment(){
 
-        previews.add(new AccommodationPreview("AAA","Beograd","1",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("BBB","Novi Sad","2",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("CCC","Nis","3",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("DDD","Kragujevac","4",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("EEE","Leskovac","5",R.drawable.apt_img));
+        Intent intent=getIntent();
+        String guests=intent.getStringExtra("guests");
+        String date= intent.getStringExtra("date");
+        String location=intent.getStringExtra("location");
 
-        setPreviewRecycler(previews);
-    }
+        Fragment fragment= SearchClosedFragment.newInstance(location,guests,date);
+        FragmentManager fragmentManager = getSupportFragmentManager();;
+        FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
 
-    private void setPreviewRecycler(List<AccommodationPreview> accommodationPreview){
-
-        previewRecycler = findViewById(R.id.preview_recycler);
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
-        previewRecycler.setLayoutManager(layoutManager);
-        previewAdapter= new PreviewAdapter(this,accommodationPreview);
-        previewRecycler.setAdapter(previewAdapter);
-
+        fragmentTransaction.add(R.id.search_fragment, fragment, null);
+        fragmentTransaction.commit();
     }
 
     @Override

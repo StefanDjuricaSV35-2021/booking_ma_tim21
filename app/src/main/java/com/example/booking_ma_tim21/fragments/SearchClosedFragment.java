@@ -23,10 +23,24 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 public class SearchClosedFragment extends Fragment {
 
     Button expandSearch;
+    String location;
+    String guests;
+    String date;
 
     public interface SearchOpenListener
     {
         public void openSearch();
+    }
+
+    public static SearchClosedFragment newInstance(String location, String guests,String date) {
+        SearchClosedFragment fragment = new SearchClosedFragment();
+        Bundle args = new Bundle();
+        args.putString("location", location);
+        args.putString("guests", guests);
+        args.putString("date", date);
+
+        fragment.setArguments(args);
+        return fragment;
     }
 
     public SearchClosedFragment() {
@@ -48,6 +62,11 @@ public class SearchClosedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_search_closed, container, false);
+        Bundle args = getArguments();
+        this.location = args.getString("location", "Location");
+        this.guests = args.getString("guests", "Guests");
+        this.date = args.getString("date", "Date");
+
         return view;
 
     }
@@ -60,6 +79,8 @@ public class SearchClosedFragment extends Fragment {
         setTransitionComponents(view);
 
         expandSearch= view.findViewById(R.id.search_btn);
+
+        expandSearch.setText(location+" • "+guests+" • "+date);
         expandSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
