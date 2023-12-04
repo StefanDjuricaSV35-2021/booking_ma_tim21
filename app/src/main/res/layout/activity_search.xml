@@ -34,11 +34,47 @@
                 android:paddingBottom="30dp"
                 android:paddingTop="30dp">
 
-                <androidx.fragment.app.FragmentContainerView
+
+
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/search_fragment"
-                    />
+                    android:layout_height="wrap_content">
+
+                    <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/search_fragment"
+                        android:layout_width="370dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/sort_btn"
+                        android:drawableLeft="@drawable/sort_24px"
+                        android:background="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sort"
+                        android:textSize="18dp"
+                        app:layout_constraintStart_toStartOf="@id/search_fragment"
+                        app:layout_constraintTop_toBottomOf="@id/search_fragment"></androidx.appcompat.widget.AppCompatButton>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/filter_btn"
+                        android:drawableLeft="@drawable/filter_list_24px"
+                        android:background="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Filter"
+                        android:textSize="18dp"
+                        app:layout_constraintEnd_toEndOf="@id/search_fragment"
+                        app:layout_constraintTop_toBottomOf="@id/search_fragment"></androidx.appcompat.widget.AppCompatButton>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <Space
                     android:layout_width="wrap_content"

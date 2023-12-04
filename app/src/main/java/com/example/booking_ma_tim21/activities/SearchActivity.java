@@ -4,34 +4,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Scene;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
+import com.example.booking_ma_tim21.fragments.AccommodationFilterFragment;
 import com.example.booking_ma_tim21.fragments.SearchClosedFragment;
-import com.example.booking_ma_tim21.fragments.SearchOpenFragment;
-import com.example.booking_ma_tim21.model.AccommodationPreview;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.booking_ma_tim21.fragments.SearchFragment;
 
 public class SearchActivity extends AppCompatActivity implements SearchClosedFragment.SearchOpenListener {
 
-    RecyclerView previewRecycler;
-    PreviewAdapter previewAdapter;
+
+    Button filter;
+    Button search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         initiateClosedSearchFragment();
+
+        filter=findViewById(R.id.filter_btn);
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AccommodationFilterFragment().show(getSupportFragmentManager(),"filter");
+            }
+        });
+
+
 
     }
 
@@ -54,13 +62,21 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
     @Override
     public void openSearch() {
 
-        Fragment fragment= new SearchOpenFragment();
+        float density =getResources().getDisplayMetrics().density;
+        int px = Math.round(310 * density);
+
+        Fragment fragment= new SearchFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();;
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction()
-                .addSharedElement(findViewById(R.id.search_closed_bg_ll),"openBg")
+                .addSharedElement(findViewById(R.id.search_bg_ll),"openBg")
                 .addSharedElement(findViewById(R.id.search_btn),"openSearch");
+
         fragmentTransaction.replace(R.id.search_fragment, fragment);
         fragmentTransaction.commit();
+
+
+
+
     }
 }

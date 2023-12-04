@@ -35,8 +35,8 @@
                 android:paddingTop="30dp">
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:name="com.example.booking_ma_tim21.fragments.SearchOpenFragment"
-                    android:layout_width="wrap_content"
+                    android:name="com.example.booking_ma_tim21.fragments.SearchFragment"
+                    android:layout_width="370dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/search_open_fragment"
                     />

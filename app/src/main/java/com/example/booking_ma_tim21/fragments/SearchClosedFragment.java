@@ -94,7 +94,7 @@ public class SearchClosedFragment extends Fragment {
     }
 
     public void setTransitionComponents(View view){
-        ViewCompat.setTransitionName(view.findViewById(R.id.search_closed_bg_ll), "closeBg");
+        ViewCompat.setTransitionName(view.findViewById(R.id.search_bg_ll), "closeBg");
         ViewCompat.setTransitionName(view.findViewById(R.id.search_btn), "closeSearch");
 
     }

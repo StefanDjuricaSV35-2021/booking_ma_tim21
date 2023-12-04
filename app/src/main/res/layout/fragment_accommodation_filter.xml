@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:background="@color/white"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/baseline_close_black_24dp"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type"
+            android:textSize="23dp"
+            android:layout_marginLeft="7dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/type_cg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="true"
+            app:layout_constraintTop_toBottomOf="@id/tag1"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="5dp"
+
+            >
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="aa"
+                />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="bb" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/type_div"
+
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/type_cg"
+            />
+
+        <TextView
+            android:id="@+id/tag2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amenities"
+            android:textSize="23dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/type_div" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/amenities_cg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="false"
+            app:singleSelection="false"
+            app:layout_constraintTop_toBottomOf="@id/tag2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="5dp"
+
+            >
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="aa"
+                />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="bb" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/am_div"
+
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/amenities_cg"
+            />
+
+        <TextView
+            android:id="@+id/tag3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price Range"
+            android:textSize="23dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/am_div" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:valueFrom="0"
+            android:valueTo="100"
+            android:stepSize="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tag3"
+            app:labelBehavior="visible"            app:values="@array/initial_range_slider_values"
+            app:tickColor="#00000000"
+
+
+            />
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="20dp"
+
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnResetAll"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Results" />
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -18,17 +18,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.booking_ma_tim21.R;
-import com.example.booking_ma_tim21.activities.AccommodationActivity;
-import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.SearchActivity;
-import com.example.booking_ma_tim21.activities.SplashScreenActivity;
-import com.example.booking_ma_tim21.model.AccommodationPreview;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
-public class SearchOpenFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
     Button date;
     Button search;
@@ -38,13 +34,13 @@ public class SearchOpenFragment extends Fragment {
     MaterialDatePicker datePicker;
 
 
-    public SearchOpenFragment() {
+    public SearchFragment() {
         // Required empty public constructor
     }
 
 
-    public static SearchOpenFragment newInstance() {
-        SearchOpenFragment fragment = new SearchOpenFragment();
+    public static SearchFragment newInstance() {
+        SearchFragment fragment = new SearchFragment();
         return fragment;
     }
 
