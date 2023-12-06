@@ -9,18 +9,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccommodationActivity;
-import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
-import com.example.booking_ma_tim21.model.AccommodationPreview;
+import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
+import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +37,8 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     RecyclerView previewRecycler;
     PreviewAdapter previewAdapter;
+    AccommodationService service;
+    RelativeLayout loadingPanel;
 
     public AccommodatioPreviewRecycleViewFragment() {
         // Required empty public constructor
@@ -56,30 +64,54 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        RetrofitService retrofitService= new RetrofitService();
+        service=retrofitService.getRetrofit().create(AccommodationService.class);
+
+        loadingPanel=getView().findViewById(R.id.loadingPanel);
+
         initializePreviews();
+
 
     }
 
     private void initializePreviews(){
-        List<AccommodationPreview> previews=new ArrayList<>();
+        Call call=service.getAllAccommodations();
 
-        previews.add(new AccommodationPreview("AAA","Beograd","1",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("BBB","Novi Sad","2",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("CCC","Nis","3",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("DDD","Kragujevac","4",R.drawable.apt_img));
-        previews.add(new AccommodationPreview("EEE","Leskovac","5",R.drawable.apt_img));
+        call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
+                if (response.code() == 200){
+                    Log.d("REZ","Meesage recieved");
+                    System.out.println(response.body());
+                    List<AccommodationPreviewDTO> previewDTOs = response.body();
+                    System.out.println(previewDTOs);
+                    loadingPanel.setVisibility(View.GONE);
+                    setPreviewRecycler(previewDTOs);
 
-        setPreviewRecycler(previews);
+
+                }else{
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationPreviewDTO>> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+
     }
 
-    private void setPreviewRecycler(List<AccommodationPreview> accommodationPreview){
+    private void setPreviewRecycler(List<AccommodationPreviewDTO> accommodationPreviewDTOs){
 
         previewRecycler = getView().findViewById(R.id.preview_recycler);
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
         previewRecycler.setLayoutManager(layoutManager);
-        previewAdapter= new PreviewAdapter(getContext(), accommodationPreview, new PreviewAdapter.ItemClickListener() {
+        previewAdapter= new PreviewAdapter(getContext(), accommodationPreviewDTOs, new PreviewAdapter.ItemClickListener() {
             @Override
-            public void onItemClick(AccommodationPreview preview) {
+            public void onItemClick(AccommodationPreviewDTO preview) {
 
                 Intent intent=createIntent(preview);
 
@@ -91,19 +123,17 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     }
 
-    Intent createIntent(AccommodationPreview preview){
+    Intent createIntent(AccommodationPreviewDTO preview){
 
         String name=preview.getName();
-        String price=preview.getPrice();
         String location=preview.getLocation();
-        int imageUrl=preview.getImageUrl();
+        String imageSrc=preview.getImage();
 
         Intent intent=new Intent(getActivity(), AccommodationActivity.class);
 
         intent.putExtra("name",name);
-        intent.putExtra("price",price);
         intent.putExtra("location",location);
-        intent.putExtra("image",imageUrl);
+        intent.putExtra("image",imageSrc);
 
         return intent;
 

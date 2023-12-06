@@ -3,6 +3,8 @@ package com.example.booking_ma_tim21.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,11 +40,10 @@ public class AccommodationActivity extends AppCompatActivity {
         Intent intent=getIntent();
 
         String name=intent.getStringExtra("name");
-        String price= intent.getStringExtra("price");
         String location=intent.getStringExtra("location");
-        int imageUrl=intent.getIntExtra("image",0);
+        String imageSrc=intent.getStringExtra("image");
 
-        this.accommodationPreview= new AccommodationPreview(name,location,price,imageUrl);
+        this.accommodationPreview= new AccommodationPreview(name,location,imageSrc);
     }
 
     void setView(){
@@ -51,10 +52,10 @@ public class AccommodationActivity extends AppCompatActivity {
         TextView location=findViewById(R.id.location_tv);
         TextView price=findViewById(R.id.price_tv);
 
-        image.setImageResource(accommodationPreview.getImageUrl());
+        Bitmap bMap = BitmapFactory.decodeFile(accommodationPreview.getImageSrc());
+        image.setImageBitmap(bMap);
         name.setText(accommodationPreview.getName());
         location.setText(accommodationPreview.getLocation());
-        price.setText(accommodationPreview.getPrice());
 
     }
 }

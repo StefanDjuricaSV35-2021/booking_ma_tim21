@@ -3,15 +3,12 @@ package com.example.booking_ma_tim21.model;
 public class AccommodationPreview {
     String name;
     String location;
-    String price;
-    int imageUrl;
+    String imageSrc;
 
-
-    public AccommodationPreview(String name, String location, String price, int imageUrl) {
+    public AccommodationPreview(String name, String location, String imageSrc) {
         this.name = name;
         this.location = location;
-        this.price = price;
-        this.imageUrl = imageUrl;
+        this.imageSrc = imageSrc;
     }
 
     public String getName() {
@@ -30,19 +27,11 @@ public class AccommodationPreview {
         this.location = location;
     }
 
-    public String getPrice() {
-        return price;
+    public String getImageSrc() {
+        return imageSrc;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public int getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(int imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageSrc = imageUrl;
     }
 }
