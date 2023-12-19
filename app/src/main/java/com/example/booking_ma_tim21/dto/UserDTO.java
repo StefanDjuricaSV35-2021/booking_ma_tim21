@@ -1,11 +1,11 @@
 package com.example.booking_ma_tim21.dto;
 
-import com.example.booking_ma_tim21.model.enumeration.UserType;
+import com.example.booking_ma_tim21.model.enumeration.Role;
 
 public class UserDTO {
-    private Long Id;
+    private Long id;
 
-    private UserType type;
+    private Role role;
     private String email;
     private String password;
     private String name;
@@ -14,10 +14,12 @@ public class UserDTO {
     private String city;
     private String street;
     private String phone;
+    private boolean enabled;
 
-    public UserDTO(Long id, UserType type, String email, String password, String name, String surname, String country, String city, String street, String phone) {
-        this.Id = id;
-        this.type = type;
+    public UserDTO() {}
+    public UserDTO(Long id, Role role, String email, String password, String name, String surname, String country, String city, String street, String phone, boolean enabled) {
+        this.id = id;
+        this.role = role;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -26,16 +28,13 @@ public class UserDTO {
         this.city = city;
         this.street = street;
         this.phone = phone;
-
+        this.enabled = enabled;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
-    public UserType getType() {
-        return type;
-    }
 
     public String getEmail() {
         return email;
@@ -67,5 +66,58 @@ public class UserDTO {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

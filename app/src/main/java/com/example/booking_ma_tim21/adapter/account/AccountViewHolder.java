@@ -41,7 +41,7 @@ public class AccountViewHolder extends RecyclerView.ViewHolder {
         country.setText(user.getCountry());
         phone.setText(user.getPhone());
         email.setText(user.getEmail());
-        role.setText(String.valueOf(user.getType().toString()));
+        role.setText(String.valueOf(user.getRole().toString()));
     }
 
     public TextView getName() {

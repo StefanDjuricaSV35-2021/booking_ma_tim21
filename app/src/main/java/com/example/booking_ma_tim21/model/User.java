@@ -1,12 +1,12 @@
 package com.example.booking_ma_tim21.model;
 
-import com.example.booking_ma_tim21.model.enumeration.UserType;
+import com.example.booking_ma_tim21.model.enumeration.Role;
 
 public class User {
 
     private Long Id;
 
-    private UserType type;
+    private Role role;
     private String email;
     private String password;
     private String name;
@@ -15,10 +15,11 @@ public class User {
     private String city;
     private String street;
     private String phone;
+    private boolean enabled;
 
-    public User(Long id, UserType type, String email, String password, String name, String surname, String country, String city, String street, String phone) {
+    public User(Long id, Role role, String email, String password, String name, String surname, String country, String city, String street, String phone, boolean enabled) {
         Id = id;
-        this.type = type;
+        this.role = role;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -27,6 +28,7 @@ public class User {
         this.city = city;
         this.street = street;
         this.phone = phone;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -37,12 +39,12 @@ public class User {
         Id = id;
     }
 
-    public UserType getType() {
-        return type;
+    public Role getRole() {
+        return role;
     }
 
-    public void setType(UserType type) {
-        this.type = type;
+    public void getRole(Role role) {
+        this.role = role;
     }
 
     public String getEmail() {
@@ -107,5 +109,13 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

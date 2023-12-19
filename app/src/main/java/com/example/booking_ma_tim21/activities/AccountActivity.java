@@ -87,6 +87,11 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        initializeAccount();
+    }
+    @Override
     protected void onPause() {
         super.onPause();
         NavigationSetup.closeDrawer(findViewById(R.id.drawerLayout));
