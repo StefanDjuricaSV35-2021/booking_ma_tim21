@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.model.enumeration.Role;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
@@ -28,12 +29,15 @@ import retrofit2.Response;
 public class ChangeAccountActivity extends AppCompatActivity {
     UserService service;
     UserDTO user = new UserDTO();
+    AuthManager authManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_account);
-        NavigationSetup.setupNavigation(this);
+
+        authManager = AuthManager.getInstance(getApplicationContext());
+        NavigationSetup.setupNavigation(this, authManager);
 
         RetrofitService retrofitService = new RetrofitService();
         service = retrofitService.getRetrofit().create(UserService.class);

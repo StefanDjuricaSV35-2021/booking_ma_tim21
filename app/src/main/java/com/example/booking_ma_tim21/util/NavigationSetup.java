@@ -3,6 +3,7 @@ package com.example.booking_ma_tim21.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,43 +14,75 @@ import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccountActivity;
 import com.example.booking_ma_tim21.activities.LoginActivity;
 import com.example.booking_ma_tim21.activities.MainActivity;
+import com.example.booking_ma_tim21.activities.RegisterActivity;
+import com.example.booking_ma_tim21.authentication.AuthManager;
 
 public class NavigationSetup {
-    public static void setupNavigation(final Activity activity) {
+
+
+    public static void setupNavigation(final Activity activity, AuthManager authManager) {
 
         DrawerLayout drawerLayout = activity.findViewById(R.id.drawerLayout);
         ImageView menu = activity.findViewById(R.id.menu);
 
         LinearLayout main = activity.findViewById(R.id.mainScreen);
-        LinearLayout account = activity.findViewById(R.id.accountScreen);
-        LinearLayout logout = activity.findViewById(R.id.loginScreen);
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDrawer(drawerLayout);
-            }
+        LinearLayout account = activity.findViewById(R.id.account);
+        LinearLayout create_accommodation = activity.findViewById(R.id.create_accommodation);
+        LinearLayout your_accommodations = activity.findViewById(R.id.your_accommodations);
+        LinearLayout accommodation_creation_requests = activity.findViewById(R.id.accommodation_creation_requests);
+        LinearLayout accommodation_updating_requests = activity.findViewById(R.id.accommodation_updating_requests);
+        LinearLayout log_out = activity.findViewById(R.id.log_out);
+        LinearLayout loginScreen = activity.findViewById(R.id.loginScreen);
+        LinearLayout registerScreen = activity.findViewById(R.id.registerScreen);
+
+        String role = authManager.getUserRole() != null ? authManager.getUserRole() : "";
+
+        switch (role) {
+            case "GUEST":
+                accommodation_creation_requests.setVisibility(View.GONE);
+                accommodation_updating_requests.setVisibility(View.GONE);
+
+            case "ADMIN":
+                create_accommodation.setVisibility(View.GONE);
+                your_accommodations.setVisibility(View.GONE);
+                loginScreen.setVisibility(View.GONE);
+                registerScreen.setVisibility(View.GONE);
+
+                break;
+            case "OWNER":
+                accommodation_creation_requests.setVisibility(View.GONE);
+                accommodation_updating_requests.setVisibility(View.GONE);
+                loginScreen.setVisibility(View.GONE);
+                registerScreen.setVisibility(View.GONE);
+                break;
+            default:
+                create_accommodation.setVisibility(View.GONE);
+                your_accommodations.setVisibility(View.GONE);
+                accommodation_creation_requests.setVisibility(View.GONE);
+                accommodation_updating_requests.setVisibility(View.GONE);
+                log_out.setVisibility(View.GONE);
+                account.setVisibility(View.GONE);
+                break;
+        }
+
+
+        menu.setOnClickListener(v -> openDrawer(drawerLayout));
+
+        main.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));
+        account.setOnClickListener(v -> redirectActivity(activity, AccountActivity.class));
+
+        create_accommodation.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        your_accommodations.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        accommodation_creation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        accommodation_updating_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+
+        log_out.setOnClickListener(v -> {
+            authManager.signOut();
+            redirectActivity(activity, MainActivity.class);
         });
 
-        main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectActivity(activity, MainActivity.class);
-            }
-        });
-
-        account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectActivity(activity, AccountActivity.class);
-            }
-        });
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                redirectActivity(activity, LoginActivity.class);
-            }
-        });
+        loginScreen.setOnClickListener(v -> redirectActivity(activity, LoginActivity.class));
+        registerScreen.setOnClickListener(v -> redirectActivity(activity, RegisterActivity.class));
     }
 
     public static void openDrawer(DrawerLayout drawerLayout) {

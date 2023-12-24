@@ -36,49 +36,162 @@
         android:layout_height="wrap_content"
         android:id="@+id/mainScreen"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
         android:orientation="horizontal">
         <TextView
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/grey"
             android:text="@string/main"
             android:textSize="20sp"
             android:drawablePadding="8dp"
-            app:drawableLeftCompat="@drawable/baseline_house_24" />
+            app:drawableLeftCompat="@drawable/baseline_house_24"
+            android:visibility="visible"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/accountScreen"
+        android:id="@+id/account"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
         android:orientation="horizontal">
         <TextView
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/grey"
             android:text="@string/account"
             android:textSize="20sp"
             android:drawablePadding="8dp"
-            app:drawableLeftCompat="@drawable/baseline_account_circle_24" />
+            app:drawableLeftCompat="@drawable/baseline_account_circle_24"
+            android:visibility="visible"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/loginScreen"
+        android:id="@+id/create_accommodation"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
         android:orientation="horizontal">
         <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/create_accommodation"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/your_accommodations"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/your_accommodations"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accommodation_creation_requests"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/accommodation_creation_requests"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accommodation_updating_requests"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/accommodation_updating_requests"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/log_out"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/grey"
             android:text="@string/log_out"
             android:textSize="20sp"
             android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/loginScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:text="@string/login"
+            android:textColor="@color/grey"
+            android:textSize="20sp"
+            android:visibility="visible"
             app:drawableLeftCompat="@drawable/baseline_logout_24" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerScreen"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/register"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
     </LinearLayout>
 
 </LinearLayout>
