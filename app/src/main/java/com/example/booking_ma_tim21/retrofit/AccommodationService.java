@@ -9,6 +9,6 @@ import retrofit2.http.GET;
 
 public interface AccommodationService {
 
-    @GET("/accommodations")
+    @GET("/api/v1/auth/accommodations")
     Call<List<AccommodationPreviewDTO>> getAllAccommodations();
 }

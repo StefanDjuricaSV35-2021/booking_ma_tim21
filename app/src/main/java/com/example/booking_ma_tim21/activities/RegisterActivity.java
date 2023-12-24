@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,26 +50,74 @@ public class RegisterActivity extends AppCompatActivity {
         NavigationSetup.setupNavigation(this);
 
         Button RegisterBtn = findViewById(R.id.button_register);
-        RegisterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = email_field.getText().toString();
-                String password = password_field.getText().toString();
-                String phone = phone_field.getText().toString();
-                String street = street_field.getText().toString();
-                String city = city_field.getText().toString();
-                String country = country_field.getText().toString();
-                String name = name_field.getText().toString();
-                String surname = surname_field.getText().toString();
-                String repeat_password = repeat_password_field.getText().toString();
+        RegisterBtn.setOnClickListener(v -> {
 
-                if(email.isEmpty() || password.isEmpty() || phone.isEmpty() || street.isEmpty() || city.isEmpty() || country.isEmpty() || name.isEmpty() || surname.isEmpty() || repeat_password.isEmpty()){
-                    Toast.makeText(RegisterActivity.this, "Fill out all the fields to register!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
+            String email = email_field.getText().toString();
+            String password = password_field.getText().toString();
+            String phone = phone_field.getText().toString();
+            String street = street_field.getText().toString();
+            String city = city_field.getText().toString();
+            String country = country_field.getText().toString();
+            String name = name_field.getText().toString();
+            String surname = surname_field.getText().toString();
+            String repeat_password = repeat_password_field.getText().toString();
+
+            boolean is_user = radio_button_user.isChecked();
+
+            if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                showToast("Invalid email address");
+                return;
             }
+
+            if (TextUtils.isEmpty(password) || password.length() < 4) {
+                showToast("Password must be at least 4 characters");
+                return;
+            }
+
+            if (!password.equals(repeat_password)) {
+                showToast("Passwords do not match");
+                return;
+            }
+
+            if (TextUtils.isEmpty(phone)) {
+                showToast("Phone number is required");
+                return;
+            }
+
+            if (TextUtils.isEmpty(street)) {
+                showToast("Street is required");
+                return;
+            }
+
+            if (TextUtils.isEmpty(city)) {
+                showToast("City is required");
+                return;
+            }
+
+            if (TextUtils.isEmpty(country)) {
+                showToast("Country is required");
+                return;
+            }
+
+            if (TextUtils.isEmpty(name)) {
+                showToast("Name is required");
+                return;
+            }
+
+            if (TextUtils.isEmpty(surname)) {
+                showToast("Surname is required");
+                return;
+            }
+
+            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        Button LoginBtn = findViewById(R.id.button_login);
+        LoginBtn.setOnClickListener(v -> {
+
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -92,5 +142,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         NavigationSetup.closeDrawer(findViewById(R.id.drawerLayout));
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
