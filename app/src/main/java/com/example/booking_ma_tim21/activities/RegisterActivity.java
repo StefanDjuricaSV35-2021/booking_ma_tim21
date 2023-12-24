@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.model.JWTAuthenticationResponse;
 import com.example.booking_ma_tim21.model.SignInRequest;
 import com.example.booking_ma_tim21.model.SignUpRequest;
@@ -40,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText repeat_password_field;
     private RadioGroup role_group;
     private RadioButton radio_button_user;
+    AuthManager authManager;
 
     AuthService authService;
     @Override
@@ -62,7 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
         role_group = findViewById(R.id.role_group);
         radio_button_user = findViewById(R.id.radio_button_user);
 
-        NavigationSetup.setupNavigation(this);
+        authManager = AuthManager.getInstance(getApplicationContext());
+        NavigationSetup.setupNavigation(this, authManager);
 
         Button RegisterBtn = findViewById(R.id.button_register);
         RegisterBtn.setOnClickListener(v -> {

@@ -37,12 +37,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        NavigationSetup.setupNavigation(this);
+
 
         RetrofitService retrofitService= new RetrofitService();
         authService=retrofitService.getRetrofit().create(AuthService.class);
 
         authManager = AuthManager.getInstance(getApplicationContext());
+        NavigationSetup.setupNavigation(this, authManager);
 
         emailField = findViewById(R.id.email_field);
         passwordField = findViewById(R.id.password_field);
