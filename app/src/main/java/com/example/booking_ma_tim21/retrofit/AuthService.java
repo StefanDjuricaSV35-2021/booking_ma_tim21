@@ -23,7 +23,7 @@ public interface AuthService {
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @POST("/api/v1/auth/signin")
+    @POST("/api/v1/auth/signup")
     Call<User> signup(@Body SignUpRequest signUpRequest);
 
 }
