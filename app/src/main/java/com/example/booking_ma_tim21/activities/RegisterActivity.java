@@ -15,7 +15,17 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.model.JWTAuthenticationResponse;
+import com.example.booking_ma_tim21.model.SignInRequest;
+import com.example.booking_ma_tim21.model.SignUpRequest;
+import com.example.booking_ma_tim21.model.User;
+import com.example.booking_ma_tim21.retrofit.AuthService;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -30,10 +40,15 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText repeat_password_field;
     private RadioGroup role_group;
     private RadioButton radio_button_user;
+
+    AuthService authService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        RetrofitService retrofitService= new RetrofitService();
+        authService=retrofitService.getRetrofit().create(AuthService.class);
 
         email_field = findViewById(R.id.email_field);
         password_field = findViewById(R.id.password_field);
@@ -109,8 +124,8 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-            startActivity(intent);
+            loginUser(new SignUpRequest(email,password,name,surname,country,city,street,phone,!is_user));
+
         });
 
         Button LoginBtn = findViewById(R.id.button_login);
@@ -146,5 +161,32 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void loginUser(SignUpRequest signUpRequest) {
+        Call<User> call = authService.signup(signUpRequest);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User user = response.body();
+                    Log.d("REZ","da.");
+
+                    showToast("Successfully signed up, check your mail for sign up confirmation");
+
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    showToast("Failed to sign up");
+                    Log.d("REZ","ne.");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("REZ","Meesage failed to be received.");
+            }
+        });
     }
 }

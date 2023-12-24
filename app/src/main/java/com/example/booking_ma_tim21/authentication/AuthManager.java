@@ -108,4 +108,13 @@ public class AuthManager {
             return null;
         }
     }
+
+    public void signOut(){
+        userRole = null;
+        userId = null;
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("user");
+        editor.apply();
+    }
+
 }
