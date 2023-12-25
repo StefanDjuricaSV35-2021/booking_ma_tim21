@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.model.AccommodationPreview;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 import com.squareup.picasso.Picasso;
@@ -18,11 +19,13 @@ import com.squareup.picasso.Picasso;
 public class AccommodationActivity extends AppCompatActivity {
 
     AccommodationPreview accommodationPreview;
+    AuthManager authManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodation);
-        NavigationSetup.setupNavigation(this);
+        authManager = AuthManager.getInstance(getApplicationContext());
+        NavigationSetup.setupNavigation(this, authManager);
 
         setAccommodation();
         setView();

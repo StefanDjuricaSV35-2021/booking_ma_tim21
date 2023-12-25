@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.booking_ma_tim21.R;
 
+import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
@@ -30,16 +31,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    AuthManager authManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NavigationSetup.setupNavigation(this);
-
-
+        authManager = AuthManager.getInstance(getApplicationContext());
+        NavigationSetup.setupNavigation(this, authManager);
     }
 
     @Override
