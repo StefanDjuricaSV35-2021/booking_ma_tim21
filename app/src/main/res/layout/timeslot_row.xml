@@ -9,10 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
         >
         <!-- Start Date TextView -->
         <TextView
@@ -44,7 +40,7 @@
         <!-- Remove Button -->
         <Button
             android:id="@+id/btnRemove"
-            android:layout_width="wrap_content"
+            android:layout_width="53dp"
             android:layout_height="wrap_content"
             android:text="X" />
     </LinearLayout>

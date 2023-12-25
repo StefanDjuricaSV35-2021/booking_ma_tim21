@@ -1,5 +1,6 @@
 package com.example.booking_ma_tim21.adapter;
 
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.model.enumeration.Amenity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.ViewHolder> {
 
     private List<Amenity> amenitiesList;
+    private SparseBooleanArray checkedItems;
 
     public AmenitiesAdapter(List<Amenity> amenitiesList) {
         this.amenitiesList = amenitiesList;
+        this.checkedItems = new SparseBooleanArray();
     }
 
     @NonNull
@@ -33,7 +37,11 @@ public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Amenity amenity = amenitiesList.get(position);
         holder.checkboxAmenity.setText(amenity.name());
-        holder.textAmenityName.setText(amenity.name());
+        holder.checkboxAmenity.setChecked(checkedItems.get(position, false));
+
+        holder.checkboxAmenity.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            checkedItems.put(position, isChecked);
+        });
     }
 
     @Override
@@ -42,13 +50,23 @@ public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        CheckBox checkboxAmenity;
-        TextView textAmenityName;
+        public CheckBox checkboxAmenity;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkboxAmenity = itemView.findViewById(R.id.checkboxAmenity);
-            textAmenityName = itemView.findViewById(R.id.textAmenityName);
         }
+    }
+
+    public List<Amenity> getSelectedAmenities() {
+        List<Amenity> selectedAmenities = new ArrayList<>();
+
+        for (int i = 0; i < amenitiesList.size(); i++) {
+            if (checkedItems.get(i, false)) {
+                selectedAmenities.add(amenitiesList.get(i));
+            }
+        }
+
+        return selectedAmenities;
     }
 }

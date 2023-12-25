@@ -24,4 +24,8 @@ public class TimeSlot {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public boolean overlapsWith(TimeSlot timeSlot) {
+        return !(this.endDate < timeSlot.startDate || timeSlot.endDate < this.startDate);
+    }
 }

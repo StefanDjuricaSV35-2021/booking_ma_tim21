@@ -39,7 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText name_field;
     private EditText surname_field;
     private EditText repeat_password_field;
-    private RadioGroup role_group;
     private RadioButton radio_button_user;
     AuthManager authManager;
 
@@ -61,7 +60,6 @@ public class RegisterActivity extends AppCompatActivity {
         name_field = findViewById(R.id.name_field);
         surname_field = findViewById(R.id.surname_field);
         repeat_password_field = findViewById(R.id.repeat_password_field);
-        role_group = findViewById(R.id.role_group);
         radio_button_user = findViewById(R.id.radio_button_user);
 
         authManager = AuthManager.getInstance(getApplicationContext());

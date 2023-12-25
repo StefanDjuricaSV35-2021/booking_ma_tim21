@@ -11,6 +11,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface UserService {
     @GET("/api/v1/auth/users/7")
@@ -24,4 +25,7 @@ public interface UserService {
 
     @PUT("/api/v1/auth/users")
     Call<UserDTO> updateUser(@Body UserDTO userDTO);
+
+    @GET("/api/v1/auth/users/email/{email}")
+    Call<UserDTO> getUser(@Path("email") String email);
 }

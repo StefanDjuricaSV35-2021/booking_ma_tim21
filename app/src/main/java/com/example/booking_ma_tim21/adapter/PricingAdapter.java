@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,9 +50,15 @@ public class PricingAdapter extends RecyclerView.Adapter<PricingAdapter.ViewHold
         return pricingList.size();
     }
 
-    public void addItem(AccommodationPricing newItem) {
+    public boolean addItem(AccommodationPricing newItem) {
+        for (AccommodationPricing pricing:pricingList) {
+            if(newItem.getTimeSlot().overlapsWith(pricing.getTimeSlot())){
+                return false;
+            }
+        }
         pricingList.add(newItem);
         notifyItemInserted(pricingList.size() - 1);
+        return true;
     }
 
     public void removeItem(int position) {
@@ -83,5 +90,9 @@ public class PricingAdapter extends RecyclerView.Adapter<PricingAdapter.ViewHold
                 }
             });
         }
+    }
+
+    public List<AccommodationPricing> getPricingList() {
+        return pricingList;
     }
 }
