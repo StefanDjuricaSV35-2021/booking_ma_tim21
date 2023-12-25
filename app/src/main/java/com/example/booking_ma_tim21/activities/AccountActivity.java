@@ -68,7 +68,8 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void initializeAccount() {
-        Call<UserDTO> call = service.getUser();
+        String email = authManager.getUserId();
+        Call<UserDTO> call = service.getUser(email);
         call.enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {

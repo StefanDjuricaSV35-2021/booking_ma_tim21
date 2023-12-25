@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         authManager = AuthManager.getInstance(getApplicationContext());
         NavigationSetup.setupNavigation(this, authManager);
-
-
     }
 
     @Override
