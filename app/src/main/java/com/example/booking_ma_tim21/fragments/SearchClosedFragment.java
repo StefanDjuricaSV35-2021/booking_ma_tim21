@@ -48,11 +48,6 @@ public class SearchClosedFragment extends Fragment {
     }
 
 
-    public static SearchClosedFragment newInstance() {
-        SearchClosedFragment fragment = new SearchClosedFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

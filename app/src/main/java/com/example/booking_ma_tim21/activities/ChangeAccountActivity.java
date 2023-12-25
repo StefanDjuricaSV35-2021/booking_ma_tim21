@@ -50,7 +50,9 @@ public class ChangeAccountActivity extends AppCompatActivity {
 
     public void setUpInputFields() {
         // Make a Retrofit API call to get the user information
-        Call<UserDTO> call = service.getUser();
+        String email = authManager.getUserId();
+
+        Call<UserDTO> call = service.getUser(email);
         call.enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
@@ -130,6 +132,8 @@ public class ChangeAccountActivity extends AppCompatActivity {
                     Toast.makeText(ChangeAccountActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                String oldEmail = user.getEmail();
+
                 user.setStreet(street);
                 user.setCity(city);
                 user.setCountry(country);
@@ -137,9 +141,7 @@ public class ChangeAccountActivity extends AppCompatActivity {
                 user.setSurname(surname);
                 user.setPhone(phone);
                 user.setEmail(email);
-                if (!password.isEmpty()) {
-                    user.setPassword(password);
-                }
+                user.setPassword(password);
 
                 Call<UserDTO> call = service.updateUser(user);
                 call.enqueue(new Callback<UserDTO>() {
@@ -147,6 +149,11 @@ public class ChangeAccountActivity extends AppCompatActivity {
                     public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                         if (response.isSuccessful()) {
                             Toast.makeText(ChangeAccountActivity.this, "User updated successfully", Toast.LENGTH_SHORT).show();
+                            if (!oldEmail.equals(email)) {
+                                authManager.signOut();
+                                Intent intent = new Intent(ChangeAccountActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
                             finish();
                         } else {
                             Toast.makeText(ChangeAccountActivity.this, "Failed to update user. Email is already in use", Toast.LENGTH_SHORT).show();
@@ -164,15 +171,15 @@ public class ChangeAccountActivity extends AppCompatActivity {
 
     private void setUpDeleteButton() {
         Button deleteAccountBtn = findViewById(R.id.button_delete_account);
-
         deleteAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                retrofit2.Call<Void> call = service.deleteUser();
+                retrofit2.Call<Void> call = service.deleteUser(user.getId());
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
+                            authManager.signOut();
                             Intent intent = new Intent(ChangeAccountActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();

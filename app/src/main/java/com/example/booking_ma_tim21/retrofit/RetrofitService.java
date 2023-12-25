@@ -16,7 +16,6 @@ public class RetrofitService {
 
     public RetrofitService() {
         initializeRetrofit();
-                
     }
 
     private void initializeRetrofit() {

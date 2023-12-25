@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
+import com.example.booking_ma_tim21.fragments.AccommodatioPreviewRecycleViewFragment;
 import com.example.booking_ma_tim21.fragments.AccommodationFilterFragment;
 import com.example.booking_ma_tim21.fragments.SearchClosedFragment;
 import com.example.booking_ma_tim21.fragments.SearchFragment;
@@ -29,6 +30,8 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         initiateClosedSearchFragment();
+        initiateRecycleView();
+
 
         filter=findViewById(R.id.filter_btn);
 
@@ -39,6 +42,24 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
             }
         });
 
+
+
+    }
+
+    void initiateRecycleView(){
+
+        Intent intent=getIntent();
+        String guests=intent.getStringExtra("guests");
+        String date= intent.getStringExtra("date");
+        String location=intent.getStringExtra("location");
+
+        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(location,guests,date);
+        FragmentManager fragmentManager = getSupportFragmentManager();;
+        FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
+
+        fragmentTransaction.add(R.id.preview_recycler_fragment, fragment, null);
+        fragmentTransaction.commit();
 
 
     }

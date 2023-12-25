@@ -12,13 +12,17 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserService {
-    @GET("/api/v1/auth/users/7")
-    Call<UserDTO> getUser();
+    @GET("/api/v1/auth/users")
+    Call<UserDTO> getUser(@Query("id") Long id);
 
-    @DELETE("/api/v1/auth/users/7")
-    Call<Void> deleteUser();
+    @GET("/api/v1/auth/users/email/{email}")
+    Call<UserDTO> getUser(@Path("email") String email);
+
+    @DELETE("/api/v1/auth/users/{id}")
+    Call<Void> deleteUser(@Path("id") Long id);
 
     @POST("/api/v1/auth/users")
     Call<UserDTO> createUser(@Body UserDTO user);

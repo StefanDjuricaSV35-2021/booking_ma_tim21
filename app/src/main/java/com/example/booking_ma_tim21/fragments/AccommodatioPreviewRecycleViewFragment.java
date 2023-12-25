@@ -39,13 +39,26 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     PreviewAdapter previewAdapter;
     AccommodationService service;
     RelativeLayout loadingPanel;
+    String location;
+    String date;
+    String guests;
+
+
+
 
     public AccommodatioPreviewRecycleViewFragment() {
         // Required empty public constructor
     }
 
-    public static AccommodatioPreviewRecycleViewFragment newInstance(String param1, String param2) {
+    public static AccommodatioPreviewRecycleViewFragment newInstance(String location, String guests, String date) {
+
         AccommodatioPreviewRecycleViewFragment fragment = new AccommodatioPreviewRecycleViewFragment();
+        Bundle args = new Bundle();
+        args.putString("location", location);
+        args.putString("guests", guests);
+        args.putString("date", date);
+
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -58,7 +71,15 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_accommodatio_preview_recycle_view, container, false);
+        View view= inflater.inflate(R.layout.fragment_accommodatio_preview_recycle_view, container, false);
+        Bundle args = getArguments();
+        if(args !=null) {
+            this.location = args.getString("location", "Location");
+            this.guests = args.getString("guests", "Guests");
+            this.date = args.getString("date", "Date");
+        }
+
+        return view;
     }
 
     @Override
@@ -66,15 +87,13 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
         RetrofitService retrofitService= new RetrofitService();
         service=retrofitService.getRetrofit().create(AccommodationService.class);
-
         loadingPanel=getView().findViewById(R.id.loadingPanel);
-
         initializePreviews();
-
 
     }
 
     private void initializePreviews(){
+        Bundle args = getArguments();
         Call call=service.getAllAccommodations();
 
         call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {

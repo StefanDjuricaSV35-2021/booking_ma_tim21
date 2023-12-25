@@ -3,6 +3,7 @@ package com.example.booking_ma_tim21.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
+import com.squareup.picasso.Picasso;
 
 public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
 
@@ -43,10 +45,8 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
         holder.name.setText(accommodationPreviews.get(position).getName());
         holder.location.setText(accommodationPreviews.get(position).getLocation());
 
-        byte[] decodedString = Base64.decode(accommodationPreviews.get(position).getImage(), Base64.DEFAULT);
-        Bitmap bMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-        holder.image.setImageBitmap(bMap);
+        Picasso.get().load("http://10.0.2.2:8080/images/"+accommodationPreviews.get(position).getImage()).into(holder.image);
 
         holder.itemView.setOnClickListener(view -> {
             itemListener.onItemClick(accommodationPreviews.get(position));
