@@ -6,9 +6,16 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface AccommodationService {
 
-    @GET("/accommodations")
+    @GET("/api/v1/auth/accommodations/previews")
     Call<List<AccommodationPreviewDTO>> getAllAccommodations();
+
+    @GET("/api/v1/auth/accommodations/search")
+    Call<List<AccommodationPreviewDTO>> getSearchedAccommodations(@Query("location") String location,@Query("noGuests")String noGuests,@Query("dateFrom")String dateFrom,@Query("dateTo")String dateTo);
+
+    @GET("/api/v1/auth/accommodations/search")
+    Call<List<AccommodationPreviewDTO>> getFilteredAccommodations(String location,String noGuests,String dateFrom,String dateTo,String filter);
 }
