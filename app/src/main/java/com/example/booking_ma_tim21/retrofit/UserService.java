@@ -30,6 +30,4 @@ public interface UserService {
     @PUT("/api/v1/auth/users")
     Call<UserDTO> updateUser(@Body UserDTO userDTO);
 
-    @GET("/api/v1/auth/users/email/{email}")
-    Call<UserDTO> getUser(@Path("email") String email);
 }
