@@ -218,102 +218,102 @@ public class AccommodationCreation extends AppCompatActivity {
         submit_accommodation = findViewById(R.id.submit_accommodation);
         submit_accommodation.setOnClickListener(v -> {
 
-//            String street = street_input_field.getText().toString().trim();
-//            String city = city_input_field.getText().toString().trim();
-//            String country = country_input_field.getText().toString().trim();
-//            String name = accommodation_name.getText().toString().trim();
-//            String description = descriptionEditText.getText().toString().trim();
-//
-//            String minGuestsText = min_guests.getText().toString().trim();
-//            String maxGuestsText = max_guests.getText().toString().trim();
-//            String cancellationDaysText = cancellation_days.getText().toString().trim();
-//
-//            String accommodationTypeString = accommodation_type.getSelectedItem().toString();
-//            AccommodationType accommodationType;
-//
-//            if (accommodationTypeString == null) {
-//                Toast.makeText(getApplicationContext(), "Accommodation type is required!", Toast.LENGTH_SHORT).show();
-//                return;
-//            }else{
-//                accommodationType = AccommodationType.fromString(accommodationTypeString);
-//                if(accommodationType == null){
-//                    Toast.makeText(getApplicationContext(), "Something went wrong with accommodation type.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//            }
-//
-//            if (street.isEmpty()) {
-//                Toast.makeText(getApplicationContext(), "Street is required!", Toast.LENGTH_SHORT).show();
-//                return;
-//            } else if (city.isEmpty()) {
-//                Toast.makeText(getApplicationContext(), "City is required!", Toast.LENGTH_SHORT).show();
-//                return;
-//            } else if (country.isEmpty()) {
-//                Toast.makeText(getApplicationContext(), "Country is required!", Toast.LENGTH_SHORT).show();
-//                return;
-//            } else if (name.isEmpty()) {
-//                Toast.makeText(getApplicationContext(), "Accommodation name is required!", Toast.LENGTH_SHORT).show();
-//                return;
-//            } else if(userId == null){
-//                Toast.makeText(getApplicationContext(), "Something went wrong with your id.", Toast.LENGTH_SHORT).show();
-//                return;
-//            } else if(description.isEmpty()){
-//                Toast.makeText(getApplicationContext(), "Description is required!", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//
-//
-//            int minGuests;
-//            int maxGuests;
-//            int cancellationDays;
-//            try {
-//                minGuests = Integer.parseInt(minGuestsText);
-//
-//                try {
-//                    maxGuests = Integer.parseInt(maxGuestsText);
-//
-//                    try {
-//                        cancellationDays = Integer.parseInt(cancellationDaysText);
-//
-//                        if (minGuests > maxGuests) {
-//                            Toast.makeText(getApplicationContext(), "Min guests should be less than or equal to max guests!", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-//                    } catch (NumberFormatException e) {
-//                        Toast.makeText(getApplicationContext(), "Enter a valid number for cancellation days!", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//
-//                } catch (NumberFormatException e) {
-//                    Toast.makeText(getApplicationContext(), "Enter a valid number for max guests!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//            } catch (NumberFormatException e) {
-//                Toast.makeText(getApplicationContext(), "Enter a valid number for min guests!", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//
-//            Accommodation accommodation = new Accommodation();
-//            accommodation.setAmenities(amenitiesAdapter.getSelectedAmenities());
-//            accommodation.setName(name);
-//            accommodation.setId(0l);
-//            accommodation.setType(accommodationType);
-//            accommodation.setDescription(description);
-//            accommodation.setPhotos(fileAdapter.getFileNameList());
-//            accommodation.setDaysForCancellation(cancellationDays);
-//            accommodation.setMaxGuests(maxGuests);
-//            accommodation.setMinGuests(minGuests);
-//            accommodation.setOwnerId(userId);
-//            accommodation.setEnabled(false);
-//            accommodation.setPerNight(radio_button_per_night.isChecked());
-//            accommodation.setLocation(street + ',' + city + ',' + country);
-//            accommodation.setDates(new ArrayList<>());
-//
-//
-//            createAccommodation(accommodation);
+            String street = street_input_field.getText().toString().trim();
+            String city = city_input_field.getText().toString().trim();
+            String country = country_input_field.getText().toString().trim();
+            String name = accommodation_name.getText().toString().trim();
+            String description = descriptionEditText.getText().toString().trim();
+
+            String minGuestsText = min_guests.getText().toString().trim();
+            String maxGuestsText = max_guests.getText().toString().trim();
+            String cancellationDaysText = cancellation_days.getText().toString().trim();
+
+            String accommodationTypeString = accommodation_type.getSelectedItem().toString();
+            AccommodationType accommodationType;
+
+            if (accommodationTypeString == null) {
+                Toast.makeText(getApplicationContext(), "Accommodation type is required!", Toast.LENGTH_SHORT).show();
+                return;
+            }else{
+                accommodationType = AccommodationType.fromString(accommodationTypeString);
+                if(accommodationType == null){
+                    Toast.makeText(getApplicationContext(), "Something went wrong with accommodation type.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            if (street.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Street is required!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (city.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "City is required!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (country.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Country is required!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (name.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Accommodation name is required!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if(userId == null){
+                Toast.makeText(getApplicationContext(), "Something went wrong with your id.", Toast.LENGTH_SHORT).show();
+                return;
+            } else if(description.isEmpty()){
+                Toast.makeText(getApplicationContext(), "Description is required!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
+
+            int minGuests;
+            int maxGuests;
+            int cancellationDays;
+            try {
+                minGuests = Integer.parseInt(minGuestsText);
+
+                try {
+                    maxGuests = Integer.parseInt(maxGuestsText);
+
+                    try {
+                        cancellationDays = Integer.parseInt(cancellationDaysText);
+
+                        if (minGuests > maxGuests) {
+                            Toast.makeText(getApplicationContext(), "Min guests should be less than or equal to max guests!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(getApplicationContext(), "Enter a valid number for cancellation days!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getApplicationContext(), "Enter a valid number for max guests!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+            } catch (NumberFormatException e) {
+                Toast.makeText(getApplicationContext(), "Enter a valid number for min guests!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
+            Accommodation accommodation = new Accommodation();
+            accommodation.setAmenities(amenitiesAdapter.getSelectedAmenities());
+            accommodation.setName(name);
+            accommodation.setId(0l);
+            accommodation.setType(accommodationType);
+            accommodation.setDescription(description);
+            accommodation.setPhotos(fileAdapter.getFileNameList());
+            accommodation.setDaysForCancellation(cancellationDays);
+            accommodation.setMaxGuests(maxGuests);
+            accommodation.setMinGuests(minGuests);
+            accommodation.setOwnerId(userId);
+            accommodation.setEnabled(false);
+            accommodation.setPerNight(radio_button_per_night.isChecked());
+            accommodation.setLocation(street + ',' + city + ',' + country);
+            accommodation.setDates(new ArrayList<>());
+
+
+            createAccommodation(accommodation);
             uploadImages();
         });
     }
