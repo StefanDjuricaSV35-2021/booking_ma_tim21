@@ -5,12 +5,14 @@ public class AccommodationPreviewDTO {
     private String name;
     private String location;
     private String image;
+    private Double price;
 
-    public AccommodationPreviewDTO(Long id, String name, String location, String image) {
+    public AccommodationPreviewDTO(Long id, String name, String location, String image,Double price) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.image = image;
+        this.price=price;
     }
 
     public Long getId() {
@@ -28,4 +30,6 @@ public class AccommodationPreviewDTO {
     public String getImage() {
         return image;
     }
+
+    public Double getPrice() { return price; }
 }

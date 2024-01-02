@@ -24,6 +24,10 @@ import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 public class SearchFragment extends Fragment {
 
     Button date;
@@ -87,6 +91,7 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = createIntent();
                 startActivity(intent);
+
             }
         });
 
@@ -101,16 +106,24 @@ public class SearchFragment extends Fragment {
     MaterialDatePicker createPicker(){
 
 
-        MaterialDatePicker picker = MaterialDatePicker.Builder.dateRangePicker()
+        MaterialDatePicker<Pair<Long,Long>> picker = MaterialDatePicker.Builder.dateRangePicker()
                 .setTheme(R.style.CustomThemeOverlay_MaterialCalendar_Fullscreen)
                 .setSelection(new Pair(null,null))
                 .setCalendarConstraints(new CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
                 .build();
 
-        picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+        picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long,Long>>() {
             @Override
-            public void onPositiveButtonClick(Object selection) {
-                date.setText(picker.getHeaderText());
+            public void onPositiveButtonClick(Pair<Long,Long> selection) {
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+                calendar.setTimeInMillis(selection.first);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String formattedDate1  = format.format(calendar.getTime());
+
+                calendar.setTimeInMillis(selection.second);
+                String formattedDate2  = format.format(calendar.getTime());
+
+                date.setText(formattedDate1+"/"+formattedDate2);
             }
         });
         picker.addOnNegativeButtonClickListener(new View.OnClickListener() {

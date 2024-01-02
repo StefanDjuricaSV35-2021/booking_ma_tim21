@@ -17,5 +17,5 @@ public interface AccommodationService {
     Call<List<AccommodationPreviewDTO>> getSearchedAccommodations(@Query("location") String location,@Query("noGuests")String noGuests,@Query("dateFrom")String dateFrom,@Query("dateTo")String dateTo);
 
     @GET("/api/v1/auth/accommodations/search")
-    Call<List<AccommodationPreviewDTO>> getFilteredAccommodations(String location,String noGuests,String dateFrom,String dateTo,String filter);
+    Call<List<AccommodationPreviewDTO>> getFilteredAccommodations(@Query("location") String location,@Query("noGuests")String noGuests,@Query("dateFrom")String dateFrom,@Query("dateTo")String dateTo,@Query("filters")String filters);
 }

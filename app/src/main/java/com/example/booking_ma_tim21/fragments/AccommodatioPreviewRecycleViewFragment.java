@@ -28,11 +28,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AccommodatioPreviewRecycleViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     RecyclerView previewRecycler;
@@ -40,11 +35,9 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     AccommodationService service;
     RelativeLayout loadingPanel;
     String location;
-    String date;
+    String[] dates;
     String guests;
-
-
-
+    String filter;
 
     public AccommodatioPreviewRecycleViewFragment() {
         // Required empty public constructor
@@ -62,25 +55,30 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         return fragment;
     }
 
+    public static AccommodatioPreviewRecycleViewFragment newInstance(String location, String guests, String date,String filter) {
+
+        AccommodatioPreviewRecycleViewFragment fragment = new AccommodatioPreviewRecycleViewFragment();
+        Bundle args = new Bundle();
+        args.putString("location", location);
+        args.putString("guests", guests);
+        args.putString("date", date);
+        args.putString("filter",filter);
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        getSearchParamsFromArgs();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_accommodatio_preview_recycle_view, container, false);
-        Bundle args = getArguments();
-        if(args !=null) {
-            this.location = args.getString("location", "Location");
-            this.guests = args.getString("guests", "Guests");
-            this.date = args.getString("date", "Date");
-        }
-
-        return view;
-    }
+                             Bundle savedInstanceState) {return inflater.inflate(R.layout.fragment_accommodatio_preview_recycle_view, container, false);}
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -92,9 +90,28 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     }
 
+    void getSearchParamsFromArgs(){
+
+        Bundle args=getArguments();
+        if(args==null){return;}
+        guests=args.getString("guests");
+        dates = args.getString("date", "Date").split("/");
+        location=args.getString("location");
+        filter=args.getString("filter");
+
+    }
+
     private void initializePreviews(){
+        Call call=null;
+
         Bundle args = getArguments();
-        Call call=service.getAllAccommodations();
+        if(args !=null) {
+
+            call=service.getFilteredAccommodations(location,guests,dates[0],dates[1],filter);
+
+        }else {
+            call = service.getAllAccommodations();
+        }
 
         call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
             @Override
@@ -147,12 +164,14 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         String name=preview.getName();
         String location=preview.getLocation();
         String imageSrc=preview.getImage();
+        Double price=preview.getPrice();
 
         Intent intent=new Intent(getActivity(), AccommodationActivity.class);
 
         intent.putExtra("name",name);
         intent.putExtra("location",location);
         intent.putExtra("image",imageSrc);
+        intent.putExtra("price",price);
 
         return intent;
 
