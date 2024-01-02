@@ -269,19 +269,19 @@ public class AccommodationFilterFragment extends DialogFragment {
         for (Integer id:ids){
             Chip chip = amenities.findViewById(id);
 
-            params.append("Amenity=").append(Amenity.valueOf(chip.getText().toString()).ordinal());
+            params.append("Amenity=").append(Amenity.valueOf(chip.getText().toString()).ordinal()).append(";");
 
         }
 
         ids = types.getCheckedChipIds();
         for (Integer id:ids){
             Chip chip = types.findViewById(id);
-            params.append("AccommodationType=").append(AccommodationType.valueOf(chip.getText().toString()).ordinal());
+            params.append("AccommodationType=").append(AccommodationType.valueOf(chip.getText().toString()).ordinal()).append(";");
 
         }
 
         if(!from.getText().toString().isEmpty()){
-            params.append("MinPrice=").append(from.getText().toString());
+            params.append("MinPrice=").append(from.getText().toString()).append(";");
 
         }
 
