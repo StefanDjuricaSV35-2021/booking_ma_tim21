@@ -44,8 +44,9 @@ public class AccommodationActivity extends AppCompatActivity {
         String name=intent.getStringExtra("name");
         String location=intent.getStringExtra("location");
         String imageSrc=intent.getStringExtra("image");
+        Double price=intent.getDoubleExtra("price",0);
 
-        this.accommodationPreview= new AccommodationPreview(name,location,imageSrc);
+        this.accommodationPreview= new AccommodationPreview(name,location,imageSrc,price);
     }
 
     void setView(){

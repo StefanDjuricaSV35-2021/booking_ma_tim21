@@ -5,10 +5,21 @@ public class AccommodationPreview {
     String location;
     String imageSrc;
 
-    public AccommodationPreview(String name, String location, String imageSrc) {
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    Double price;
+
+    public AccommodationPreview(String name, String location, String imageSrc,Double price) {
         this.name = name;
         this.location = location;
         this.imageSrc = imageSrc;
+        this.price=price;
     }
 
     public String getName() {

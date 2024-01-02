@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         RegisterBtn.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
+
         });
     }
 

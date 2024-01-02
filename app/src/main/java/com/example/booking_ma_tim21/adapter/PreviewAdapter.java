@@ -44,9 +44,13 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
 
         holder.name.setText(accommodationPreviews.get(position).getName());
         holder.location.setText(accommodationPreviews.get(position).getLocation());
-
-
         Picasso.get().load("http://10.0.2.2:8080/images/"+accommodationPreviews.get(position).getImage()).into(holder.image);
+
+        try {
+            holder.price.setText(accommodationPreviews.get(position).getPrice().toString());
+        }catch (Exception e){
+            holder.price.setVisibility(View.GONE);
+        }
 
         holder.itemView.setOnClickListener(view -> {
             itemListener.onItemClick(accommodationPreviews.get(position));

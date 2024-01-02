@@ -81,7 +81,6 @@
                     android:layout_height="20dp" />
 
                 <androidx.fragment.app.FragmentContainerView
-                    android:name="com.example.booking_ma_tim21.fragments.AccommodatioPreviewRecycleViewFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/preview_recycler_fragment"

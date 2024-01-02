@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,18 +25,21 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingRight="10dp"
+        android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
 
         <TextView
             android:id="@+id/tag1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
             android:text="Type"
             android:textSize="23dp"
-            android:layout_marginLeft="7dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,28 +48,15 @@
             android:id="@+id/type_cg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tag1"
             app:selectionRequired="false"
             app:singleSelection="true"
-            app:layout_constraintTop_toBottomOf="@id/tag1"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="5dp"
 
             >
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="aa"
-                />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="bb" />
-
         </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.divider.MaterialDivider
@@ -73,22 +64,21 @@
 
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="7dp"
+            android:layout_marginRight="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/type_cg"
-            />
+            app:layout_constraintTop_toBottomOf="@id/type_cg" />
 
         <TextView
             android:id="@+id/tag2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Amenities"
-            android:textSize="23dp"
             android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
+            android:text="Amenities"
+            android:textSize="23dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/type_div" />
 
@@ -96,27 +86,15 @@
             android:id="@+id/amenities_cg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:selectionRequired="false"
-            app:singleSelection="false"
-            app:layout_constraintTop_toBottomOf="@id/tag2"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="7dp"
             android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tag2"
+            app:selectionRequired="false"
+            app:singleSelection="false"
 
             >
 
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="aa"
-                />
-
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="bb" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -125,42 +103,72 @@
 
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="7dp"
+            android:layout_marginRight="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/amenities_cg"
-            />
+            app:layout_constraintTop_toBottomOf="@id/amenities_cg" />
 
         <TextView
             android:id="@+id/tag3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price Range"
-            android:textSize="23dp"
             android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
+            android:text="Price Range"
+            android:textSize="23dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/am_div" />
 
-        <com.google.android.material.slider.RangeSlider
-            android:valueFrom="0"
-            android:valueTo="100"
-            android:stepSize="1"
-            android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/fromText"
             android:layout_width="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="7dp"
+            android:text="from"
+            app:layout_constraintStart_toStartOf="@id/from"
             app:layout_constraintTop_toBottomOf="@id/tag3"
-            app:labelBehavior="visible"
-            app:values="@array/initial_range_slider_values"
-            app:tickColor="#00000000"
-
 
             />
 
+        <EditText
+            android:id="@+id/from"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberSigned"
+            app:layout_constraintTop_toBottomOf="@id/fromText"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="357dp" />
 
 
+
+        <TextView
+            android:id="@+id/toText"
+            android:layout_marginLeft="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="to"
+            app:layout_constraintTop_toBottomOf="@id/from"
+            app:layout_constraintStart_toStartOf="@id/to"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/to"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberSigned"
+            app:layout_constraintTop_toBottomOf="@id/toText"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="277dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -177,7 +185,7 @@
         >
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnResetAll"
+            android:id="@+id/btnFilter"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
