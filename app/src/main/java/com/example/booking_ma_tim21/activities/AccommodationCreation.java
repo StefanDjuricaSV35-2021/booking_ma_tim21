@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.booking_ma_tim21.R;
-import com.example.booking_ma_tim21.adapter.AmenitiesAdapter;
+import com.example.booking_ma_tim21.adapter.AmenityCheckBoxAdapter;
 import com.example.booking_ma_tim21.adapter.FileAdapter;
 import com.example.booking_ma_tim21.adapter.PricingAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
@@ -73,7 +73,7 @@ public class AccommodationCreation extends AppCompatActivity {
     private Spinner accommodation_type;
     private RecyclerView amenities;
     private RecyclerView timeslots;
-    private AmenitiesAdapter amenitiesAdapter;
+    private AmenityCheckBoxAdapter amenitiesAdapter;
     private PricingAdapter pricingAdapter;
     private Button btnStartDate;
     private Button btnEndDate;
@@ -139,7 +139,7 @@ public class AccommodationCreation extends AppCompatActivity {
         amenities = findViewById(R.id.amenities);
         amenities.setLayoutManager(new LinearLayoutManager(this));
 
-        amenitiesAdapter = new AmenitiesAdapter(amenitiesList);
+        amenitiesAdapter = new AmenityCheckBoxAdapter(amenitiesList);
         amenities.setAdapter(amenitiesAdapter);
 
 //        accommodation pricing adapter

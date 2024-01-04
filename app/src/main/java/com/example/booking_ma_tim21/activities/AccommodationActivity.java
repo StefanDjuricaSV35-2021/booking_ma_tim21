@@ -1,24 +1,31 @@
 package com.example.booking_ma_tim21.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.adapter.AmenityCheckBoxAdapter;
+import com.example.booking_ma_tim21.adapter.AmenityListAdapter;
+import com.example.booking_ma_tim21.adapter.ImageAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
-import com.example.booking_ma_tim21.model.AccommodationPreview;
+import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
+import com.example.booking_ma_tim21.model.enumeration.Amenity;
 import com.example.booking_ma_tim21.util.NavigationSetup;
-import com.squareup.picasso.Picasso;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 public class AccommodationActivity extends AppCompatActivity {
-
-    AccommodationPreview accommodationPreview;
+    AccommodationDetailsDTO acc;
     AuthManager authManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,26 +45,38 @@ public class AccommodationActivity extends AppCompatActivity {
     }
 
     void setAccommodation(){
-
         Intent intent=getIntent();
-
-        String name=intent.getStringExtra("name");
-        String location=intent.getStringExtra("location");
-        String imageSrc=intent.getStringExtra("image");
-        Double price=intent.getDoubleExtra("price",0);
-
-        this.accommodationPreview= new AccommodationPreview(name,location,imageSrc,price);
+        acc= (AccommodationDetailsDTO) intent.getSerializableExtra("accommodation");
     }
 
     void setView(){
-        ImageView image=findViewById(R.id.image);
+        ViewPager imageSlider=findViewById(R.id.image_slider);
         TextView name=findViewById(R.id.name_tv);
         TextView location=findViewById(R.id.location_tv);
-        TextView price=findViewById(R.id.price_tv);
+        TextView type=findViewById(R.id.type_tv);
+        TextView guests=findViewById(R.id.guests_tv);
+        RecyclerView amenities=findViewById(R.id.amenities_lv);
+        //TextView price=findViewById(R.id.price_tv);
 
-        Picasso.get().load("http://10.0.2.2:8080/images/"+accommodationPreview.getImageSrc()).into(image);
-        name.setText(accommodationPreview.getName());
-        location.setText(accommodationPreview.getLocation());
+        ImageAdapter adapterView = new ImageAdapter(this,acc.getPhotos());
+        imageSlider.setAdapter(adapterView);
+        name.setText(acc.getName());
+        location.setText(acc.getLocation());
+        type.setText(acc.getType().toString());
+        guests.setText(acc.getMinGuests()+"-"+acc.getMaxGuests()+" Guests");
+        setAmenityList(amenities, (ArrayList<Amenity>) acc.getAmenities());
+
+
+
+    }
+
+    void setAmenityList(RecyclerView listView, ArrayList<Amenity> amenities){
+
+
+        listView.setLayoutManager(new LinearLayoutManager(this));
+        AmenityListAdapter adapter = new AmenityListAdapter(amenities); // Replace with your custom adapter
+
+        listView.setAdapter(adapter);
 
     }
 }

@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccommodationActivity;
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
+import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
@@ -41,18 +42,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     public AccommodatioPreviewRecycleViewFragment() {
         // Required empty public constructor
-    }
-
-    public static AccommodatioPreviewRecycleViewFragment newInstance(String location, String guests, String date) {
-
-        AccommodatioPreviewRecycleViewFragment fragment = new AccommodatioPreviewRecycleViewFragment();
-        Bundle args = new Bundle();
-        args.putString("location", location);
-        args.putString("guests", guests);
-        args.putString("date", date);
-
-        fragment.setArguments(args);
-        return fragment;
     }
 
     public static AccommodatioPreviewRecycleViewFragment newInstance(String location, String guests, String date,String filter) {
@@ -113,17 +102,20 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
             call = service.getAllAccommodations();
         }
 
+        enqueuePreviewCall(call);
+    }
+
+    void enqueuePreviewCall(Call call){
+
         call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
             @Override
             public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
                 if (response.code() == 200){
+
                     Log.d("REZ","Meesage recieved");
-                    System.out.println(response.body());
                     List<AccommodationPreviewDTO> previewDTOs = response.body();
-                    System.out.println(previewDTOs);
                     loadingPanel.setVisibility(View.GONE);
                     setPreviewRecycler(previewDTOs);
-
 
                 }else{
                     Log.d("REZ","Meesage recieved: "+response.code());
@@ -138,7 +130,9 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
         });
 
+
     }
+
 
     private void setPreviewRecycler(List<AccommodationPreviewDTO> accommodationPreviewDTOs){
 
@@ -149,9 +143,8 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
             @Override
             public void onItemClick(AccommodationPreviewDTO preview) {
 
-                Intent intent=createIntent(preview);
-
-                startActivity(intent);
+                Call call= service.getAccommodation(preview.getId());
+                enqueueDetailsCall(call);
 
             }
         });
@@ -159,21 +152,37 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     }
 
-    Intent createIntent(AccommodationPreviewDTO preview){
+    void enqueueDetailsCall(Call call){
+        call.enqueue(new Callback<AccommodationDetailsDTO>() {
+            @Override
+            public void onResponse(Call<AccommodationDetailsDTO> call, Response<AccommodationDetailsDTO> response) {
+                if (response.code() == 200){
 
-        String name=preview.getName();
-        String location=preview.getLocation();
-        String imageSrc=preview.getImage();
-        Double price=preview.getPrice();
+                    Log.d("REZ","Meesage recieved");
+                    AccommodationDetailsDTO detailsDTO = response.body();
+                    loadingPanel.setVisibility(View.GONE);
+                    showDetails(detailsDTO);
+
+                }else{
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccommodationDetailsDTO> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+    }
+
+    void showDetails(AccommodationDetailsDTO detailsDTO){
 
         Intent intent=new Intent(getActivity(), AccommodationActivity.class);
+        intent.putExtra("accommodation",detailsDTO);
 
-        intent.putExtra("name",name);
-        intent.putExtra("location",location);
-        intent.putExtra("image",imageSrc);
-        intent.putExtra("price",price);
-
-        return intent;
+        startActivity(intent);
 
     }
 }

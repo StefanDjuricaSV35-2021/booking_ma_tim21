@@ -1,6 +1,8 @@
 package com.example.booking_ma_tim21.model;
 
-public class TimeSlot {
+import java.io.Serializable;
+
+public class TimeSlot implements Serializable {
     private long startDate;
     private long endDate;
 

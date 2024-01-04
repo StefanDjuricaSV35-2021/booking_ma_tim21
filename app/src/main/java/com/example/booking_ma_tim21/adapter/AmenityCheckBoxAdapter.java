@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,12 +15,12 @@ import com.example.booking_ma_tim21.model.enumeration.Amenity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AmenitiesAdapter extends RecyclerView.Adapter<AmenitiesAdapter.ViewHolder> {
+public class AmenityCheckBoxAdapter extends RecyclerView.Adapter<AmenityCheckBoxAdapter.ViewHolder> {
 
     private List<Amenity> amenitiesList;
     private SparseBooleanArray checkedItems;
 
-    public AmenitiesAdapter(List<Amenity> amenitiesList) {
+    public AmenityCheckBoxAdapter(List<Amenity> amenitiesList) {
         this.amenitiesList = amenitiesList;
         this.checkedItems = new SparseBooleanArray();
     }
