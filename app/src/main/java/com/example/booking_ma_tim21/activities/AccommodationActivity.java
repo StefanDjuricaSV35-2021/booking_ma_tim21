@@ -15,6 +15,7 @@ import com.example.booking_ma_tim21.adapter.AmenityListAdapter;
 import com.example.booking_ma_tim21.adapter.ImageAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
+import com.example.booking_ma_tim21.fragments.MapFragment;
 import com.example.booking_ma_tim21.model.enumeration.Amenity;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -58,16 +59,35 @@ public class AccommodationActivity extends AppCompatActivity {
         RecyclerView amenities=findViewById(R.id.amenities_lv);
         //TextView price=findViewById(R.id.price_tv);
 
-        ImageAdapter adapterView = new ImageAdapter(this,acc.getPhotos());
-        imageSlider.setAdapter(adapterView);
+        setImageSlider(imageSlider);
         name.setText(acc.getName());
         location.setText(acc.getLocation());
         type.setText(acc.getType().toString());
         guests.setText(acc.getMinGuests()+"-"+acc.getMaxGuests()+" Guests");
         setAmenityList(amenities, (ArrayList<Amenity>) acc.getAmenities());
+        setMapFragment();
 
 
+    }
 
+    void setImageSlider(ViewPager imageSlider){
+
+        ImageAdapter adapterView = new ImageAdapter(this,acc.getPhotos());
+        imageSlider.setAdapter(adapterView);
+
+    }
+
+    void setMapFragment(){
+        MapFragment map=new MapFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("location", acc.getLocation());
+
+        map.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.map_fragment_container, map)
+                .commit();
     }
 
     void setAmenityList(RecyclerView listView, ArrayList<Amenity> amenities){

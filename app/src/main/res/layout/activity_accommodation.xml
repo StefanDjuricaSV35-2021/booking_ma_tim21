@@ -29,6 +29,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="35dp"
 
                 >
 
@@ -149,20 +150,120 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/amenities_lv" />
 
-                <fragment
-                    android:id="@+id/map"
-                    android:name="com.google.android.gms.maps.MapFragment"
+                <TextView
+                    android:id="@+id/map_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="20dp"
+                    android:text="Map View"
+                    android:textSize="25dp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/amenities_div" />
+
+                <androidx.cardview.widget.CardView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/map_container"
                     android:layout_width="350dp"
                     android:layout_height="200dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="8dp"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/amenities_div"
+                    app:layout_constraintTop_toBottomOf="@id/map_tv">
 
-                    map:cameraZoom="13"
-                    map:liteMode="true"
-                    map:mapType="normal"
-                    />
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/map_fragment_container"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/map_div"
+                    android:layout_width="380dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="25dp"
+                    app:dividerColor="@color/darkblue"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/map_container" />
+
+                <TextView
+                    android:id="@+id/availability_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Availability"
+                    android:textSize="25dp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/map_div" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/availability_div"
+                    android:layout_width="380dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="25dp"
+                    app:dividerColor="@color/darkblue"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/availability_tv" />
+
+                <TextView
+                    android:id="@+id/reviews_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Reviews"
+                    android:textSize="25dp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/availability_div" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/acc_reviews_btn"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_round_corners_white"
+                    app:backgroundTint="@null"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:text="Accommodation"
+
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/reviews_tv"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/own_reviews_btn"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/bg_round_corners_white"
+                    app:backgroundTint="@null"
+                    android:textColor="@color/black"
+
+
+                    android:textSize="25dp"
+                    android:text="Owner"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/acc_reviews_btn"/>
+
+
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
