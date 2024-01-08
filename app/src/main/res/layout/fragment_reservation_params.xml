@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="40dp"
+        android:paddingBottom="40dp">
+
+        <EditText
+            android:id="@+id/guests_et"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:hint="Number of Guests"
+            android:textAlignment="center"
+            android:inputType="number"
+            android:background="@drawable/bg_round_corners_white"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selected_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:text="Select Date"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:background="@drawable/bg_round_corners_white"
+
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guests_et"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirm_btn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_round_corners_white"
+            android:text="Confirm"
+            android:textColor="@color/white"
+
+
+            android:textSize="25dp"
+            app:backgroundTint="@color/lightblue"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selected_date_tv" />
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

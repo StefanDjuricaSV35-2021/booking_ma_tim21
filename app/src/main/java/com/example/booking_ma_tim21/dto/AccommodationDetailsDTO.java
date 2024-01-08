@@ -22,6 +22,7 @@ public class AccommodationDetailsDTO implements Serializable {
     private boolean enabled;
     private boolean perNight;
     private String location;
+
     private List<TimeSlot> dates;
 
     public AccommodationDetailsDTO(Long id, Long ownerId, String name, AccommodationType type,
@@ -94,5 +95,10 @@ public class AccommodationDetailsDTO implements Serializable {
 
     public String getLocation() {
         return location;
+    }
+
+
+    public List<TimeSlot> getDates() {
+        return dates;
     }
 }

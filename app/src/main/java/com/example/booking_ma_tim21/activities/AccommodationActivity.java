@@ -1,5 +1,7 @@
 package com.example.booking_ma_tim21.activities;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.booking_ma_tim21.R;
@@ -17,13 +20,16 @@ import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.fragments.MapFragment;
 import com.example.booking_ma_tim21.model.enumeration.Amenity;
+import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AccommodationActivity extends AppCompatActivity {
     AccommodationDetailsDTO acc;
@@ -56,7 +62,7 @@ public class AccommodationActivity extends AppCompatActivity {
         TextView location=findViewById(R.id.location_tv);
         TextView type=findViewById(R.id.type_tv);
         TextView guests=findViewById(R.id.guests_tv);
-        RecyclerView amenities=findViewById(R.id.amenities_lv);
+        TextView availability=findViewById(R.id.availability_tv);
         //TextView price=findViewById(R.id.price_tv);
 
         setImageSlider(imageSlider);
@@ -64,8 +70,18 @@ public class AccommodationActivity extends AppCompatActivity {
         location.setText(acc.getLocation());
         type.setText(acc.getType().toString());
         guests.setText(acc.getMinGuests()+"-"+acc.getMaxGuests()+" Guests");
-        setAmenityList(amenities, (ArrayList<Amenity>) acc.getAmenities());
+        setAmenityList((ArrayList<Amenity>) acc.getAmenities());
         setMapFragment();
+        availability.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MaterialDatePicker picker = DatePickerCreator.getDatePicker(acc.getDates());
+                picker.show(getSupportFragmentManager(), picker.toString());
+
+
+            }
+        });
 
 
     }
@@ -90,12 +106,11 @@ public class AccommodationActivity extends AppCompatActivity {
                 .commit();
     }
 
-    void setAmenityList(RecyclerView listView, ArrayList<Amenity> amenities){
+    void setAmenityList(ArrayList<Amenity> amenities){
 
-
+        RecyclerView listView=findViewById(R.id.amenities_lv);
         listView.setLayoutManager(new LinearLayoutManager(this));
         AmenityListAdapter adapter = new AmenityListAdapter(amenities); // Replace with your custom adapter
-
         listView.setAdapter(adapter);
 
     }

@@ -19,6 +19,7 @@ import android.widget.EditText;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.SearchActivity;
+import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -105,12 +106,7 @@ public class SearchFragment extends Fragment {
 
     MaterialDatePicker createPicker(){
 
-
-        MaterialDatePicker<Pair<Long,Long>> picker = MaterialDatePicker.Builder.dateRangePicker()
-                .setTheme(R.style.CustomThemeOverlay_MaterialCalendar_Fullscreen)
-                .setSelection(new Pair(null,null))
-                .setCalendarConstraints(new CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
-                .build();
+        MaterialDatePicker<Pair<Long,Long>> picker = DatePickerCreator.getDatePicker(null);
 
         picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long,Long>>() {
             @Override
@@ -124,13 +120,6 @@ public class SearchFragment extends Fragment {
                 String formattedDate2  = format.format(calendar.getTime());
 
                 date.setText(formattedDate1+"/"+formattedDate2);
-            }
-        });
-        picker.addOnNegativeButtonClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                picker.dismiss();
             }
         });
 
