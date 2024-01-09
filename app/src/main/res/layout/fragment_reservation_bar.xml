@@ -86,6 +86,21 @@
             app:layout_constraintStart_toEndOf="@id/date_res_tv"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/make_res_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightblue"
+            android:textColor="@color/white"
+
+
+            android:textSize="40dp"
+            android:text="Make Reservation"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/date_res_tv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 
 

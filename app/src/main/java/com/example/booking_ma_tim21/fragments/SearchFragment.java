@@ -36,9 +36,6 @@ public class SearchFragment extends Fragment {
     EditText location;
     EditText guests;
 
-    MaterialDatePicker datePicker;
-
-
     public SearchFragment() {
         // Required empty public constructor
     }

@@ -45,6 +45,9 @@
             android:name=".activities.SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.ReservationSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true">
             <intent-filter>

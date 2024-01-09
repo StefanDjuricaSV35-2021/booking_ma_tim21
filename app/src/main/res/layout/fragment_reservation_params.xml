@@ -3,12 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_round_corners_white"
+    app:cardCornerRadius="9dp"
+    app:cardElevation="100dp"
+
+    >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="40dp"
-        android:paddingBottom="40dp">
+        android:paddingBottom="40dp"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp">
 
         <EditText
             android:id="@+id/guests_et"

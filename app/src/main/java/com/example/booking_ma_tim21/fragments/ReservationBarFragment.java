@@ -1,19 +1,38 @@
 package com.example.booking_ma_tim21.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.activities.MainActivity;
+import com.example.booking_ma_tim21.activities.ReservationSuccessActivity;
+import com.example.booking_ma_tim21.dto.ReservationRequestDTO;
+import com.example.booking_ma_tim21.model.TimeSlot;
+import com.example.booking_ma_tim21.model.enumeration.ReservationRequestStatus;
+import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.ReservationRequestService;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.google.android.material.button.MaterialButton;
+
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,22 +44,37 @@ public class ReservationBarFragment extends Fragment {
     public TextView date;
     public TextView guests;
     public TextView price;
-
     MaterialButton reserve;
     MaterialButton edit;
+    MaterialButton makeRes;
+    Bundle resParams;
+    Bundle resRestrictions;
+    AccommodationService serviceAcc;
+    ReservationRequestService serviceResReq;
+
+
 
 
     public ReservationBarFragment() {
         // Required empty public constructor
     }
 
-    public static ReservationBarFragment newInstance(String date, Integer guests,Double price) {
+    public static ReservationBarFragment newInstance(Bundle resParams, Bundle resRestrictions) {
         ReservationBarFragment fragment = new ReservationBarFragment();
 
         Bundle args = new Bundle();
-        args.putString("date", date);
-        args.putInt("guests", guests);
-        args.putDouble("price", price);
+        args.putBundle("res_params", resParams);
+        args.putBundle("res_restrict", resRestrictions);
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ReservationBarFragment newInstance( Bundle resRestrictions) {
+        ReservationBarFragment fragment = new ReservationBarFragment();
+
+        Bundle args = new Bundle();
+        args.putBundle("res_restrict", resRestrictions);
 
         fragment.setArguments(args);
         return fragment;
@@ -49,6 +83,15 @@ public class ReservationBarFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        resParams=getArguments().getBundle("res_params");
+        resRestrictions=getArguments().getBundle("res_restrict");
+
+        RetrofitService rs=new RetrofitService();
+        serviceAcc =rs.getRetrofit().create(AccommodationService.class);
+        serviceResReq=rs.getRetrofit().create(ReservationRequestService.class);
+
+
     }
 
     @Override
@@ -56,6 +99,7 @@ public class ReservationBarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_reservation_bar, container, false);
+
     }
 
     @Override
@@ -66,17 +110,136 @@ public class ReservationBarFragment extends Fragment {
         price=view.findViewById(R.id.price_res_tv);
         reserve=view.findViewById(R.id.res_btn);
         edit=view.findViewById(R.id.edit_btn);
+        makeRes=view.findViewById(R.id.make_res_btn);
+
+        if(resParams.getBoolean("searched")==true){
+            setResParams(resParams);
+        }
+
+        setButtonClicks();
+
+    }
+
+    void setButtonClicks(){
+
+        reserve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String[] dates=date.getText().toString().split("/");
+                ZoneId zoneId = ZoneId.of("GMT");
+                LocalDate dateFrom = LocalDate.parse(dates[0]);
+                LocalDate dateTo = LocalDate.parse(dates[1]);
+
+                Long userId=2L;
+                Long accId=resParams.getLong("id");
+                Integer noGuests=Integer.parseInt(guests.getText().toString());
+                Double priceVal=Double.parseDouble(price.getText().toString());
+                TimeSlot ts=new TimeSlot(dateFrom.atStartOfDay(zoneId).toEpochSecond(),dateTo.atStartOfDay(zoneId).toEpochSecond());
+                ReservationRequestStatus reqStauts=ReservationRequestStatus.Waiting;
+
+                ReservationRequestDTO req=new ReservationRequestDTO(userId,accId,noGuests,priceVal,ts,reqStauts);
+                Call call=serviceResReq.createReservationRequest(req);
+                enqueueResReqCall(call);
+
+            }
+        });
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ReservationParamsEditFragment dialogFragment= ReservationParamsEditFragment.newInstance(resRestrictions);
+                dialogFragment.show(getChildFragmentManager(),"My  Fragment");
+
+            }
+        });
+
+        makeRes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReservationParamsEditFragment dialogFragment= ReservationParamsEditFragment.newInstance(resRestrictions);
+                dialogFragment.show(getChildFragmentManager(),"My  Fragment");
+            }
+        });
 
 
     }
 
-    public void editDates(Bundle b){
+    public void setResParams(Bundle b) {
+        makeRes.setVisibility(View.GONE);
+        this.date.setText(b.getString("dates"));
+        this.guests.setText(b.getString("guests"));
 
-        date.setText(b.getString("dates"));
-        guests.setText(b.getString("guests"));
-
-        //TODO add price change
+        setPrice(b);
 
     }
+
+    void setPrice(Bundle b){
+        Integer guests=Integer.parseInt(b.getString("guests"));
+        String dateFrom=b.getString("dates").split("/")[0];
+        String dateTo=b.getString("dates").split("/")[1];
+        Long id=resParams.getLong("id");
+
+        Call call= serviceAcc.getAccommodationsPrice(guests,dateFrom,dateTo,id);
+        enqueuePriceCall(call);
+
+    }
+
+
+    void enqueueResReqCall(Call call){
+
+        call.enqueue(new Callback<ReservationRequestDTO>() {
+            @Override
+            public void onResponse(Call<ReservationRequestDTO> call, Response<ReservationRequestDTO> response) {
+                if (response.code() == 201){
+
+                    Log.d("REZ","Meesage recieved");
+
+                    Intent intent = new Intent(getActivity(), ReservationSuccessActivity.class); // Replace HomeActivity with your home page activity
+                    startActivity(intent);
+                    getActivity().finish();
+
+
+                }else{
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReservationRequestDTO> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+
+
+    }
+    void enqueuePriceCall(Call call){
+        call.enqueue(new Callback<Double>() {
+            @Override
+            public void onResponse(Call<Double> call, Response<Double> response) {
+                if (response.code() == 200){
+
+                    Log.d("REZ","Meesage recieved");
+                    Double priceVal = response.body();
+                    price.setText(priceVal.toString());
+
+                }else{
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Double> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+
+    }
+
 
 }

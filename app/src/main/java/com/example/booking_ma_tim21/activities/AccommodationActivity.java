@@ -3,6 +3,7 @@ package com.example.booking_ma_tim21.activities;
 import static android.app.PendingIntent.getActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -19,6 +20,8 @@ import com.example.booking_ma_tim21.adapter.ImageAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.fragments.MapFragment;
+import com.example.booking_ma_tim21.fragments.ReservationBarFragment;
+import com.example.booking_ma_tim21.model.TimeSlot;
 import com.example.booking_ma_tim21.model.enumeration.Amenity;
 import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.example.booking_ma_tim21.util.NavigationSetup;
@@ -33,6 +36,7 @@ import java.util.Date;
 
 public class AccommodationActivity extends AppCompatActivity {
     AccommodationDetailsDTO acc;
+    Bundle searchParams;
     AuthManager authManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class AccommodationActivity extends AppCompatActivity {
     void setAccommodation(){
         Intent intent=getIntent();
         acc= (AccommodationDetailsDTO) intent.getSerializableExtra("accommodation");
+        searchParams=intent.getExtras();
     }
 
     void setView(){
@@ -83,8 +88,26 @@ public class AccommodationActivity extends AppCompatActivity {
             }
         });
 
+        setResFragment();
+
 
     }
+
+     void setResFragment(){
+
+        Bundle resRestrictions= new Bundle();
+        resRestrictions.putInt("min",acc.getMinGuests());
+        resRestrictions.putInt("max",acc.getMaxGuests());
+        resRestrictions.putParcelableArrayList("dates",(ArrayList) acc.getDates());
+
+        ReservationBarFragment fragment = ReservationBarFragment.newInstance(searchParams,resRestrictions);
+
+         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+         transaction.add(R.id.res_bar_frag, fragment, "Res Bar");
+         transaction.commit();
+
+    }
+
 
     void setImageSlider(ViewPager imageSlider){
 

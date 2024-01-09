@@ -36,8 +36,8 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     AccommodationService service;
     RelativeLayout loadingPanel;
     String location;
-    String[] dates;
-    String guests;
+    String[] dates=null;
+    String guests=null;
     String filter;
 
     public AccommodatioPreviewRecycleViewFragment() {
@@ -96,7 +96,7 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         Bundle args = getArguments();
         if(args !=null) {
 
-            call=service.getFilteredAccommodations(location,guests,dates[0],dates[1],filter);
+            call=service.getFilteredAccommodations(dates[0],dates[1],Integer.parseInt(guests),location,filter);
 
         }else {
             call = service.getAllAccommodations();
@@ -179,8 +179,24 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     void showDetails(AccommodationDetailsDTO detailsDTO){
 
+
+
         Intent intent=new Intent(getActivity(), AccommodationActivity.class);
         intent.putExtra("accommodation",detailsDTO);
+
+        if(guests!=null&&dates!=null) {
+            Bundle searchParams = new Bundle();
+            searchParams.putString("guests", guests);
+            searchParams.putString("dates", dates[0] + "/" + dates[1]);
+            searchParams.putLong("id",detailsDTO.getId());
+            searchParams.putBoolean("searched",true);
+            intent.putExtras(searchParams);
+        }else{
+            Bundle searchParams = new Bundle();
+            searchParams.putLong("id",detailsDTO.getId());
+            searchParams.putBoolean("searched",false);
+            intent.putExtras(searchParams);
+        }
 
         startActivity(intent);
 

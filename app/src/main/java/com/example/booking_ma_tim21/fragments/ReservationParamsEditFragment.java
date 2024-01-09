@@ -8,57 +8,45 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.booking_ma_tim21.R;
-import com.example.booking_ma_tim21.model.TimeSlot;
 import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ReservationParamsFragment#newInstance} factory method to
+ * Use the {@link ReservationParamsEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReservationParamsFragment extends DialogFragment {
+public class ReservationParamsEditFragment extends DialogFragment {
 
-    public interface paramsChanged{
 
-        void changedParams(Bundle args);
-    }
-
-    private Integer minGuests;
-    private Integer maxGuests;
-    List<TimeSlot> datesAvailable;
+    Bundle resRestrictions;
 
     TextView guests;
     TextView dates;
     MaterialButton confirm;
 
-    paramsChanged pc;
-
-    public ReservationParamsFragment() {
+    public ReservationParamsEditFragment() {
         // Required empty public constructor
     }
 
-    public static ReservationParamsFragment newInstance(Integer minGuests, Integer maxGuests,List<TimeSlot> ts) {
-        ReservationParamsFragment fragment = new ReservationParamsFragment();
-        Bundle args = new Bundle();
-        args.putInt("min", minGuests);
-        args.putInt("max", maxGuests);
-        args.putParcelableArrayList("dates",(ArrayList)ts);
-        fragment.setArguments(args);
+    public static ReservationParamsEditFragment newInstance(Bundle resRestrictions) {
+        ReservationParamsEditFragment fragment = new ReservationParamsEditFragment();
+
+        fragment.setArguments(resRestrictions);
         return fragment;
     }
 
@@ -66,10 +54,9 @@ public class ReservationParamsFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            minGuests = getArguments().getInt("min");
-            maxGuests = getArguments().getInt("max");
-            datesAvailable =getArguments().getParcelableArrayList("dates");
+            resRestrictions=getArguments();
         }
+
     }
 
     @Override
@@ -82,11 +69,49 @@ public class ReservationParamsFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.bg_round_corners_white);
+
         dates=view.findViewById(R.id.selected_date_tv);
         guests=view.findViewById(R.id.guests_et);
         confirm=view.findViewById(R.id.confirm_btn);
+        confirm.setVisibility(View.GONE);
 
         setDatesInput();
+
+        guests.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.toString().isEmpty()){
+                    guests.setBackgroundResource(R.drawable.bg_round_corners_white_red_borders);
+                    confirm.setVisibility(View.GONE);
+                    return;
+                }
+
+                Integer number=Integer.parseInt(s.toString());
+                Integer min=resRestrictions.getInt("min");
+                Integer max=resRestrictions.getInt("max");
+
+                if((number>=min&&number<=max)){
+                    guests.setBackgroundResource(R.drawable.bg_round_corners_white);
+                    confirm.setVisibility(View.VISIBLE);
+                }else{
+                    guests.setBackgroundResource(R.drawable.bg_round_corners_white_red_borders);
+                    confirm.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +122,8 @@ public class ReservationParamsFragment extends DialogFragment {
                 b.putString("dates",dates.getText().toString());
                 b.putString("guests",guests.getText().toString());
 
-                frag.editDates(b);
+                frag.setResParams(b);
+                dismiss();
 
             }
         });
@@ -110,7 +136,8 @@ public class ReservationParamsFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                MaterialDatePicker mdp= DatePickerCreator.getDatePicker(datesAvailable);
+
+                MaterialDatePicker mdp= DatePickerCreator.getDatePicker(resRestrictions.getParcelableArrayList("dates"));
 
                 mdp.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long,Long>>() {
                     @Override

@@ -275,7 +275,6 @@
             android:id="@+id/res_bar_frag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.example.booking_ma_tim21.fragments.ReservationBarFragment"
             android:background="@drawable/res_footer"
              >
 
