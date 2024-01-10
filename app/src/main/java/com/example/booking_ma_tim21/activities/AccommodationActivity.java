@@ -95,6 +95,12 @@ public class AccommodationActivity extends AppCompatActivity {
 
      void setResFragment(){
 
+        AuthManager auth=AuthManager.getInstance(this);
+
+        if(!(auth.isLoggedIn()&& auth.getUserRole().equals("GUEST"))){
+            return;
+        }
+
         Bundle resRestrictions= new Bundle();
         resRestrictions.putInt("min",acc.getMinGuests());
         resRestrictions.putInt("max",acc.getMaxGuests());
