@@ -29,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class AccommodationActivity extends AppCompatActivity {
     AccommodationDetailsDTO acc;
     Bundle searchParams;
     AuthManager authManager;
+    TextView availability;
+    MaterialButton ownerReviews;
+    MaterialButton accomodationReviews;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,16 +71,27 @@ public class AccommodationActivity extends AppCompatActivity {
         TextView location=findViewById(R.id.location_tv);
         TextView type=findViewById(R.id.type_tv);
         TextView guests=findViewById(R.id.guests_tv);
-        TextView availability=findViewById(R.id.availability_tv);
-        //TextView price=findViewById(R.id.price_tv);
+        availability=findViewById(R.id.availability_tv);
+        accomodationReviews=findViewById(R.id.acc_reviews_btn);
+        ownerReviews=findViewById(R.id.own_reviews_btn);
+
 
         setImageSlider(imageSlider);
         name.setText(acc.getName());
         location.setText(acc.getLocation());
         type.setText(acc.getType().toString());
         guests.setText(acc.getMinGuests()+"-"+acc.getMaxGuests()+" Guests");
+
         setAmenityList((ArrayList<Amenity>) acc.getAmenities());
         setMapFragment();
+        setButtonClicks();
+        setResFragment();
+
+
+    }
+
+    void setButtonClicks(){
+
         availability.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,8 +103,28 @@ public class AccommodationActivity extends AppCompatActivity {
             }
         });
 
-        setResFragment();
+        accomodationReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent intent = new Intent(v.getContext(), AccommodationReviewPage.class);
+
+                Bundle b=new Bundle();
+                b.putLong("ACCOMMODATION_ID",acc.getId());
+                intent.putExtras(b);
+
+                v.getContext().startActivity(intent);
+
+            }
+
+        });
+
+        ownerReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
