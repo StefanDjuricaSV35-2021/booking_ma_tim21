@@ -15,8 +15,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UserService {
-    @GET("/api/v1/auth/users")
-    Call<UserDTO> getUser(@Query("id") Long id);
+    @GET("/api/v1/auth/users/{id}")
+    Call<UserDTO> getUser(@Path("id") Long id);
 
     @GET("/api/v1/auth/users/email/{email}")
     Call<UserDTO> getUser(@Path("email") String email);

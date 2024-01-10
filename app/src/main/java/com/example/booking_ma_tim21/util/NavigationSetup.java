@@ -32,6 +32,14 @@ public class NavigationSetup {
         LinearLayout your_accommodations = activity.findViewById(R.id.your_accommodations);
         LinearLayout accommodation_creation_requests = activity.findViewById(R.id.accommodation_creation_requests);
         LinearLayout accommodation_updating_requests = activity.findViewById(R.id.accommodation_updating_requests);
+        LinearLayout review_reports = activity.findViewById(R.id.review_reports);
+        LinearLayout view_reservation_requests = activity.findViewById(R.id.view_reservation_requests);
+        LinearLayout view_reservations_guest = activity.findViewById(R.id.view_reservations_guest);
+        LinearLayout view_reservations_owner = activity.findViewById(R.id.view_reservations_owner);
+        LinearLayout favorite_accommodations = activity.findViewById(R.id.favorite_accommodations);
+        LinearLayout owner_reviews = activity.findViewById(R.id.owner_reviews);
+        LinearLayout guest_report = activity.findViewById(R.id.guest_report);
+        LinearLayout owner_report = activity.findViewById(R.id.owner_report);
         LinearLayout log_out = activity.findViewById(R.id.log_out);
         LinearLayout loginScreen = activity.findViewById(R.id.loginScreen);
         LinearLayout registerScreen = activity.findViewById(R.id.registerScreen);
@@ -40,23 +48,50 @@ public class NavigationSetup {
 
         switch (role) {
             case "GUEST":
+                guest_report.setVisibility(View.GONE);
+                owner_reviews.setVisibility(View.GONE);
+                view_reservations_owner.setVisibility(View.GONE);
+                review_reports.setVisibility(View.GONE);
                 accommodation_creation_requests.setVisibility(View.GONE);
                 accommodation_updating_requests.setVisibility(View.GONE);
-
-            case "ADMIN":
                 create_accommodation.setVisibility(View.GONE);
                 your_accommodations.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
+                break;
 
+            case "ADMIN":
+                owner_report.setVisibility(View.GONE);
+                guest_report.setVisibility(View.GONE);
+                owner_reviews.setVisibility(View.GONE);
+                favorite_accommodations.setVisibility(View.GONE);
+                view_reservations_owner.setVisibility(View.GONE);
+                view_reservations_guest.setVisibility(View.GONE);
+                view_reservation_requests.setVisibility(View.GONE);
+                create_accommodation.setVisibility(View.GONE);
+                your_accommodations.setVisibility(View.GONE);
+                loginScreen.setVisibility(View.GONE);
+                registerScreen.setVisibility(View.GONE);
                 break;
             case "OWNER":
+                owner_report.setVisibility(View.GONE);
+                favorite_accommodations.setVisibility(View.GONE);
+                view_reservations_guest.setVisibility(View.GONE);
+                review_reports.setVisibility(View.GONE);
                 accommodation_creation_requests.setVisibility(View.GONE);
                 accommodation_updating_requests.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
                 break;
             default:
+                owner_report.setVisibility(View.GONE);
+                guest_report.setVisibility(View.GONE);
+                owner_reviews.setVisibility(View.GONE);
+                favorite_accommodations.setVisibility(View.GONE);
+                view_reservations_owner.setVisibility(View.GONE);
+                view_reservations_guest.setVisibility(View.GONE);
+                view_reservation_requests.setVisibility(View.GONE);
+                review_reports.setVisibility(View.GONE);
                 create_accommodation.setVisibility(View.GONE);
                 your_accommodations.setVisibility(View.GONE);
                 accommodation_creation_requests.setVisibility(View.GONE);
@@ -76,6 +111,15 @@ public class NavigationSetup {
         your_accommodations.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         accommodation_creation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         accommodation_updating_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+
+        review_reports.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        view_reservation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        owner_reviews.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        guest_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        owner_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
 
         log_out.setOnClickListener(v -> {
             authManager.signOut();

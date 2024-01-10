@@ -8,9 +8,11 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -26,6 +28,14 @@ public interface AccommodationService {
     @POST("/api/v1/auth/accommodations")
     Call<Accommodation> createAccommodation(@Body Accommodation accommodation);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type: application/json"
+    })
+    @PUT("/api/v1/auth/accommodations")
+    Call<Accommodation> updateAccommodation(@Body Accommodation accommodation);
+
+
     @GET("/api/v1/auth/accommodations/{id}")
     Call<AccommodationDetailsDTO> getAccommodation(@Path("id") Long id);
 
@@ -34,4 +44,7 @@ public interface AccommodationService {
 
     @GET("/api/v1/auth/accommodations/price")
     Call<Double> getAccommodationsPrice(@Query("noGuests")Integer noGuests,@Query("dateFrom")String dateFrom,@Query("dateTo")String dateTo,@Query("id")Long id);
+
+    @DELETE("/api/v1/accommodations/{id}")
+    Call<Void> deleteAccommodation(@Path("id") Long id);
 }

@@ -70,24 +70,6 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/create_accommodation"
-        android:layout_marginStart="12dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_marginTop="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/grey"
-            android:text="@string/create_accommodation"
-            android:textSize="20sp"
-            android:drawablePadding="8dp"
-            app:drawableLeftCompat="@drawable/baseline_logout_24"
-            android:visibility="visible"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/your_accommodations"
         android:layout_marginStart="12dp"
         android:orientation="horizontal">
@@ -97,6 +79,24 @@
             android:layout_height="wrap_content"
             android:textColor="@color/grey"
             android:text="@string/your_accommodations"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_accommodation"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/create_accommodation"
             android:textSize="20sp"
             android:drawablePadding="8dp"
             app:drawableLeftCompat="@drawable/baseline_logout_24"
@@ -133,6 +133,150 @@
             android:layout_height="wrap_content"
             android:textColor="@color/grey"
             android:text="@string/accommodation_updating_requests"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/review_reports"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/review_reports"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_reservation_requests"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/view_reservation_requests"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_reservations_guest"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/view_reservations"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_reservations_owner"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/view_reservations"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/favorite_accommodations"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/favorite_accommodations"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/owner_reviews"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/owner_reviews"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guest_report"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/guest_report"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/owner_report"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/owner_report"
             android:textSize="20sp"
             android:drawablePadding="8dp"
             app:drawableLeftCompat="@drawable/baseline_logout_24"
