@@ -16,8 +16,9 @@ public class User {
     private String street;
     private String phone;
     private boolean enabled;
+    private boolean blocked;
 
-    public User(Long id, Role role, String email, String password, String name, String surname, String country, String city, String street, String phone, boolean enabled) {
+    public User(Long id, Role role, String email, String password, String name, String surname, String country, String city, String street, String phone, boolean enabled, boolean blocked) {
         Id = id;
         this.role = role;
         this.email = email;
@@ -29,6 +30,7 @@ public class User {
         this.street = street;
         this.phone = phone;
         this.enabled = enabled;
+        this.blocked = blocked;
     }
 
     public Long getId() {
@@ -117,5 +119,17 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
