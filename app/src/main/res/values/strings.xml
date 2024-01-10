@@ -28,6 +28,13 @@
     <string name="cancellation_days">Days for cancellations</string>
     <string name="price">Enter price</string>
     <string name="submit_price">Submit pricing</string>
+    <string name="view_reservation_requests">View Reservation Requests</string>
+    <string name="view_reservations">View Reservations</string>
+    <string name="favorite_accommodations">Favorite Accommodations</string>
+    <string name="owner_reviews">Owner Reviews</string>
+    <string name="guest_report">Guest Report</string>
+    <string name="owner_report">Owner Report</string>
+    <string name="review_reports">Review Reports</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dummy_button">Dummy Button</string>
