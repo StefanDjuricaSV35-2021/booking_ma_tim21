@@ -17,34 +17,48 @@ import android.widget.RelativeLayout;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccommodationActivity;
+import com.example.booking_ma_tim21.activities.AccountActivity;
+import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
+import com.example.booking_ma_tim21.adapter.account.AccountAdapter;
+import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
+import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
+import com.example.booking_ma_tim21.retrofit.UserService;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AccommodatioPreviewRecycleViewFragment extends Fragment {
+    private UserDTO loggedInUser;
+    AuthManager authManager;
 
     RecyclerView previewRecycler;
     PreviewAdapter previewAdapter;
     AccommodationService service;
+    private UserService userService;
     RelativeLayout loadingPanel;
     String location;
     String[] dates=null;
     String guests=null;
     String filter;
 
+    boolean showOwnersAccommodations = false;
+
+
+
     public AccommodatioPreviewRecycleViewFragment() {
         // Required empty public constructor
     }
 
-    public static AccommodatioPreviewRecycleViewFragment newInstance(String location, String guests, String date,String filter) {
+    public static AccommodatioPreviewRecycleViewFragment newInstance(String location, String guests, String date,String filter, boolean showOwnersAccommodations) {
 
         AccommodatioPreviewRecycleViewFragment fragment = new AccommodatioPreviewRecycleViewFragment();
         Bundle args = new Bundle();
@@ -52,6 +66,7 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         args.putString("guests", guests);
         args.putString("date", date);
         args.putString("filter",filter);
+        args.putBoolean("showOwnersAccommodations", showOwnersAccommodations);
 
         fragment.setArguments(args);
         return fragment;
@@ -61,6 +76,7 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         getSearchParamsFromArgs();
 
     }
@@ -71,9 +87,10 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         RetrofitService retrofitService= new RetrofitService();
+        this.userService=retrofitService.getRetrofit().create(UserService.class);
         service=retrofitService.getRetrofit().create(AccommodationService.class);
+
         loadingPanel=getView().findViewById(R.id.loadingPanel);
         initializePreviews();
 
@@ -84,19 +101,24 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         Bundle args=getArguments();
         if(args==null){return;}
         guests=args.getString("guests");
-        dates = args.getString("date", "Date").split("/");
+        dates = args.getString("date", "Date/Date").split("/");
         location=args.getString("location");
         filter=args.getString("filter");
-
+        showOwnersAccommodations=(args.getBoolean("showOwnersAccommodations"));
     }
 
     private void initializePreviews(){
-        Call call=null;
+        Call call = null;
 
         Bundle args = getArguments();
         if(args !=null) {
+            if (showOwnersAccommodations) {
+                initializeUserAndAccommodations();
+                return;
+            } else {
+                call = service.getFilteredAccommodations(dates[0], dates[1], Integer.parseInt(guests), location, filter);
+            }
 
-            call=service.getFilteredAccommodations(dates[0],dates[1],Integer.parseInt(guests),location,filter);
 
         }else {
             call = service.getAllAccommodations();
@@ -200,5 +222,35 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
         startActivity(intent);
 
+    }
+
+    private void initializeUserAndAccommodations() {
+        OwnersAccommodationsActivity activity = (OwnersAccommodationsActivity) getActivity();
+        authManager = activity.getAuthManager();
+        String email = authManager.getUserId();
+        Call<UserDTO> call = this.userService.getUser(email);
+        call.enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if (response.isSuccessful()) {
+                    loggedInUser = response.body();
+                    Call newCall = service.getOwnersAccommodations(loggedInUser.getId());
+                    enqueuePreviewCall(newCall);
+                } else {
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initializePreviews();
     }
 }
