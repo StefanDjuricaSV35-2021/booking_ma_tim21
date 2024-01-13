@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,10 +20,15 @@ import com.example.booking_ma_tim21.adapter.AmenityListAdapter;
 import com.example.booking_ma_tim21.adapter.ImageAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
+import com.example.booking_ma_tim21.dto.UserDTO;
+import com.example.booking_ma_tim21.fragments.ChangeAccommodationButtonFragment;
 import com.example.booking_ma_tim21.fragments.MapFragment;
 import com.example.booking_ma_tim21.fragments.ReservationBarFragment;
 import com.example.booking_ma_tim21.model.TimeSlot;
+import com.example.booking_ma_tim21.model.User;
 import com.example.booking_ma_tim21.model.enumeration.Amenity;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
+import com.example.booking_ma_tim21.retrofit.UserService;
 import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +41,10 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import java.util.ArrayList;
 import java.util.Date;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class AccommodationActivity extends AppCompatActivity {
     AccommodationDetailsDTO acc;
     Bundle searchParams;
@@ -42,13 +52,17 @@ public class AccommodationActivity extends AppCompatActivity {
     TextView availability;
     MaterialButton ownerReviews;
     MaterialButton accomodationReviews;
+
+    UserService userService;
+    UserDTO loggedInUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accommodation);
         authManager = AuthManager.getInstance(getApplicationContext());
         NavigationSetup.setupNavigation(this, authManager);
-
+        RetrofitService retrofitService= new RetrofitService();
+        userService=retrofitService.getRetrofit().create(UserService.class);
         setAccommodation();
         setView();
     }
@@ -62,6 +76,7 @@ public class AccommodationActivity extends AppCompatActivity {
     void setAccommodation(){
         Intent intent=getIntent();
         acc= (AccommodationDetailsDTO) intent.getSerializableExtra("accommodation");
+        loggedInUser = (UserDTO) intent.getSerializableExtra("loggedInUser");
         searchParams=intent.getExtras();
     }
 
@@ -86,6 +101,7 @@ public class AccommodationActivity extends AppCompatActivity {
         setMapFragment();
         setButtonClicks();
         setResFragment();
+        setChangeAccommodationFragment();
 
 
     }
@@ -146,6 +162,43 @@ public class AccommodationActivity extends AppCompatActivity {
          FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
          transaction.add(R.id.res_bar_frag, fragment, "Res Bar");
          transaction.commit();
+
+    }
+
+    void setChangeAccommodationFragment(){
+
+        AuthManager auth=AuthManager.getInstance(this);
+
+        if(!(auth.isLoggedIn()&& auth.getUserRole().equals("OWNER"))){
+            return;
+        }
+
+        String email = auth.getUserId();
+        Call<UserDTO> call = this.userService.getUser(email);
+        call.enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if (response.isSuccessful()) {
+                    loggedInUser = response.body();
+                    if (loggedInUser == null) return;
+                    if (!loggedInUser.getId().equals(acc.getOwnerId())) return;
+
+                    ChangeAccommodationButtonFragment fragment = new ChangeAccommodationButtonFragment();
+                    fragment.setAccommodationDetails(acc);
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.change_accommodation_btn_container, fragment);
+
+                    transaction.commit();
+                } else {
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
     }
 

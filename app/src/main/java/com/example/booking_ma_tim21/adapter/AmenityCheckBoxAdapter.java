@@ -19,10 +19,21 @@ public class AmenityCheckBoxAdapter extends RecyclerView.Adapter<AmenityCheckBox
 
     private List<Amenity> amenitiesList;
     private SparseBooleanArray checkedItems;
+    private List<Amenity> selectedAmenities;
 
     public AmenityCheckBoxAdapter(List<Amenity> amenitiesList) {
         this.amenitiesList = amenitiesList;
         this.checkedItems = new SparseBooleanArray();
+
+    }
+
+    public AmenityCheckBoxAdapter(List<Amenity> amenitiesList, List<Amenity> selectedAmenities) {
+        this.amenitiesList = amenitiesList;
+        this.checkedItems = new SparseBooleanArray();
+        this.selectedAmenities = selectedAmenities;
+        for (int i = 0; i < amenitiesList.size(); i++) {
+            checkedItems.put(i, selectedAmenities.contains(amenitiesList.get(i)));
+        }
     }
 
     @NonNull
@@ -36,6 +47,7 @@ public class AmenityCheckBoxAdapter extends RecyclerView.Adapter<AmenityCheckBox
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Amenity amenity = amenitiesList.get(position);
         holder.checkboxAmenity.setText(amenity.name());
+
         holder.checkboxAmenity.setChecked(checkedItems.get(position, false));
 
         holder.checkboxAmenity.setOnCheckedChangeListener((buttonView, isChecked) -> {
