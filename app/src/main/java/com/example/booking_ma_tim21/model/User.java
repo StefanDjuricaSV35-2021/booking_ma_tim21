@@ -5,7 +5,6 @@ import com.example.booking_ma_tim21.model.enumeration.Role;
 public class User {
 
     private Long Id;
-
     private Role role;
     private String email;
     private String password;

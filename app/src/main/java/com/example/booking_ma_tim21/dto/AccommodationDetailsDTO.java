@@ -21,14 +21,14 @@ public class AccommodationDetailsDTO implements Serializable {
     private int daysForCancellation;
     private boolean enabled;
     private boolean perNight;
+    private boolean autoAccepting;
     private String location;
-
     private List<TimeSlot> dates;
 
     public AccommodationDetailsDTO(Long id, Long ownerId, String name, AccommodationType type,
                                    int minGuests, int maxGuests, String description, List<Amenity> amenities,
                                    List<String> photos, int daysForCancellation, boolean enabled,
-                                   boolean perNight, String location, List<TimeSlot> dates) {
+                                   boolean perNight, String location, List<TimeSlot> dates,boolean autoAccepting) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -43,6 +43,7 @@ public class AccommodationDetailsDTO implements Serializable {
         this.perNight = perNight;
         this.location = location;
         this.dates = dates;
+        this.autoAccepting=autoAccepting;
     }
 
     public Long getId() {
@@ -96,7 +97,6 @@ public class AccommodationDetailsDTO implements Serializable {
     public String getLocation() {
         return location;
     }
-
 
     public List<TimeSlot> getDates() {
         return dates;
