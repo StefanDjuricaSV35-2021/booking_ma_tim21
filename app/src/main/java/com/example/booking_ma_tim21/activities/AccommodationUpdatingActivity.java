@@ -519,6 +519,7 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
                         createAccommodationPricingChangeRequest(accommodationPricingChangeRequestDTO);
                     }
                     Toast.makeText(getApplicationContext(), "Created accommodation pricing.", Toast.LENGTH_SHORT).show();
+                    finish();
 
 
                 } else {

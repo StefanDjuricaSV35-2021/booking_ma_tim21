@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.booking_ma_tim21.R;
-import com.example.booking_ma_tim21.adapter.AmenityCheckBoxAdapter;
 import com.example.booking_ma_tim21.adapter.AmenityListAdapter;
 import com.example.booking_ma_tim21.adapter.ImageAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
@@ -23,23 +22,20 @@ import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.fragments.ChangeAccommodationButtonFragment;
 import com.example.booking_ma_tim21.fragments.MapFragment;
+import com.example.booking_ma_tim21.fragments.PricingsListFragment;
 import com.example.booking_ma_tim21.fragments.ReservationBarFragment;
-import com.example.booking_ma_tim21.model.TimeSlot;
-import com.example.booking_ma_tim21.model.User;
+import com.example.booking_ma_tim21.model.AccommodationPricing;
 import com.example.booking_ma_tim21.model.enumeration.Amenity;
+import com.example.booking_ma_tim21.retrofit.AccommodationPricingService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
 import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.example.booking_ma_tim21.util.NavigationSetup;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +50,7 @@ public class AccommodationActivity extends AppCompatActivity {
     MaterialButton accomodationReviews;
 
     UserService userService;
+    AccommodationPricingService pricingService;
     UserDTO loggedInUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +60,7 @@ public class AccommodationActivity extends AppCompatActivity {
         NavigationSetup.setupNavigation(this, authManager);
         RetrofitService retrofitService= new RetrofitService();
         userService=retrofitService.getRetrofit().create(UserService.class);
+        pricingService=retrofitService.getRetrofit().create(AccommodationPricingService.class);
         setAccommodation();
         setView();
     }
@@ -101,7 +99,7 @@ public class AccommodationActivity extends AppCompatActivity {
         setMapFragment();
         setButtonClicks();
         setResFragment();
-        setChangeAccommodationFragment();
+        setChangeAccommodationFragmentAndPricings();
 
 
     }
@@ -165,11 +163,11 @@ public class AccommodationActivity extends AppCompatActivity {
 
     }
 
-    void setChangeAccommodationFragment(){
+    void setChangeAccommodationFragmentAndPricings(){
 
-        AuthManager auth=AuthManager.getInstance(this);
+        AuthManager auth = AuthManager.getInstance(this);
 
-        if(!(auth.isLoggedIn()&& auth.getUserRole().equals("OWNER"))){
+        if(!(auth.isLoggedIn() && auth.getUserRole().equals("OWNER"))){
             return;
         }
 
@@ -183,14 +181,36 @@ public class AccommodationActivity extends AppCompatActivity {
                     if (loggedInUser == null) return;
                     if (!loggedInUser.getId().equals(acc.getOwnerId())) return;
 
+                    Call<List<AccommodationPricing>> pricingsCall = pricingService.getPricingsForAccommodation(acc.getId());
+
+                    pricingsCall.enqueue(new Callback<List<AccommodationPricing>>() {
+                        @Override
+                        public void onResponse(Call<List<AccommodationPricing>> pricingsCall, Response<List<AccommodationPricing>> response) {
+                            if (response.isSuccessful()) {
+                                List<AccommodationPricing> pricings = response.body();
+                                PricingsListFragment fragment = new PricingsListFragment();
+                                fragment.setPricings(pricings);
+                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.pricings_container, fragment);
+                                transaction.commit();
+                            } else {
+                                Log.d("REZ", "Message received: " + response.code());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<AccommodationPricing>> pricingsCall, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+
                     ChangeAccommodationButtonFragment fragment = new ChangeAccommodationButtonFragment();
                     fragment.setAccommodationDetails(acc);
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.change_accommodation_btn_container, fragment);
-
                     transaction.commit();
                 } else {
-                    Log.d("REZ","Meesage recieved: "+response.code());
+                    Log.d("REZ", "Message received: " + response.code());
                 }
             }
 
@@ -199,8 +219,8 @@ public class AccommodationActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-
     }
+
 
 
     void setImageSlider(ViewPager imageSlider){
