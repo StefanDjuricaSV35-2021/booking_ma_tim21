@@ -20,6 +20,15 @@ public class Accommodation {
     private boolean perNight;
     private String location;
     private List<TimeSlot> dates;
+    private Boolean autoAccepting;
+
+    public Boolean getAutoAccepting() {
+        return autoAccepting;
+    }
+
+    public void setAutoAccepting(Boolean autoAccepting) {
+        this.autoAccepting = autoAccepting;
+    }
 
     public List<TimeSlot> getDates() {
         return dates;

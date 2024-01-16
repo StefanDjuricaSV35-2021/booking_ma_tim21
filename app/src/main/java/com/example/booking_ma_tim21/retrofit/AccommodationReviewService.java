@@ -24,8 +24,9 @@ public interface AccommodationReviewService {
     @GET("/api/v1/auth/reviews/accommodations/one/{id}")
     Call<AccommodationReviewDTO> getAccommodationReview(@Path("id") Long id);
 
-    @GET("/api/v1/auth/reports/reviews/accommodation")
-    Call<List<ReviewReportDTO>> findAllAccommodationReports(@Path("id") Long id);
+
+    @GET("/api/v1/auth/reports/reviews/accommodations/{accId}/avg")
+    Call<List<ReviewReportDTO>> getAverageAccommodationReview(@Path("accId") Long id);
 
     @Headers({
             "User-Agent: Mobile-Android",
