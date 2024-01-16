@@ -24,9 +24,10 @@ public class AccommodationChangeRequestDTO {
     private List<String> photos;
     private int daysForCancellation;
     private boolean perNight;
+    private boolean autoAccepting;
     private boolean enabled;
 
-    public AccommodationChangeRequestDTO(Long id, long requestCreationDate, RequestStatus status, Long accommodationId, Long ownerId, String name, AccommodationType type, int minGuests, int maxGuests, String description, String location, List<Amenity> amenities, List<String> photos, int daysForCancellation, boolean perNight, boolean enabled) {
+    public AccommodationChangeRequestDTO(Long id, long requestCreationDate, RequestStatus status, Long accommodationId, Long ownerId, String name, AccommodationType type, int minGuests, int maxGuests, String description, String location, List<Amenity> amenities, List<String> photos, int daysForCancellation, boolean perNight, boolean autoAccepting, boolean enabled) {
         this.id = id;
         this.requestCreationDate = requestCreationDate;
         this.status = status;
@@ -42,6 +43,7 @@ public class AccommodationChangeRequestDTO {
         this.photos = photos;
         this.daysForCancellation = daysForCancellation;
         this.perNight = perNight;
+        this.autoAccepting = autoAccepting;
         this.enabled = enabled;
     }
 
@@ -174,5 +176,13 @@ public class AccommodationChangeRequestDTO {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isAutoAccepting() {
+        return autoAccepting;
+    }
+
+    public void setAutoAccepting(boolean autoAccepting) {
+        this.autoAccepting = autoAccepting;
     }
 }

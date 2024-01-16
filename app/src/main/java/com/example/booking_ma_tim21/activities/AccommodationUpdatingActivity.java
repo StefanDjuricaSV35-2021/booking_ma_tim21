@@ -104,6 +104,9 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
 
     private RadioButton radio_button_per_night;
     private RadioButton radio_button_per_guest;
+
+    private RadioButton auto_accepting_on;
+    private RadioButton auto_accepting_off;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +186,11 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
         radio_button_per_night.setChecked(accommodation.isPerNight());
         radio_button_per_guest = findViewById(R.id.radio_button_per_guest);
         radio_button_per_guest.setChecked(!accommodation.isPerNight());
+
+        auto_accepting_on = findViewById(R.id.auto_accepting_on);
+        auto_accepting_on.setChecked(accommodation.isAutoAccepting());
+        auto_accepting_off = findViewById(R.id.auto_accepting_off);
+        auto_accepting_off.setChecked(!accommodation.isAutoAccepting());
 
         timeslots = findViewById(R.id.timeslots);
         timeslots.setLayoutManager(new LinearLayoutManager(this));
@@ -349,6 +357,7 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
             changedAccommodation.setOwnerId(accommodation.getOwnerId());
             changedAccommodation.setEnabled(false);
             changedAccommodation.setPerNight(radio_button_per_night.isChecked());
+            changedAccommodation.setAutoAccepting(auto_accepting_on.isChecked());
             changedAccommodation.setLocation(street + ',' + city + ',' + country);
             changedAccommodation.setDates(new ArrayList<>());
 

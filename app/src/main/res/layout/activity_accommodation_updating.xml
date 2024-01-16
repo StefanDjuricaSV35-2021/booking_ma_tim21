@@ -248,6 +248,47 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:minLines="5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Accept reservation requests"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp">
+                        <RadioGroup
+                            android:id="@+id/auto_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/auto_accepting_on"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="50dp"
+                                android:text="Automatically"
+                                android:checked="true"/>
+
+                            <RadioButton
+                                android:id="@+id/auto_accepting_off"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="50dp"
+                                android:text="Manually"/>
+
+                        </RadioGroup>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -255,6 +296,7 @@
                         android:textSize="20sp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"/>
+
 
 
                     <LinearLayout
