@@ -1,5 +1,6 @@
 package com.example.booking_ma_tim21.adapter.accommodation_review;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CountDownLatch;
 
 
 import com.example.booking_ma_tim21.R;
@@ -46,6 +46,7 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
         accommodationReviewService=retrofitService.getRetrofit().create(AccommodationReviewService.class);
         this.role = role;
         this.userEmail = userEmail;
+
     }
 
     @NonNull
@@ -59,34 +60,12 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
     public void onBindViewHolder(@NonNull AccommodationReviewViewHolder holder, int position) {
         AccommodationReviewDTO revv = reviewList.get(position);
 
-        getUser(revv.getReviewerId());
-        holder.email = email;
-        holder.textName.setText(holder.email);
-
-
+        getUser(revv.getReviewerId(), holder);
         holder.textDate.setText(formatDate(revv.getTimePosted()) + " " +getStarIcons(revv.getRating()));
         holder.textComment.setText(revv.getComment());
 
-        if(!isCurrentUser(holder.email)){
-            holder.btnDeleteReview.setVisibility(View.GONE);
-        }
-
         holder.btnDeleteReview.setOnClickListener(v -> {
-            deleteAccommodationReview(revv.getId(), new DeleteReviewCallback() {
-                @Override
-                public void onDeleteSuccess() {
-                    int position = reviewList.indexOf(revv);
-                    if (position != -1) {
-                        reviewList.remove(position);
-                        notifyItemRemoved(position);
-                    }
-                }
-
-                @Override
-                public void onDeleteFailure(String errorMessage) {
-                    System.out.println(errorMessage);
-                }
-            });
+            deleteAccommodationReview(revv.getId(), position);
         });
     }
 
@@ -126,8 +105,7 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
         this.role = role;
     }
 
-    public void getUser(Long userId) {
-        final CountDownLatch latch = new CountDownLatch(1);
+    public void getUser(Long userId, AccommodationReviewViewHolder holder) {
         Call<UserDTO> call = userService.getUser(userId);
 
         call.enqueue(new Callback<UserDTO>() {
@@ -137,16 +115,25 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
                     UserDTO userDTO = response.body();
                     if (userDTO != null && userDTO.getEmail() != null) {
                         email = userDTO.getEmail();
-                        latch.countDown();
+
                     } else {
                         email = "";
                         System.out.println("Error!");
-                        latch.countDown();
+
                     }
                 } else {
                     email = "";
                     System.out.println("Response Error!");
-                    latch.countDown();
+                }
+
+                holder.email = email;
+                holder.textName.setText(holder.email);
+                Log.d("rez", "set email: "+email);
+
+                if(!isCurrentUser(holder.email)){
+                    holder.btnDeleteReview.setVisibility(View.GONE);
+                    Log.d("rez", "set btnDeleteReview to invisible.");
+
                 }
             }
 
@@ -154,46 +141,28 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
             public void onFailure(Call<UserDTO> call, Throwable t) {
                 email = "";
                 System.out.println("HTTP Error!");
-                latch.countDown();
             }
         });
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public Boolean isCurrentUser(String email) {
         return userEmail.equalsIgnoreCase(email) && "GUEST".equalsIgnoreCase(role);
     }
 
-    public interface DeleteReviewCallback {
-        void onDeleteSuccess();
-
-        void onDeleteFailure(String errorMessage);
-    }
-
-    public void deleteAccommodationReview(Long reviewId, DeleteReviewCallback callback) {
+    public void deleteAccommodationReview(Long reviewId, int position) {
         Call<Void> call = accommodationReviewService.deleteAccommodationReview(reviewId);
 
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    // Handle successful deletion
-                    callback.onDeleteSuccess();
-                } else {
-                    // Handle error response
-                    callback.onDeleteFailure("Failed to delete review. HTTP status code: " + response.code());
-                }
+                reviewList.remove(position);
+                notifyItemRemoved(position);
+                Log.d("rez", "deleted review: "+reviewId);
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                // Handle network or unexpected errors
-                callback.onDeleteFailure("Failed to delete review. Error: " + t.getMessage());
+                Log.d("rez", "failed to delete review.");
             }
         });
     }
