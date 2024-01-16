@@ -84,7 +84,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RetrofitService retrofitService= new RetrofitService();
-        this.userService=retrofitService.getRetrofit().create(UserService.class);
         service=retrofitService.getRetrofit().create(AccommodationService.class);
 
         loadingPanel=getView().findViewById(R.id.loadingPanel);
@@ -106,23 +105,25 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
 
 
-    private void setPreviewRecycler(List<AccommodationPreviewDTO> accommodationPreviewDTOs){
-
+    private void setPreviewRecycler(List<AccommodationPreviewDTO> accommodationPreviewDTOs) {
         previewRecycler = getView().findViewById(R.id.preview_recycler);
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
-        previewRecycler.setLayoutManager(layoutManager);
-        previewAdapter= new PreviewAdapter(getContext(), accommodationPreviewDTOs, new PreviewAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(AccommodationPreviewDTO preview) {
 
-                Call call= service.getAccommodation(preview.getId());
-                enqueueDetailsCall(call);
-
-            }
-        });
-        previewRecycler.setAdapter(previewAdapter);
-
+        if (accommodationPreviewDTOs != null && !accommodationPreviewDTOs.isEmpty()) {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+            previewRecycler.setLayoutManager(layoutManager);
+            previewAdapter = new PreviewAdapter(getContext(), accommodationPreviewDTOs, new PreviewAdapter.ItemClickListener() {
+                @Override
+                public void onItemClick(AccommodationPreviewDTO preview) {
+                    Call call = service.getAccommodation(preview.getId());
+                    enqueueDetailsCall(call);
+                }
+            });
+            previewRecycler.setAdapter(previewAdapter);
+        } else {
+            previewRecycler.setVisibility(View.GONE);
+        }
     }
+
 
     void enqueueDetailsCall(Call call){
         call.enqueue(new Callback<AccommodationDetailsDTO>() {
@@ -174,29 +175,7 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     }
 
-//    private void initializeUserAndAccommodations() {
-//        OwnersAccommodationsActivity activity = (OwnersAccommodationsActivity) getActivity();
-//        authManager = activity.getAuthManager();
-//        String email = authManager.getUserId();
-//        Call<UserDTO> call = this.userService.getUser(email);
-//        call.enqueue(new Callback<UserDTO>() {
-//            @Override
-//            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-//                if (response.isSuccessful()) {
-//                    loggedInUser = response.body();
-//                    Call newCall = service.getOwnersAccommodations(loggedInUser.getId());
-//                    enqueuePreviewCall(newCall);
-//                } else {
-//                    Log.d("REZ","Meesage recieved: "+response.code());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<UserDTO> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-//    }
+
 
     @Override
     public void onResume() {

@@ -20,8 +20,12 @@
             android:exported="false" />
         <activity
             android:name=".activities.AccommodationUpdatingActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".activities.AnalyticsActivity"
             android:exported="false" />
+
         <activity
             android:name=".activities.FavoritesActivity"
             android:exported="false" />
