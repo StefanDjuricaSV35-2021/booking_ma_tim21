@@ -39,6 +39,9 @@ public interface AccommodationService {
     @GET("/api/v1/auth/accommodations/{id}")
     Call<AccommodationDetailsDTO> getAccommodation(@Path("id") Long id);
 
+    @GET("/api/v1/auth/accommodations/{ownerId}/accommodations")
+    Call<List<AccommodationPreviewDTO>> getOwnersAccommodations(@Path("ownerId") Long ownerId);
+
     @GET("/api/v1/auth/accommodations/search")
     Call<List<AccommodationPreviewDTO>> getFilteredAccommodations(@Query("dateFrom")String dateFrom,@Query("dateTo") String dateTo,@Query("noGuests")Integer noGuests,@Query("location") String location,@Query("filters")String filters);
 

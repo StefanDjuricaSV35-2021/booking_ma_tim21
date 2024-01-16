@@ -101,4 +101,8 @@ public class AccommodationDetailsDTO implements Serializable {
     public List<TimeSlot> getDates() {
         return dates;
     }
+
+    public boolean isAutoAccepting() {
+        return autoAccepting;
+    }
 }

@@ -65,7 +65,7 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
 
 
 
-        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(location,guests,date,filter);
+        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(location,guests,date,filter, false);
         FragmentManager fragmentManager = getSupportFragmentManager();;
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
@@ -121,7 +121,7 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
         String date= intent.getStringExtra("date");
         String location=intent.getStringExtra("location");
 
-        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(location,guests,date,data);
+        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(location,guests,date,data, false);
         FragmentManager fragmentManager = getSupportFragmentManager();;
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
