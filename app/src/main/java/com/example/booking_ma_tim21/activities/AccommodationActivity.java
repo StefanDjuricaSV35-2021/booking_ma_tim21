@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.booking_ma_tim21.R;
@@ -22,6 +24,7 @@ import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.fragments.ChangeAccommodationButtonFragment;
+import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
 import com.example.booking_ma_tim21.fragments.MapFragment;
 import com.example.booking_ma_tim21.fragments.ReservationBarFragment;
 import com.example.booking_ma_tim21.model.TimeSlot;
@@ -29,6 +32,9 @@ import com.example.booking_ma_tim21.model.User;
 import com.example.booking_ma_tim21.model.enumeration.Amenity;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
+import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.FavoriteAccommodationService;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,12 +46,21 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AccommodationActivity extends AppCompatActivity {
+
+    Boolean isFavorite=null;
+
+    FavoriteAccommodationService favoriteAccommodationService;
     AccommodationDetailsDTO acc;
     Bundle searchParams;
     AuthManager authManager;
@@ -55,6 +70,7 @@ public class AccommodationActivity extends AppCompatActivity {
 
     UserService userService;
     UserDTO loggedInUser;
+    Button favorite;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +79,8 @@ public class AccommodationActivity extends AppCompatActivity {
         NavigationSetup.setupNavigation(this, authManager);
         RetrofitService retrofitService= new RetrofitService();
         userService=retrofitService.getRetrofit().create(UserService.class);
+        this.favoriteAccommodationService = retrofitService.getRetrofit().create(FavoriteAccommodationService.class);
+
         setAccommodation();
         setView();
     }
@@ -89,6 +107,7 @@ public class AccommodationActivity extends AppCompatActivity {
         availability=findViewById(R.id.availability_tv);
         accomodationReviews=findViewById(R.id.acc_reviews_btn);
         ownerReviews=findViewById(R.id.own_reviews_btn);
+        favorite=findViewById(R.id.favorite_btn);
 
 
         setImageSlider(imageSlider);
@@ -99,6 +118,7 @@ public class AccommodationActivity extends AppCompatActivity {
 
         setAmenityList((ArrayList<Amenity>) acc.getAmenities());
         setMapFragment();
+        setFavoriteButton();
         setButtonClicks();
         setResFragment();
         setChangeAccommodationFragment();
@@ -106,7 +126,15 @@ public class AccommodationActivity extends AppCompatActivity {
 
     }
 
+
     void setButtonClicks(){
+
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFavoriteButtonBackground(!isFavorite);
+            }
+        });
 
         availability.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +142,6 @@ public class AccommodationActivity extends AppCompatActivity {
 
                 MaterialDatePicker picker = DatePickerCreator.getDatePicker(acc.getDates());
                 picker.show(getSupportFragmentManager(), picker.toString());
-
 
             }
         });
@@ -141,6 +168,65 @@ public class AccommodationActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    void setFavoriteButton(){
+
+        AuthManager auth=AuthManager.getInstance(this);
+        if(!(auth.isLoggedIn()&& auth.getUserRole().equals("GUEST"))){
+            this.favorite.setVisibility(View.GONE);
+            return;
+        }else{
+            checkIfFavorite();
+        }
+    }
+
+    void checkIfFavorite(){
+
+        AuthManager auth=AuthManager.getInstance(this);
+        Long userId= Long.valueOf(auth.getUserId());
+
+        Call call=favoriteAccommodationService.isUsersFavorite(acc.getId(),userId);
+
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.code() == 200){
+
+                    Log.d("REZ","Meesage recieved");
+                    Boolean isFavorite = response.body();
+                    setFavoriteButtonBackground(isFavorite);
+
+                }else{
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
+    void setFavoriteButtonBackground(Boolean isFavorite){
+
+        if(isFavorite){
+            this.favorite.setBackgroundResource(R.drawable.favorite_unselect_24px);
+        }else{
+            this.favorite.setBackgroundResource(R.drawable.favorite_select_24px);
+        }
+
+        this.isFavorite=isFavorite;
+
+    }
+
+    void setRatingBar(){
+
+        RatingBar ratingBar=findViewById(R.id.rating_bar);
+        ratingBar.setMax(5);
+
 
     }
 

@@ -20,6 +20,10 @@
             android:exported="false" />
         <activity
             android:name=".activities.AccommodationUpdatingActivity"
+            android:name=".activities.AnalyticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.FavoritesActivity"
             android:exported="false" />
         <activity
             android:name=".activities.AccommodationReviewPage"

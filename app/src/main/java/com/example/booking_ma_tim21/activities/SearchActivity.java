@@ -8,21 +8,32 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
 import com.example.booking_ma_tim21.fragments.AccommodatioPreviewRecycleViewFragment;
 import com.example.booking_ma_tim21.fragments.AccommodationFilterFragment;
 import com.example.booking_ma_tim21.fragments.SearchClosedFragment;
 import com.example.booking_ma_tim21.fragments.SearchFragment;
+import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
+import com.example.booking_ma_tim21.retrofit.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity implements SearchClosedFragment.SearchOpenListener,AccommodationFilterFragment.OnFilter {
 
-
+    AccommodationService accService;
     Button filterBtn;
     DialogFragment filterDialog;
-    Button search;
     String guests;
     String location;
     String date;
@@ -33,11 +44,14 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        RetrofitService retrofitService= new RetrofitService();
+        accService = retrofitService.getRetrofit().create(AccommodationService.class);
+
         this.filterDialog=new AccommodationFilterFragment();
 
         getSearchParamsFromIntent();
         initiateClosedSearchFragment();
-        initiateRecycleView();
+        getPreviews(location,guests,date,null);
 
         filterBtn =findViewById(R.id.filter_btn);
 
@@ -61,16 +75,16 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
 
     }
 
-    void initiateRecycleView(){
+    void initiateRecycleView(ArrayList<AccommodationPreviewDTO> previews){
 
 
 
-        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(location,guests,date,filter, false);
+        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(previews);
         FragmentManager fragmentManager = getSupportFragmentManager();;
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
 
-        fragmentTransaction.add(R.id.preview_recycler_fragment, fragment, null);
+        fragmentTransaction.replace(R.id.preview_recycler_fragment, fragment, null);
         fragmentTransaction.commit();
 
 
@@ -90,6 +104,46 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
 
         fragmentTransaction.add(R.id.search_fragment, fragment, null);
         fragmentTransaction.commit();
+    }
+
+    private void getPreviews(String location,String guests,String date,String filter){
+        Call call = null;
+        String[]dates=date.split("/");
+
+        call = accService.getFilteredAccommodations(dates[0], dates[1], Integer.parseInt(guests), location, filter);
+
+        enqueuePreviewCall(call);
+    }
+
+    void enqueuePreviewCall(Call call){
+
+        call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
+                if (response.code() == 200){
+
+                    Log.d("REZ","Meesage recieved");
+                    List<AccommodationPreviewDTO> previewDTOs = response.body();
+                    initiateRecycleView((ArrayList)previewDTOs);
+
+                }else{
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationPreviewDTO>> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+        });
+
+    }
+
+    void setPreviewFragment(List<AccommodationPreviewDTO> previews){
+
+
+
     }
 
     @Override
@@ -121,13 +175,7 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
         String date= intent.getStringExtra("date");
         String location=intent.getStringExtra("location");
 
-        Fragment fragment= AccommodatioPreviewRecycleViewFragment.newInstance(location,guests,date,data, false);
-        FragmentManager fragmentManager = getSupportFragmentManager();;
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-
-        fragmentTransaction.replace(R.id.preview_recycler_fragment, fragment, null);
-        fragmentTransaction.commit();
+        getPreviews(location,guests,date,filter);
 
     }
 }

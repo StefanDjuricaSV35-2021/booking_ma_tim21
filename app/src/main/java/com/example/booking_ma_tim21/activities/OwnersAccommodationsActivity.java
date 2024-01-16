@@ -20,7 +20,8 @@ public class OwnersAccommodationsActivity extends AppCompatActivity {
         NavigationSetup.setupNavigation(this, authManager);
 
 
-        AccommodatioPreviewRecycleViewFragment fragment = AccommodatioPreviewRecycleViewFragment.newInstance(null, null, null, null, true);
+        AccommodatioPreviewRecycleViewFragment fragment=null;
+       // AccommodatioPreviewRecycleViewFragment fragment = AccommodatioPreviewRecycleViewFragment.newInstance(null, null, null, null, true);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.preview_recycler_fragment, fragment);
         transaction.commit();

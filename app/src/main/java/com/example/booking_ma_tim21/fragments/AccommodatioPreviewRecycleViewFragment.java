@@ -29,6 +29,7 @@ import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -40,6 +41,7 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     private UserDTO loggedInUser;
     AuthManager authManager;
 
+    List<AccommodationPreviewDTO> previews;
     RecyclerView previewRecycler;
     PreviewAdapter previewAdapter;
     AccommodationService service;
@@ -58,16 +60,11 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AccommodatioPreviewRecycleViewFragment newInstance(String location, String guests, String date,String filter, boolean showOwnersAccommodations) {
+    public static AccommodatioPreviewRecycleViewFragment newInstance(ArrayList<AccommodationPreviewDTO> previews) {
 
         AccommodatioPreviewRecycleViewFragment fragment = new AccommodatioPreviewRecycleViewFragment();
         Bundle args = new Bundle();
-        args.putString("location", location);
-        args.putString("guests", guests);
-        args.putString("date", date);
-        args.putString("filter",filter);
-        args.putBoolean("showOwnersAccommodations", showOwnersAccommodations);
-
+        args.putParcelableArrayList("previews",previews);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,7 +73,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         getSearchParamsFromArgs();
 
     }
@@ -100,60 +96,14 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
         Bundle args=getArguments();
         if(args==null){return;}
-        guests=args.getString("guests");
-        dates = args.getString("date", "Date/Date").split("/");
-        location=args.getString("location");
-        filter=args.getString("filter");
-        showOwnersAccommodations=(args.getBoolean("showOwnersAccommodations"));
+        this.previews=args.getParcelableArrayList("previews");
+
     }
 
     private void initializePreviews(){
-        Call call = null;
-
-        Bundle args = getArguments();
-        if(args !=null) {
-            if (showOwnersAccommodations) {
-                initializeUserAndAccommodations();
-                return;
-            } else {
-                call = service.getFilteredAccommodations(dates[0], dates[1], Integer.parseInt(guests), location, filter);
-            }
-
-
-        }else {
-            call = service.getAllAccommodations();
-        }
-
-        enqueuePreviewCall(call);
+        setPreviewRecycler(this.previews);
     }
 
-    void enqueuePreviewCall(Call call){
-
-        call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
-            @Override
-            public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
-                if (response.code() == 200){
-
-                    Log.d("REZ","Meesage recieved");
-                    List<AccommodationPreviewDTO> previewDTOs = response.body();
-                    loadingPanel.setVisibility(View.GONE);
-                    setPreviewRecycler(previewDTOs);
-
-                }else{
-                    Log.d("REZ","Meesage recieved: "+response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<AccommodationPreviewDTO>> call, Throwable t) {
-                t.printStackTrace();
-            }
-
-
-        });
-
-
-    }
 
 
     private void setPreviewRecycler(List<AccommodationPreviewDTO> accommodationPreviewDTOs){
@@ -224,29 +174,29 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
     }
 
-    private void initializeUserAndAccommodations() {
-        OwnersAccommodationsActivity activity = (OwnersAccommodationsActivity) getActivity();
-        authManager = activity.getAuthManager();
-        String email = authManager.getUserId();
-        Call<UserDTO> call = this.userService.getUser(email);
-        call.enqueue(new Callback<UserDTO>() {
-            @Override
-            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-                if (response.isSuccessful()) {
-                    loggedInUser = response.body();
-                    Call newCall = service.getOwnersAccommodations(loggedInUser.getId());
-                    enqueuePreviewCall(newCall);
-                } else {
-                    Log.d("REZ","Meesage recieved: "+response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserDTO> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
+//    private void initializeUserAndAccommodations() {
+//        OwnersAccommodationsActivity activity = (OwnersAccommodationsActivity) getActivity();
+//        authManager = activity.getAuthManager();
+//        String email = authManager.getUserId();
+//        Call<UserDTO> call = this.userService.getUser(email);
+//        call.enqueue(new Callback<UserDTO>() {
+//            @Override
+//            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+//                if (response.isSuccessful()) {
+//                    loggedInUser = response.body();
+//                    Call newCall = service.getOwnersAccommodations(loggedInUser.getId());
+//                    enqueuePreviewCall(newCall);
+//                } else {
+//                    Log.d("REZ","Meesage recieved: "+response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<UserDTO> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
+//    }
 
     @Override
     public void onResume() {

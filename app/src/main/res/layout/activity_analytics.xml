@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AnalyticsActivity">
+
+    <TextView
+        android:id="@+id/pieCharts_selected_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:text="Select Date Range"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:background="@drawable/bg_round_corners_white"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartReservations"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/pieChartProfit"
+        app:layout_constraintTop_toBottomOf="@id/pieCharts_selected_date_tv"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartProfit"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+
+        app:layout_constraintEnd_toStartOf="@id/pieChartReservations"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieCharts_selected_date_tv"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
