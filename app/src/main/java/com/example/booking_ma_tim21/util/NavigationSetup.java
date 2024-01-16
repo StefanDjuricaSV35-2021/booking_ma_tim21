@@ -44,6 +44,7 @@ public class NavigationSetup {
         LinearLayout log_out = activity.findViewById(R.id.log_out);
         LinearLayout loginScreen = activity.findViewById(R.id.loginScreen);
         LinearLayout registerScreen = activity.findViewById(R.id.registerScreen);
+        LinearLayout favoritesScreen=activity.findViewById(R.id.favoritesScreen);
 
         String role = authManager.getUserRole() != null ? authManager.getUserRole() : "";
 
@@ -73,6 +74,8 @@ public class NavigationSetup {
                 your_accommodations.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
+                favoritesScreen.setVisibility(View.GONE);
+
                 break;
             case "OWNER":
                 owner_report.setVisibility(View.GONE);
@@ -83,6 +86,7 @@ public class NavigationSetup {
                 accommodation_updating_requests.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
+                favoritesScreen.setVisibility(View.GONE);
                 break;
             default:
                 owner_report.setVisibility(View.GONE);
@@ -99,6 +103,7 @@ public class NavigationSetup {
                 accommodation_updating_requests.setVisibility(View.GONE);
                 log_out.setVisibility(View.GONE);
                 account.setVisibility(View.GONE);
+                favoritesScreen.setVisibility(View.GONE);
                 break;
         }
 

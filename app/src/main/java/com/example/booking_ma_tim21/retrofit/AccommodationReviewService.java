@@ -35,7 +35,7 @@ public interface AccommodationReviewService {
     @POST("/api/v1/auth/reviews/accommodations")
     Call<AccommodationReviewDTO> createAccommodationReview(@Body AccommodationReviewDTO accommodationReviewDTO);
 
-    @DELETE("/api/v1/reviews/accommodations/{id}")
+    @DELETE("/api/v1/auth/reviews/accommodations/{id}")
     Call<Void> deleteAccommodationReview(@Path("id") Long id);
 
 }

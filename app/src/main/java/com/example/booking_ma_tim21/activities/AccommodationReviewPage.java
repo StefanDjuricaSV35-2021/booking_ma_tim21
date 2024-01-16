@@ -5,8 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
-import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,19 +22,14 @@ import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.AccommodationReviewDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
-import com.example.booking_ma_tim21.model.Accommodation;
 import com.example.booking_ma_tim21.retrofit.AccommodationReviewService;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.CountDownLatch;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,14 +78,17 @@ public class AccommodationReviewPage extends AppCompatActivity {
         accommodationReviewsRecyclerView = findViewById(R.id.accommodationReviewsRecyclerView);
         starIconsLayout = findViewById(R.id.starIconsLayout);
 
-        this.role = authManager.getUserRole();
-        this.userEmail = authManager.getUserId();
+
+        role = authManager.getUserRole();
+        userEmail = authManager.getUserId();
+
 
         getUserByEmail(this.userEmail);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             accommodationId = extras.getLong("ACCOMMODATION_ID", -1);
+
             if (accommodationId == -1) {
                 Toast.makeText(this, "Invalid Accommodation ID", Toast.LENGTH_SHORT).show();
                 finish();
@@ -99,11 +98,7 @@ public class AccommodationReviewPage extends AppCompatActivity {
 
         getAccommodationName();
 
-        getAccommodationReviews();
-
-        this.reviewAdapter = new AccommodationReviewAdapter(this,accommodationReviews,role,userEmail);
-        accommodationReviewsRecyclerView.setAdapter(reviewAdapter);
-        accommodationReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        getAccommodationReviews(this);
 
         submitReviewButton.setOnClickListener(v -> {
             String ratingText = ratingEditText.getText().toString();
@@ -213,6 +208,7 @@ public class AccommodationReviewPage extends AppCompatActivity {
                     UserDTO userDTO = response.body();
                     if (userDTO != null && userDTO.getEmail() != null) {
                         userId = userDTO.getId();
+
                     } else {
                         Toast.makeText(AccommodationReviewPage.this, "Can't load user!! " + response.code(), Toast.LENGTH_SHORT).show();
                     }
@@ -252,9 +248,7 @@ public class AccommodationReviewPage extends AppCompatActivity {
         });
     }
 
-    public void getAccommodationReviews(){
-        final CountDownLatch latch = new CountDownLatch(1);
-
+    public void getAccommodationReviews(Context context){
         Call<List<AccommodationReviewDTO>> call = accommodationReviewService.getAccommodationReviews(accommodationId);
         call.enqueue(new Callback<List<AccommodationReviewDTO>>() {
             @Override
@@ -263,32 +257,33 @@ public class AccommodationReviewPage extends AppCompatActivity {
                     List<AccommodationReviewDTO> data = response.body();
                     if (data != null) {
                         accommodationReviews = data;
+                        for (AccommodationReviewDTO a: accommodationReviews) {
+                            Log.d("reviewTest", "Accommodation review id: "+ a.getId());
 
+                        }
                     } else {
                         accommodationReviews = new ArrayList<>();
                     }
+
+
                     calculateAverage();
                     String starIcons = getStarIcons(averageGrade);
                     addStarsToLayout(starIcons);
-                    latch.countDown();
+
+                    reviewAdapter = new AccommodationReviewAdapter(context,accommodationReviews,role,userEmail);
+                    accommodationReviewsRecyclerView.setAdapter(reviewAdapter);
+                    accommodationReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
                 } else {
                     Toast.makeText(AccommodationReviewPage.this, "Failed to get accommodation reviews.", Toast.LENGTH_SHORT).show();
-                    latch.countDown();
                 }
             }
 
             @Override
             public void onFailure(Call<List<AccommodationReviewDTO>> call, Throwable t) {
                 Toast.makeText(AccommodationReviewPage.this, "Network error", Toast.LENGTH_SHORT).show();
-                latch.countDown();
             }
         });
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
     }
 
