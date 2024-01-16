@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccommodationCreation;
 import com.example.booking_ma_tim21.activities.AccountActivity;
+import com.example.booking_ma_tim21.activities.CreationRequestsActivity;
 import com.example.booking_ma_tim21.activities.LoginActivity;
 import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
@@ -115,7 +116,7 @@ public class NavigationSetup {
 
         create_accommodation.setOnClickListener(v -> redirectActivity(activity, AccommodationCreation.class));
         your_accommodations.setOnClickListener(v -> redirectActivity(activity, OwnersAccommodationsActivity.class));
-        accommodation_creation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        accommodation_creation_requests.setOnClickListener(v -> redirectActivity(activity, CreationRequestsActivity.class));//promeniti
         accommodation_updating_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
 
         review_reports.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti

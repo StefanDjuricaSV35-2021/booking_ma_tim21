@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.AcceptRejectAccommodationButtons">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/availability_div"
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="25dp"
+            app:dividerColor="@color/darkblue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availability_tv" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/accept_accommodation_creation_btn"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_round_corners_white"
+            android:text="Accept Request"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availability_div" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reject_accommodation_creation_btn"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_round_corners_white"
+            android:text="Reject Request"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            app:backgroundTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availability_div" />
+    </LinearLayout>
+
+</FrameLayout>
