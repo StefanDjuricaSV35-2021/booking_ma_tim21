@@ -132,7 +132,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
                     Log.d("REZ","Meesage recieved");
                     AccommodationDetailsDTO detailsDTO = response.body();
-                    loadingPanel.setVisibility(View.GONE);
                     showDetails(detailsDTO);
 
                 }else{

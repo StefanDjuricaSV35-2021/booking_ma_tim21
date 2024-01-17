@@ -107,7 +107,7 @@ public class AccommodationCreation extends AppCompatActivity {
         accommodationPricingService=retrofitService.getRetrofit().create(AccommodationPricingService.class);
         fileUploadService=retrofitService.getRetrofit().create(FileUploadService.class);
 
-        getUserId(authManager.getUserId());
+        getUserId(authManager.getUserEmail());
 
 //        initialize normal fields
         street_input_field = findViewById(R.id.street_input_field);

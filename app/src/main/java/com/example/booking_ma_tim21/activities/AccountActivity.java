@@ -1,20 +1,15 @@
 package com.example.booking_ma_tim21.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.adapter.account.AccountAdapter;
@@ -27,7 +22,6 @@ import com.example.booking_ma_tim21.util.NavigationSetup;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.util.List;
 
 public class AccountActivity extends AppCompatActivity {
     AccountAdapter accountAdapter;
@@ -68,7 +62,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void initializeAccount() {
-        String email = authManager.getUserId();
+        String email = authManager.getUserEmail();
         Call<UserDTO> call = service.getUser(email);
         call.enqueue(new Callback<UserDTO>() {
             @Override

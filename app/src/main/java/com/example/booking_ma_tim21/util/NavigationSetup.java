@@ -19,6 +19,7 @@ import com.example.booking_ma_tim21.activities.LoginActivity;
 import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
 import com.example.booking_ma_tim21.activities.RegisterActivity;
+import com.example.booking_ma_tim21.activities.ReservationRequestsActivity;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 
 public class NavigationSetup {
@@ -47,6 +48,8 @@ public class NavigationSetup {
         LinearLayout loginScreen = activity.findViewById(R.id.loginScreen);
         LinearLayout registerScreen = activity.findViewById(R.id.registerScreen);
         LinearLayout analyticsScreen=activity.findViewById(R.id.analyticsScreen);
+        LinearLayout reservationRequestsScreen=activity.findViewById(R.id.view_reservations_requests);
+
 
         String role = authManager.getUserRole() != null ? authManager.getUserRole() : "";
 
@@ -78,6 +81,7 @@ public class NavigationSetup {
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
                 analyticsScreen.setVisibility(View.GONE);
+                reservationRequestsScreen.setVisibility(View.GONE);
 
                 break;
             case "OWNER":
@@ -106,6 +110,7 @@ public class NavigationSetup {
                 log_out.setVisibility(View.GONE);
                 account.setVisibility(View.GONE);
                 analyticsScreen.setVisibility(View.GONE);
+                reservationRequestsScreen.setVisibility(View.GONE);
                 break;
         }
 
@@ -129,6 +134,8 @@ public class NavigationSetup {
         guest_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         owner_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         analyticsScreen.setOnClickListener(v->redirectActivity(activity,AnalyticsActivity.class));
+        reservationRequestsScreen.setOnClickListener(v->redirectActivity(activity, ReservationRequestsActivity.class));
+
         log_out.setOnClickListener(v -> {
             authManager.signOut();
             redirectActivity(activity, MainActivity.class);

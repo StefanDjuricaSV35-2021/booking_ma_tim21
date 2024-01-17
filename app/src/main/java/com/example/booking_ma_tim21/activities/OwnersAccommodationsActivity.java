@@ -48,7 +48,7 @@ public class OwnersAccommodationsActivity extends AppCompatActivity {
 
     private void initializeUserAndAccommodations() {
         authManager = this.getAuthManager();
-        String email = authManager.getUserId();
+        String email = authManager.getUserEmail();
         Call<UserDTO> call = userService.getUser(email);
         call.enqueue(new Callback<UserDTO>() {
             @Override

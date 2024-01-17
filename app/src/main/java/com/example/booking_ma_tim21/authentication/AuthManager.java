@@ -4,22 +4,37 @@ import android.content.SharedPreferences;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.model.JWTAuthenticationResponse;
+import com.example.booking_ma_tim21.model.User;
+import com.example.booking_ma_tim21.retrofit.NotificationService;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
+import com.example.booking_ma_tim21.retrofit.UserService;
 
 import java.util.List;
 import java.util.Map;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AuthManager {
     private static AuthManager instance;
+    private static UserService userService;
     private static String secret = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
     private String userRole;
-    private String userId;
+    private String userEmail;
+
+    Context context;
+
+
+    private Long userIdLong;
     private SharedPreferences sharedPreferences;
 
     private AuthManager(Context context) {
+        this.context=context;
         sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
     }
 
@@ -30,8 +45,8 @@ public class AuthManager {
         return instance;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
     public String getUserRole() {
@@ -47,6 +62,7 @@ public class AuthManager {
         editor.putString("user", token.getToken());
         editor.apply();
         setUser();
+        setUserIdFromEmail();
     }
 
     public void setUser(){
@@ -55,7 +71,7 @@ public class AuthManager {
         if(!accessToken.isEmpty()){
             String id = getUserIdFromToken(accessToken);
             if(id!=null){
-                this.userId = id;
+                this.userEmail = id;
                 setUserRole();
             }
         }
@@ -111,10 +127,42 @@ public class AuthManager {
 
     public void signOut(){
         userRole = null;
-        userId = null;
+        userEmail = null;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("user");
         editor.apply();
+    }
+
+    public void setUserIdFromEmail(){
+        RetrofitService ref=new RetrofitService();
+        userService=ref.getRetrofit().create(UserService.class);
+        Call call=userService.getUser(getUserEmail());
+
+        call.enqueue(new Callback<UserDTO>() {
+            @Override
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                if (response.code() == 200){
+
+                    Log.d("REZ","Meesage recieved");
+                    userIdLong=response.body().getId();
+                    NotificationService.getInstance(context);
+
+                }else{
+                    Log.d("REZ","Meesage recieved: "+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+    }
+
+    public Long getUserIdLong() {
+        return userIdLong;
     }
 
 }
