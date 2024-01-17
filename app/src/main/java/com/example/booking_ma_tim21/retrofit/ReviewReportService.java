@@ -23,7 +23,7 @@ public interface ReviewReportService {
     Call<List<ReviewReportDTO>> findAllOwnerReports(@Path("id") Long id);
 
     @GET("/api/v1/auth/reports/reviews/accommodation")
-    Call<List<ReviewReportDTO>> findAllAccommodationReports(@Path("id") Long id);
+    Call<List<ReviewReportDTO>> getAccommodationReviewReports();
 
     @Headers({
             "User-Agent: Mobile-Android",

@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Request for deleteting user: "
+                android:text="Request for deleting user: "
                 android:textSize="18sp"
                 android:textStyle="italic" />
 
