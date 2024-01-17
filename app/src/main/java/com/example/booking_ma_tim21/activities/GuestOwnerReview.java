@@ -286,7 +286,7 @@ public class GuestOwnerReview extends AppCompatActivity {
                     ownerReviewRecyclerView.setLayoutManager(new LinearLayoutManager(context));
 
                 } else {
-                    Toast.makeText(GuestOwnerReview.this, "Failed to get accommodation reviews.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestOwnerReview.this, "Failed to get owner reviews.", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -17,6 +17,7 @@ import com.example.booking_ma_tim21.activities.AnalyticsActivity;
 import com.example.booking_ma_tim21.activities.FavoritesActivity;
 import com.example.booking_ma_tim21.activities.LoginActivity;
 import com.example.booking_ma_tim21.activities.MainActivity;
+import com.example.booking_ma_tim21.activities.OwnerOwnerReview;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
 import com.example.booking_ma_tim21.activities.RegisterActivity;
 import com.example.booking_ma_tim21.authentication.AuthManager;
@@ -125,7 +126,7 @@ public class NavigationSetup {
         view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, FavoritesActivity.class));
-        owner_reviews.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        owner_reviews.setOnClickListener(v -> redirectActivity(activity, OwnerOwnerReview.class));
         guest_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         owner_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         analyticsScreen.setOnClickListener(v->redirectActivity(activity,AnalyticsActivity.class));
