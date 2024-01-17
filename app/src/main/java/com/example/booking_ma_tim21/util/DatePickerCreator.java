@@ -42,7 +42,6 @@ public class DatePickerCreator {
             picker=MaterialDatePicker.Builder.dateRangePicker()
                     .setTheme(R.style.CustomThemeOverlay_MaterialCalendar_Fullscreen)
                     .setSelection(new Pair(null,null))
-                    .setCalendarConstraints(new CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
                     .build();
         }else {
             RangeDateValidator validator=new RangeDateValidator(ts);

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.ReservationSuccessActivity;
+import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.ReservationRequestDTO;
 import com.example.booking_ma_tim21.model.TimeSlot;
 import com.example.booking_ma_tim21.model.enumeration.ReservationRequestStatus;
@@ -126,12 +127,14 @@ public class ReservationBarFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                AuthManager auth=AuthManager.getInstance(getContext());
+
                 String[] dates=date.getText().toString().split("/");
                 ZoneId zoneId = ZoneId.of("GMT");
                 LocalDate dateFrom = LocalDate.parse(dates[0]);
                 LocalDate dateTo = LocalDate.parse(dates[1]);
 
-                Long userId=2L;
+                Long userId=Long.getLong(auth.getUserId());
                 Long accId=resParams.getLong("id");
                 Integer noGuests=Integer.parseInt(guests.getText().toString());
                 Double priceVal=Double.parseDouble(price.getText().toString());
