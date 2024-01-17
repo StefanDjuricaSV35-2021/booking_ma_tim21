@@ -148,10 +148,8 @@ public class UserReportRecycleViewFragment extends Fragment {
                     UserDTO reporterUser = response.body();
                     UserReportWithEmails userReport = new UserReportWithEmails(userReportDTO.getId(), reportedUser, reporterUser, userReportDTO.getDescription());
                     userReports.add(userReport);
-                    // Notify the adapter that data has changed
                     userReportsAdapter.notifyDataSetChanged();
                 } else {
-                    // Handle failure
                 }
             }
 
@@ -175,7 +173,6 @@ public class UserReportRecycleViewFragment extends Fragment {
             userReportsAdapter = new UserReportsAdapter(getContext(), userReports, new UserReportsAdapter.ItemClickListener() {
                 @Override
                 public void onItemClick(UserReportWithEmails preview) {
-                    // Handle item click if needed
                 }
             });
             userReportRecycler.setAdapter(userReportsAdapter);
