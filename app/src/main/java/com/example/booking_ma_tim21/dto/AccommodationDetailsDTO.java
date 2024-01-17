@@ -25,6 +25,7 @@ public class AccommodationDetailsDTO implements Serializable {
     private String location;
     private List<TimeSlot> dates;
 
+    public AccommodationDetailsDTO() {}
     public AccommodationDetailsDTO(Long id, Long ownerId, String name, AccommodationType type,
                                    int minGuests, int maxGuests, String description, List<Amenity> amenities,
                                    List<String> photos, int daysForCancellation, boolean enabled,

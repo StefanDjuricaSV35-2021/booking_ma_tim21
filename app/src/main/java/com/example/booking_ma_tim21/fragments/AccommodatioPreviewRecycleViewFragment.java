@@ -52,9 +52,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     String guests=null;
     String filter;
 
-    boolean showOwnersAccommodations = false;
-
-
 
     public AccommodatioPreviewRecycleViewFragment() {
         // Required empty public constructor
@@ -95,7 +92,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         Bundle args=getArguments();
         if(args==null){return;}
         this.previews=args.getParcelableArrayList("previews");
-
     }
 
     private void initializePreviews(){
@@ -132,7 +128,9 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
 
                     Log.d("REZ","Meesage recieved");
                     AccommodationDetailsDTO detailsDTO = response.body();
-                    loadingPanel.setVisibility(View.GONE);
+                    if (loadingPanel != null) {
+                        loadingPanel.setVisibility(View.GONE);
+                    }
                     showDetails(detailsDTO);
 
                 }else{
@@ -171,6 +169,8 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         startActivity(intent);
 
     }
+
+
 
 
 
