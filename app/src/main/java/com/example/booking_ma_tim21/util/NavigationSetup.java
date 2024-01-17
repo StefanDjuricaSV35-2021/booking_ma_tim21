@@ -20,6 +20,7 @@ import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
 import com.example.booking_ma_tim21.activities.RegisterActivity;
 import com.example.booking_ma_tim21.activities.UpdatingRequestsActivity;
+import com.example.booking_ma_tim21.activities.UserReportsAdminPageActivity;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 
 public class NavigationSetup {
@@ -36,6 +37,7 @@ public class NavigationSetup {
         LinearLayout accommodation_creation_requests = activity.findViewById(R.id.accommodation_creation_requests);
         LinearLayout accommodation_updating_requests = activity.findViewById(R.id.accommodation_updating_requests);
         LinearLayout review_reports = activity.findViewById(R.id.review_reports);
+        LinearLayout user_reports = activity.findViewById(R.id.user_reports);
         LinearLayout view_reservation_requests = activity.findViewById(R.id.view_reservation_requests);
         LinearLayout view_reservations_guest = activity.findViewById(R.id.view_reservations_guest);
         LinearLayout view_reservations_owner = activity.findViewById(R.id.view_reservations_owner);
@@ -56,6 +58,7 @@ public class NavigationSetup {
                 owner_reviews.setVisibility(View.GONE);
                 view_reservations_owner.setVisibility(View.GONE);
                 review_reports.setVisibility(View.GONE);
+                user_reports.setVisibility(View.GONE);
                 accommodation_creation_requests.setVisibility(View.GONE);
                 accommodation_updating_requests.setVisibility(View.GONE);
                 create_accommodation.setVisibility(View.GONE);
@@ -85,6 +88,7 @@ public class NavigationSetup {
                 favorite_accommodations.setVisibility(View.GONE);
                 view_reservations_guest.setVisibility(View.GONE);
                 review_reports.setVisibility(View.GONE);
+                user_reports.setVisibility(View.GONE);
                 accommodation_creation_requests.setVisibility(View.GONE);
                 accommodation_updating_requests.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
@@ -99,6 +103,7 @@ public class NavigationSetup {
                 view_reservations_guest.setVisibility(View.GONE);
                 view_reservation_requests.setVisibility(View.GONE);
                 review_reports.setVisibility(View.GONE);
+                user_reports.setVisibility(View.GONE);
                 create_accommodation.setVisibility(View.GONE);
                 your_accommodations.setVisibility(View.GONE);
                 accommodation_creation_requests.setVisibility(View.GONE);
@@ -121,6 +126,7 @@ public class NavigationSetup {
         accommodation_updating_requests.setOnClickListener(v -> redirectActivity(activity, UpdatingRequestsActivity.class));
 
         review_reports.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
+        user_reports.setOnClickListener(v -> redirectActivity(activity, UserReportsAdminPageActivity.class));// promeniti
         view_reservation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti

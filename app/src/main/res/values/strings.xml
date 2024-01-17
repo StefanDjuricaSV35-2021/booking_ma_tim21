@@ -42,5 +42,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="delete_account">Delete Account</string>
+    <string name="user_reports">User Reports</string>
 
 </resources>
