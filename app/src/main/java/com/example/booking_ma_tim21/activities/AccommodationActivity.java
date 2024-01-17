@@ -21,6 +21,7 @@ import com.example.booking_ma_tim21.adapter.AmenityListAdapter;
 import com.example.booking_ma_tim21.adapter.ImageAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
+import com.example.booking_ma_tim21.dto.FavoriteAccommodationDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.fragments.AcceptRejectAccommodationButtons;
 import com.example.booking_ma_tim21.fragments.ChangeAccommodationButtonFragment;
@@ -33,9 +34,7 @@ import com.example.booking_ma_tim21.model.enumeration.Amenity;
 import com.example.booking_ma_tim21.retrofit.AccommodationPricingService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
-import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.FavoriteAccommodationService;
-import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 import com.google.android.material.button.MaterialButton;
@@ -43,12 +42,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.divider.MaterialDivider;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -147,6 +141,7 @@ public class AccommodationActivity extends AppCompatActivity {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 setFavoriteButtonBackground(!isFavorite);
             }
         });
@@ -181,10 +176,77 @@ public class AccommodationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(v.getContext(), GuestOwnerReview.class);
+
+                Bundle b = new Bundle();
+                b.putString("OWNER_ID", authManager.getUserId());
+                intent.putExtras(b);
+
+                v.getContext().startActivity(intent);
+
             }
         });
 
     }
+
+    void addToFavorites(){
+
+        Long userId = authManager.getUserIdLong();
+        FavoriteAccommodationDTO acc= new FavoriteAccommodationDTO();
+        acc.setAccommodationId(this.acc.getId());
+        acc.setUserId(userId);
+
+        Call call=favoriteAccommodationService.addFavoriteAccommodation(acc);
+
+        call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
+                if (response.code() == 200) {
+
+                    Log.d("REZ", "Meesage recieved");
+                } else {
+                    Log.d("REZ", "Meesage recieved: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationPreviewDTO>> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+
+    }
+
+    void removeFromFavorites(){
+
+        Long userId =authManager.getUserIdLong();
+
+        Call call=favoriteAccommodationService.deleteFavoritesAccommodation(this.acc.getId(),userId);
+
+        call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
+                if (response.code() == 200) {
+
+                    Log.d("REZ", "Meesage recieved");
+                } else {
+                    Log.d("REZ", "Meesage recieved: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationPreviewDTO>> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+
+    }
+
+
 
     void setFavoriteButton() {
 
@@ -200,7 +262,7 @@ public class AccommodationActivity extends AppCompatActivity {
     void checkIfFavorite() {
 
         AuthManager auth = AuthManager.getInstance(this);
-        Long userId = Long.valueOf(auth.getUserId());
+        Long userId = auth.getUserIdLong();
 
         Call call = favoriteAccommodationService.isUsersFavorite(acc.getId(), userId);
 
@@ -230,8 +292,12 @@ public class AccommodationActivity extends AppCompatActivity {
 
         if (isFavorite) {
             this.favorite.setBackgroundResource(R.drawable.favorite_unselect_24px);
+            if(this.isFavorite!=null) {
+                addToFavorites();
+            }
         } else {
             this.favorite.setBackgroundResource(R.drawable.favorite_select_24px);
+            removeFromFavorites();
         }
 
         this.isFavorite = isFavorite;
@@ -274,7 +340,7 @@ public class AccommodationActivity extends AppCompatActivity {
             return;
         }
 
-        String email = auth.getUserId();
+        String email = auth.getUserEmail();
         Call<UserDTO> call = this.userService.getUser(email);
         call.enqueue(new Callback<UserDTO>() {
             @Override

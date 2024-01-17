@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Search EditText -->
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="Search"
+            android:layout_margin="16dp"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
+
+        <!-- Filter Button -->
+        <Spinner
+            android:id="@+id/spinnerDataset"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            />
+
+    </LinearLayout>
+
+
+    <!-- Reservation RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reservationRequestsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>

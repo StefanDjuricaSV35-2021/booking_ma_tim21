@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,12 +17,15 @@ import android.widget.Toast;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.adapter.accommodation_review.AccommodationReviewAdapter;
+import com.example.booking_ma_tim21.adapter.owner_review.OwnerReviewAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.AccommodationReviewDTO;
+import com.example.booking_ma_tim21.dto.OwnerReviewDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.retrofit.AccommodationReviewService;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.OwnerReviewService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
@@ -35,55 +37,53 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccommodationReviewPage extends AppCompatActivity {
-    private AccommodationReviewService accommodationReviewService;
+public class GuestOwnerReview extends AppCompatActivity {
+    private OwnerReviewService ownerReviewService;
     private UserService userService;
-    private AccommodationService accommodationService;
     private AuthManager authManager;
 
-    private Long accommodationId;
+    private Long ownerId;
+
+    private String ownerEmail;
+
     public Long userId;
     private String role;
     private String userEmail;
-    private List<AccommodationReviewDTO> accommodationReviews;
+    private List<OwnerReviewDTO> ownerReviews;
     private double averageGrade;
-    private String name = "Email not found";
+    private String email = "Email not found";
 
     private TextView nameTextView;
     private EditText ratingEditText;
     private EditText descriptionEditText;
     private Button submitReviewButton;
     private View starIconsLayout;
-    private RecyclerView accommodationReviewsRecyclerView;
+    private RecyclerView ownerReviewRecyclerView;
 
-    private AccommodationReviewAdapter reviewAdapter;
-
-    @SuppressLint("WrongViewCast")
+    private OwnerReviewAdapter reviewAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accommodation_review_page);
+        setContentView(R.layout.activity_guest_owner_review);
+
         authManager = AuthManager.getInstance(getApplicationContext());
         NavigationSetup.setupNavigation(this, authManager);
 
         RetrofitService retrofitService = new RetrofitService();
-        accommodationReviewService = retrofitService.getRetrofit().create(AccommodationReviewService.class);
+        ownerReviewService = retrofitService.getRetrofit().create(OwnerReviewService.class);
         userService = retrofitService.getRetrofit().create(UserService.class);
-        accommodationService = retrofitService.getRetrofit().create(AccommodationService.class);
 
         nameTextView = findViewById(R.id.nameTextView);
         ratingEditText = findViewById(R.id.ratingEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
         submitReviewButton = findViewById(R.id.submitReviewButton);
-        accommodationReviewsRecyclerView = findViewById(R.id.accommodationReviewsRecyclerView);
+        ownerReviewRecyclerView = findViewById(R.id.ownerReviewRecyclerView);
         starIconsLayout = findViewById(R.id.starIconsLayout);
 
 
         role = authManager.getUserRole();
-
-
         if(role != "GUEST"){
-            Toast.makeText(this, "You need to be a guest in order to see accommodation reviews!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You need to be a guest in order to see owner reviews!!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -94,18 +94,17 @@ public class AccommodationReviewPage extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            accommodationId = extras.getLong("ACCOMMODATION_ID", -1);
+            ownerEmail = extras.getString("OWNER_ID", null);
 
-            if (accommodationId == -1) {
-                Toast.makeText(this, "Invalid Accommodation ID", Toast.LENGTH_SHORT).show();
+            if (ownerEmail == null) {
+                Toast.makeText(this, "Invalid Owner ID", Toast.LENGTH_SHORT).show();
                 finish();
                 return;
             }
         }
+        nameTextView.setText(ownerEmail);
 
-        getAccommodationName();
-
-        getAccommodationReviews(this);
+        getOwnerId(this);
 
         submitReviewButton.setOnClickListener(v -> {
             String ratingText = ratingEditText.getText().toString();
@@ -125,21 +124,21 @@ public class AccommodationReviewPage extends AppCompatActivity {
                 return;
             }
 
-            AccommodationReviewDTO newReview = new AccommodationReviewDTO();
+            OwnerReviewDTO newReview = new OwnerReviewDTO();
             newReview.setId(0l);
             newReview.setReviewerId(this.userId);
-            newReview.setAccommodationId(this.accommodationId);
+            newReview.setReviewedId(this.ownerId);
             newReview.setComment(descriptionText);
             newReview.setRating(rating);
             newReview.setTimePosted(System.currentTimeMillis());
 
-            createAccommodationReview(newReview);
+            createOwnerReview(newReview);
         });
     }
 
     public void calculateAverage() {
         double sum = 0;
-        for (AccommodationReviewDTO review : accommodationReviews) {
+        for (OwnerReviewDTO review : ownerReviews) {
             sum += review.getRating();
         }
 
@@ -148,7 +147,7 @@ public class AccommodationReviewPage extends AppCompatActivity {
             return;
         }
 
-        averageGrade = roundUpToNearestHalf(sum / accommodationReviews.size());
+        averageGrade = roundUpToNearestHalf(sum / ownerReviews.size());
     }
 
     private double roundUpToNearestHalf(double value) {
@@ -217,59 +216,64 @@ public class AccommodationReviewPage extends AppCompatActivity {
                         userId = userDTO.getId();
 
                     } else {
-                        Toast.makeText(AccommodationReviewPage.this, "Can't load user!! " + response.code(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GuestOwnerReview.this, "Can't load user!! " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(AccommodationReviewPage.this, "Response Error! Can't load user!! " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestOwnerReview.this, "Response Error! Can't load user!! " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                Toast.makeText(AccommodationReviewPage.this, "HTTP Error! Can't load user!! " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GuestOwnerReview.this, "HTTP Error! Can't load user!! " + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
-    public void getAccommodationName(){
-        Call<AccommodationDetailsDTO> call = accommodationService.getAccommodation(accommodationId);
-        call.enqueue(new Callback<AccommodationDetailsDTO>() {
+    public void getOwnerId(Context context){
+        Call<UserDTO> call = userService.getUser(ownerEmail);
+
+        call.enqueue(new Callback<UserDTO>() {
             @Override
-            public void onResponse(Call<AccommodationDetailsDTO> call, Response<AccommodationDetailsDTO> response) {
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
-                    AccommodationDetailsDTO data = response.body();
-                    if (data != null && data.getName() != null) {
-                        name = data.getName();
-                        nameTextView.setText(name);
+                    UserDTO userDTO = response.body();
+                    if (userDTO != null && userDTO.getEmail() != null) {
+                        ownerId = userDTO.getId();
+                        getOwnerReviews(context);
+
+                    } else {
+                        Toast.makeText(GuestOwnerReview.this, "Can't load owner!! " + response.code(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(AccommodationReviewPage.this, "Failed to get accommodation details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestOwnerReview.this, "Response Error! Can't load owner!! " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<AccommodationDetailsDTO> call, Throwable t) {
-                Toast.makeText(AccommodationReviewPage.this, "Network error", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<UserDTO> call, Throwable t) {
+                Toast.makeText(GuestOwnerReview.this, "HTTP Error! Can't load owner!! " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
+
     }
 
-    public void getAccommodationReviews(Context context){
-        Call<List<AccommodationReviewDTO>> call = accommodationReviewService.getAccommodationReviews(accommodationId);
-        call.enqueue(new Callback<List<AccommodationReviewDTO>>() {
+    public void getOwnerReviews(Context context){
+        Call<List<OwnerReviewDTO>> call = ownerReviewService.getOwnerReviews(ownerId);
+        call.enqueue(new Callback<List<OwnerReviewDTO>>() {
             @Override
-            public void onResponse(Call<List<AccommodationReviewDTO>> call, Response<List<AccommodationReviewDTO>> response) {
+            public void onResponse(Call<List<OwnerReviewDTO>> call, Response<List<OwnerReviewDTO>> response) {
                 if (response.isSuccessful()) {
-                    List<AccommodationReviewDTO> data = response.body();
+                    List<OwnerReviewDTO> data = response.body();
                     if (data != null) {
-                        accommodationReviews = data;
-                        for (AccommodationReviewDTO a: accommodationReviews) {
-                            Log.d("reviewTest", "Accommodation review id: "+ a.getId());
-
+                        ownerReviews = data;
+                        for (OwnerReviewDTO a: ownerReviews) {
+                            Log.d("reviewTest", "Owner review id: "+ a.getId());
                         }
                     } else {
-                        accommodationReviews = new ArrayList<>();
+                        ownerReviews = new ArrayList<>();
                     }
 
 
@@ -277,41 +281,41 @@ public class AccommodationReviewPage extends AppCompatActivity {
                     String starIcons = getStarIcons(averageGrade);
                     addStarsToLayout(starIcons);
 
-                    reviewAdapter = new AccommodationReviewAdapter(context,accommodationReviews,role,userEmail);
-                    accommodationReviewsRecyclerView.setAdapter(reviewAdapter);
-                    accommodationReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    reviewAdapter = new OwnerReviewAdapter(context,ownerReviews,role,userEmail);
+                    ownerReviewRecyclerView.setAdapter(reviewAdapter);
+                    ownerReviewRecyclerView.setLayoutManager(new LinearLayoutManager(context));
 
                 } else {
-                    Toast.makeText(AccommodationReviewPage.this, "Failed to get accommodation reviews.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestOwnerReview.this, "Failed to get owner reviews.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<AccommodationReviewDTO>> call, Throwable t) {
-                Toast.makeText(AccommodationReviewPage.this, "Network error", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<OwnerReviewDTO>> call, Throwable t) {
+                Toast.makeText(GuestOwnerReview.this, "Network error", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    public void createAccommodationReview(AccommodationReviewDTO reviewDTO){
-        Call<AccommodationReviewDTO> call = accommodationReviewService.createAccommodationReview(reviewDTO);
+    public void createOwnerReview(OwnerReviewDTO reviewDTO){
+        Call<OwnerReviewDTO> call = ownerReviewService.createOwnerReview(reviewDTO);
 
-        call.enqueue(new Callback<AccommodationReviewDTO>() {
+        call.enqueue(new Callback<OwnerReviewDTO>() {
             @Override
-            public void onResponse(Call<AccommodationReviewDTO> call, Response<AccommodationReviewDTO> response) {
+            public void onResponse(Call<OwnerReviewDTO> call, Response<OwnerReviewDTO> response) {
                 if (response.isSuccessful()) {
-                    AccommodationReviewDTO result = response.body();
+                    OwnerReviewDTO result = response.body();
                     reviewAdapter.add(result);
-                    Toast.makeText(AccommodationReviewPage.this, "Review added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestOwnerReview.this, "Review added.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(AccommodationReviewPage.this, "You are not eligible for a review.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestOwnerReview.this, "You are not eligible for a review.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<AccommodationReviewDTO> call, Throwable t) {
-                Toast.makeText(AccommodationReviewPage.this, "Network error", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<OwnerReviewDTO> call, Throwable t) {
+                Toast.makeText(GuestOwnerReview.this, "Network error", Toast.LENGTH_SHORT).show();
             }
         });
     }

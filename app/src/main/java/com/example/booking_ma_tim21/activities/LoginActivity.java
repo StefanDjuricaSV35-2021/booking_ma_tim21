@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +16,7 @@ import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.model.JWTAuthenticationResponse;
 import com.example.booking_ma_tim21.model.SignInRequest;
 import com.example.booking_ma_tim21.retrofit.AuthService;
+import com.example.booking_ma_tim21.retrofit.NotificationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 
@@ -111,20 +111,23 @@ public class LoginActivity extends AppCompatActivity {
                     JWTAuthenticationResponse jwtResponse = response.body();
 
                     authManager.addUser(jwtResponse);
-                    Log.d("REZ","userId: "+authManager.getUserId());
+
+                    Log.d("REZ","userId: "+authManager.getUserEmail());
                     Log.d("REZ","userRole: "+authManager.getUserRole());
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
                     Log.d("REZ","Meesage recieved: "+response.code());
+                    Toast.makeText(getApplicationContext(), "Login failed.", Toast.LENGTH_SHORT).show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<JWTAuthenticationResponse> call, Throwable t) {
-                Log.d("REZ","Meesage failed to be received.");
+                Toast.makeText(getApplicationContext(), "Login failed.", Toast.LENGTH_SHORT).show();
+
             }
         });
     }

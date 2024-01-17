@@ -18,7 +18,7 @@ public interface OwnerReviewService {
     Call<List<OwnerReviewDTO>> getAllOwnerReviews();
 
     @GET("/api/v1/auth/reviews/owners/{id}")
-    Call<OwnerReviewDTO> getOwnerReviews(@Path("id") Long id);
+    Call<List<OwnerReviewDTO>> getOwnerReviews(@Path("id") Long id);
 
     @GET("/api/v1/auth/reviews/owners/one/{id}")
     Call<OwnerReviewDTO> getOwnerReview(@Path("id") Long id);
