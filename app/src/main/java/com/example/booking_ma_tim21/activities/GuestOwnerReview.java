@@ -87,7 +87,7 @@ public class GuestOwnerReview extends AppCompatActivity {
             finish();
             return;
         }
-        userEmail = authManager.getUserId();
+        userEmail = authManager.getUserEmail();
 
 
         getUserByEmail(this.userEmail);

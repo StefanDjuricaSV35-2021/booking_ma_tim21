@@ -72,7 +72,7 @@ public class OwnerOwnerReview extends AppCompatActivity {
             finish();
             return;
         }
-        userEmail = authManager.getUserId();
+        userEmail = authManager.getUserEmail();
 
         nameTextView.setText(userEmail);
         getUserByEmail(userEmail, this);

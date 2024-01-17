@@ -179,7 +179,7 @@ public class AccommodationActivity extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), GuestOwnerReview.class);
 
                 Bundle b = new Bundle();
-                b.putString("OWNER_ID", authManager.getUserId());
+                b.putString("OWNER_ID", authManager.getUserEmail());
                 intent.putExtras(b);
 
                 v.getContext().startActivity(intent);
