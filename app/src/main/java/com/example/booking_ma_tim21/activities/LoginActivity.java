@@ -111,11 +111,10 @@ public class LoginActivity extends AppCompatActivity {
                     JWTAuthenticationResponse jwtResponse = response.body();
 
                     authManager.addUser(jwtResponse);
-<<<<<<< HEAD
-=======
+
                     Log.d("REZ","userId: "+authManager.getUserEmail());
                     Log.d("REZ","userRole: "+authManager.getUserRole());
->>>>>>> 8172b918d6a2f688819e56099c7a5aac9357cf1a
+
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
