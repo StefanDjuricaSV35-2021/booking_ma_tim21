@@ -52,9 +52,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     String guests=null;
     String filter;
 
-    boolean showOwnersAccommodations = false;
-
-
 
     public AccommodatioPreviewRecycleViewFragment() {
         // Required empty public constructor
@@ -95,7 +92,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         Bundle args=getArguments();
         if(args==null){return;}
         this.previews=args.getParcelableArrayList("previews");
-
     }
 
     private void initializePreviews(){
@@ -170,6 +166,8 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         startActivity(intent);
 
     }
+
+
 
 
 

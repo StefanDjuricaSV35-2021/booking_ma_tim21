@@ -21,4 +21,32 @@ public class ReservationRequestDTO {
         this.timeSlot = timeSlot;
         this.status = status;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getAccommodationId() {
+        return accommodationId;
+    }
+
+    public int getGuestsNumber() {
+        return guestsNumber;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public TimeSlot getTimeSlot() {
+        return timeSlot;
+    }
+
+    public ReservationRequestStatus getStatus() {
+        return status;
+    }
 }

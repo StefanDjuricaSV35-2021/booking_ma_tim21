@@ -80,12 +80,16 @@ public class AccommodationReviewPage extends AppCompatActivity {
 
 
         role = authManager.getUserRole();
+<<<<<<< HEAD
         if(role != "GUEST"){
             Toast.makeText(this, "You need to be a guest in order to see accommodation reviews!!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
         userEmail = authManager.getUserId();
+=======
+        userEmail = authManager.getUserEmail();
+>>>>>>> 8172b918d6a2f688819e56099c7a5aac9357cf1a
 
 
         getUserByEmail(this.userEmail);

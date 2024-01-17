@@ -21,6 +21,9 @@ public interface AccommodationService {
     @GET("/api/v1/auth/accommodations/previews")
     Call<List<AccommodationPreviewDTO>> getAllAccommodations();
 
+    @GET("/api/v1/auth/accommodations/previews/notEnabled")
+    Call<List<AccommodationPreviewDTO>> getAllNotEnabled();
+
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
@@ -33,7 +36,7 @@ public interface AccommodationService {
             "Content-Type: application/json"
     })
     @PUT("/api/v1/auth/accommodations")
-    Call<Accommodation> updateAccommodation(@Body Accommodation accommodation);
+    Call<AccommodationDetailsDTO> updateAccommodation(@Body AccommodationDetailsDTO accommodation);
 
 
     @GET("/api/v1/auth/accommodations/{id}")
@@ -48,6 +51,6 @@ public interface AccommodationService {
     @GET("/api/v1/auth/accommodations/price")
     Call<Double> getAccommodationsPrice(@Query("noGuests")Integer noGuests,@Query("dateFrom")String dateFrom,@Query("dateTo")String dateTo,@Query("id")Long id);
 
-    @DELETE("/api/v1/accommodations/{id}")
+    @DELETE("/api/v1/auth/accommodations/{id}")
     Call<Void> deleteAccommodation(@Path("id") Long id);
 }

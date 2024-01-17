@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -17,10 +18,17 @@
         android:theme="@style/Theme.Booking_ma_tim21"
         tools:targetApi="31">
         <activity
+<<<<<<< HEAD
             android:name=".activities.GuestOwnerReview"
             android:exported="false" />
         <activity
             android:name=".activities.OwnerOwnerReview"
+=======
+            android:name=".activities.AccommodationUpdatingRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.UpdatingRequestsActivity"
+>>>>>>> 8172b918d6a2f688819e56099c7a5aac9357cf1a
             android:exported="false" />
 
         <provider
@@ -33,6 +41,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <service android:name=".retrofit.NotificationService"
+            android:exported="false"/>
+        <activity
+            android:name=".activities.CreationRequestsActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.OwnersAccommodationsActivity"
             android:exported="false" />
