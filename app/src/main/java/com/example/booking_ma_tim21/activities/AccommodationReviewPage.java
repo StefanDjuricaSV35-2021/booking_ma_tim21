@@ -80,6 +80,8 @@ public class AccommodationReviewPage extends AppCompatActivity {
 
 
         role = authManager.getUserRole();
+
+
         if(role != "GUEST"){
             Toast.makeText(this, "You need to be a guest in order to see accommodation reviews!!", Toast.LENGTH_SHORT).show();
             finish();

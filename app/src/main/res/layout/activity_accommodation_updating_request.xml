@@ -6,11 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
-    tools:context=".activities.MainActivity"
-    xmlns:map="http://schemas.android.com/apk/res-auto">
+    tools:context=".activities.AccommodationUpdatingRequestActivity">
 
-    <!--Ovo ispod morate da prepisujete u svoje aktivnosti da bi bio toolbar i navigacija
-    Samo ne mora TextView-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,7 +32,7 @@
                 >
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/image_slider"
+                    android:id="@+id/image_slider_updating"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_gravity="center"
@@ -47,7 +44,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/name_tv"
+                    android:id="@+id/name_tv_updating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
@@ -56,10 +53,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_slider" />
+                    app:layout_constraintTop_toBottomOf="@+id/image_slider_updating" />
 
                 <TextView
-                    android:id="@+id/location_tv"
+                    android:id="@+id/location_tv_updating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -67,10 +64,10 @@
                     android:text="Location"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/name_tv" />
+                    app:layout_constraintTop_toBottomOf="@+id/name_tv_updating" />
 
                 <TextView
-                    android:id="@+id/type_tv"
+                    android:id="@+id/type_tv_updating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -78,10 +75,10 @@
                     android:text="Type"
                     android:textSize="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/location_tv" />
+                    app:layout_constraintTop_toBottomOf="@+id/location_tv_updating" />
 
                 <TextView
-                    android:id="@+id/guests_tv"
+                    android:id="@+id/guests_tv_updating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -89,36 +86,12 @@
                     android:text="x-y Guests"
                     android:textSize="15dp"
 
-                    app:layout_constraintStart_toEndOf="@id/type_tv"
-                    app:layout_constraintTop_toBottomOf="@+id/location_tv" />
+                    app:layout_constraintStart_toEndOf="@id/type_tv_updating"
+                    app:layout_constraintTop_toBottomOf="@+id/location_tv_updating" />
 
-                <Button
-                    android:id="@+id/favorite_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="32dp"
-
-                    android:background="@drawable/favorite_select_24px"
-                    app:backgroundTint="@null"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/name_tv"/>
-
-
-                <RatingBar
-                    android:id="@+id/rating_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/guests_tv"
-
-                    />
 
                 <com.google.android.material.divider.MaterialDivider
-                    android:id="@+id/rating_div"
+                    android:id="@+id/rating_div_updating"
                     android:layout_width="380dp"
                     android:layout_height="2dp"
                     android:layout_marginTop="25dp"
@@ -126,10 +99,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rating_bar" />
+                    app:layout_constraintTop_toBottomOf="@id/guests_tv_updating" />
 
                 <TextView
-                    android:id="@+id/Amenities_tv"
+                    android:id="@+id/Amenities_tv_updating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -138,11 +111,11 @@
                     android:textSize="25dp"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rating_div" />
+                    app:layout_constraintTop_toBottomOf="@id/rating_div_updating" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/amenities_lv"
+                    android:id="@+id/amenities_lv_updating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxHeight="200dp"
@@ -152,11 +125,11 @@
                     android:nestedScrollingEnabled="true"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/Amenities_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/Amenities_tv_updating" />
                 />
 
                 <com.google.android.material.divider.MaterialDivider
-                    android:id="@+id/amenities_div"
+                    android:id="@+id/amenities_div_updating"
                     android:layout_width="380dp"
                     android:layout_height="2dp"
                     android:layout_marginTop="25dp"
@@ -164,10 +137,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/amenities_lv" />
+                    app:layout_constraintTop_toBottomOf="@id/amenities_lv_updating" />
 
                 <TextView
-                    android:id="@+id/map_tv"
+                    android:id="@+id/map_tv_updating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -176,11 +149,11 @@
                     android:textSize="25dp"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/amenities_div" />
+                    app:layout_constraintTop_toBottomOf="@id/amenities_div_updating" />
 
                 <androidx.cardview.widget.CardView
                     xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/map_container"
+                    android:id="@+id/map_container_updating"
                     android:layout_width="350dp"
                     android:layout_height="200dp"
                     android:layout_marginTop="15dp"
@@ -188,17 +161,26 @@
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/map_tv">
+                    app:layout_constraintTop_toBottomOf="@id/map_tv_updating">
 
-                <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/map_fragment_container"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"/>
+                    <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/map_fragment_container_updating"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"/>
 
                 </androidx.cardview.widget.CardView>
 
+                <FrameLayout
+                    android:id="@+id/pricings_container_updating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/map_container_updating"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <com.google.android.material.divider.MaterialDivider
-                    android:id="@+id/map_div"
+                    android:id="@+id/map_div_updating"
                     android:layout_width="380dp"
                     android:layout_height="2dp"
                     android:layout_marginTop="25dp"
@@ -206,45 +188,10 @@
                     app:layout_constraintEnd_toEndOf="parent"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/map_container" />
-
-                <TextView
-                    android:id="@+id/availability_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Availability"
-                    android:textSize="25dp"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/map_div" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:id="@+id/availability_div"
-                    android:layout_width="380dp"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="25dp"
-                    app:dividerColor="@color/darkblue"
-                    app:layout_constraintEnd_toEndOf="parent"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/availability_tv" />
-
-                <TextView
-                    android:id="@+id/reviews_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="20dp"
-                    android:text="Reviews"
-                    android:textSize="25dp"
-
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/availability_div" />
+                    app:layout_constraintTop_toBottomOf="@id/pricings_container_updating" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/acc_reviews_btn"
+                    android:id="@+id/accept_updating_request"
                     android:layout_width="300dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="20dp"
@@ -252,15 +199,15 @@
                     app:backgroundTint="@null"
                     android:textColor="@color/black"
                     android:textSize="25dp"
-                    android:text="Accommodation"
+                    android:text="Accept Request"
 
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/reviews_tv"/>
+                    app:layout_constraintTop_toBottomOf="@id/map_div_updating"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/own_reviews_btn"
+                    android:id="@+id/reject_updating_request"
                     android:layout_width="300dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="20dp"
@@ -270,36 +217,12 @@
 
 
                     android:textSize="25dp"
-                    android:text="Owner"
+                    android:text="Reject Request"
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/acc_reviews_btn"/>
+                    app:layout_constraintTop_toBottomOf="@id/accept_updating_request"/>
 
-                <FrameLayout
-                    android:id="@+id/pricings_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/own_reviews_btn"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <FrameLayout
-                    android:id="@+id/change_accommodation_btn_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/pricings_container"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <FrameLayout
-                    android:id="@+id/accept_reject_accommodation_btn_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/pricings_container"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
 
 
 
@@ -314,7 +237,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/res_footer"
-             >
+            >
 
         </androidx.fragment.app.FragmentContainerView>
 
@@ -332,7 +255,4 @@
         <include
             layout="@layout/naw_drawer"/>
     </RelativeLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>
-
-

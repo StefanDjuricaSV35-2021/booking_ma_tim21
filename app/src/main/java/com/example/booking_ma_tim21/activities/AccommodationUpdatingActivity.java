@@ -355,7 +355,7 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
             changedAccommodation.setMaxGuests(maxGuests);
             changedAccommodation.setMinGuests(minGuests);
             changedAccommodation.setOwnerId(accommodation.getOwnerId());
-            changedAccommodation.setEnabled(false);
+            changedAccommodation.setEnabled(true);
             changedAccommodation.setPerNight(radio_button_per_night.isChecked());
             changedAccommodation.setAutoAccepting(auto_accepting_on.isChecked());
             changedAccommodation.setLocation(street + ',' + city + ',' + country);

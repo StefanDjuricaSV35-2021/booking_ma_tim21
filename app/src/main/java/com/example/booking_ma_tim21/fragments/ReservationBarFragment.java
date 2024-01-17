@@ -134,7 +134,7 @@ public class ReservationBarFragment extends Fragment {
                 LocalDate dateFrom = LocalDate.parse(dates[0]);
                 LocalDate dateTo = LocalDate.parse(dates[1]);
 
-                Long userId=Long.getLong(auth.getUserId());
+                Long userId=auth.getUserIdLong();
                 Long accId=resParams.getLong("id");
                 Integer noGuests=Integer.parseInt(guests.getText().toString());
                 Double priceVal=Double.parseDouble(price.getText().toString());

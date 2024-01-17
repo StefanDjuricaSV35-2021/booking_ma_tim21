@@ -1,6 +1,5 @@
 package com.example.booking_ma_tim21.util;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccommodationCreation;
 import com.example.booking_ma_tim21.activities.AccountActivity;
+import com.example.booking_ma_tim21.activities.CreationRequestsActivity;
 import com.example.booking_ma_tim21.activities.AnalyticsActivity;
 import com.example.booking_ma_tim21.activities.FavoritesActivity;
 import com.example.booking_ma_tim21.activities.LoginActivity;
@@ -20,10 +20,11 @@ import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.OwnerOwnerReview;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
 import com.example.booking_ma_tim21.activities.RegisterActivity;
+import com.example.booking_ma_tim21.activities.UpdatingRequestsActivity;
+import com.example.booking_ma_tim21.activities.ReservationRequestsActivity;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 
 public class NavigationSetup {
-
 
     public static void setupNavigation(final Activity activity, AuthManager authManager) {
 
@@ -48,6 +49,8 @@ public class NavigationSetup {
         LinearLayout loginScreen = activity.findViewById(R.id.loginScreen);
         LinearLayout registerScreen = activity.findViewById(R.id.registerScreen);
         LinearLayout analyticsScreen=activity.findViewById(R.id.analyticsScreen);
+        LinearLayout reservationRequestsScreen=activity.findViewById(R.id.view_reservations_requests);
+
 
         String role = authManager.getUserRole() != null ? authManager.getUserRole() : "";
 
@@ -79,6 +82,7 @@ public class NavigationSetup {
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
                 analyticsScreen.setVisibility(View.GONE);
+                reservationRequestsScreen.setVisibility(View.GONE);
 
                 break;
             case "OWNER":
@@ -107,29 +111,31 @@ public class NavigationSetup {
                 log_out.setVisibility(View.GONE);
                 account.setVisibility(View.GONE);
                 analyticsScreen.setVisibility(View.GONE);
+                reservationRequestsScreen.setVisibility(View.GONE);
                 break;
         }
 
-
         menu.setOnClickListener(v -> openDrawer(drawerLayout));
-
         main.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));
         account.setOnClickListener(v -> redirectActivity(activity, AccountActivity.class));
 
         create_accommodation.setOnClickListener(v -> redirectActivity(activity, AccommodationCreation.class));
         your_accommodations.setOnClickListener(v -> redirectActivity(activity, OwnersAccommodationsActivity.class));
-        accommodation_creation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
-        accommodation_updating_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        accommodation_creation_requests
+                .setOnClickListener(v -> redirectActivity(activity, CreationRequestsActivity.class));
+        accommodation_updating_requests.setOnClickListener(v -> redirectActivity(activity, UpdatingRequestsActivity.class));
 
-        review_reports.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
-        view_reservation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
-        view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
-        view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        review_reports.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
+        view_reservation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
+        view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
+        view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, FavoritesActivity.class));
         owner_reviews.setOnClickListener(v -> redirectActivity(activity, OwnerOwnerReview.class));
         guest_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         owner_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         analyticsScreen.setOnClickListener(v->redirectActivity(activity,AnalyticsActivity.class));
+        reservationRequestsScreen.setOnClickListener(v->redirectActivity(activity, ReservationRequestsActivity.class));
+
         log_out.setOnClickListener(v -> {
             authManager.signOut();
             redirectActivity(activity, MainActivity.class);

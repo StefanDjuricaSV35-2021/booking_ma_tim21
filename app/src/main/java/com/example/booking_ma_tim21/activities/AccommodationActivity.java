@@ -21,7 +21,9 @@ import com.example.booking_ma_tim21.adapter.AmenityListAdapter;
 import com.example.booking_ma_tim21.adapter.ImageAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
+import com.example.booking_ma_tim21.dto.FavoriteAccommodationDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
+import com.example.booking_ma_tim21.fragments.AcceptRejectAccommodationButtons;
 import com.example.booking_ma_tim21.fragments.ChangeAccommodationButtonFragment;
 import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
 import com.example.booking_ma_tim21.fragments.MapFragment;
@@ -32,21 +34,15 @@ import com.example.booking_ma_tim21.model.enumeration.Amenity;
 import com.example.booking_ma_tim21.retrofit.AccommodationPricingService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
-import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.FavoriteAccommodationService;
-import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.util.DatePickerCreator;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.divider.MaterialDivider;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +59,9 @@ public class AccommodationActivity extends AppCompatActivity {
     TextView availability;
     MaterialButton ownerReviews;
     MaterialButton accomodationReviews;
+
+    MaterialDivider availabilityDivider;
+    TextView reviewsTextView;
 
     UserService userService;
     AccommodationPricingService pricingService;
@@ -85,6 +84,11 @@ public class AccommodationActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setAccommodation();
+    }
+    @Override
     protected void onPause() {
         super.onPause();
         NavigationSetup.closeDrawer(findViewById(R.id.drawerLayout));
@@ -98,6 +102,9 @@ public class AccommodationActivity extends AppCompatActivity {
     }
 
     void setView() {
+        AuthManager auth = AuthManager.getInstance(this);
+
+
         ViewPager imageSlider = findViewById(R.id.image_slider);
         TextView name = findViewById(R.id.name_tv);
         TextView location = findViewById(R.id.location_tv);
@@ -107,6 +114,8 @@ public class AccommodationActivity extends AppCompatActivity {
         accomodationReviews = findViewById(R.id.acc_reviews_btn);
         ownerReviews = findViewById(R.id.own_reviews_btn);
         favorite = findViewById(R.id.favorite_btn);
+        availabilityDivider = findViewById(R.id.availability_div);
+        reviewsTextView = findViewById(R.id.reviews_tv);
 
         setImageSlider(imageSlider);
         name.setText(acc.getName());
@@ -119,7 +128,11 @@ public class AccommodationActivity extends AppCompatActivity {
         setFavoriteButton();
         setButtonClicks();
         setResFragment();
-        setChangeAccommodationFragmentAndPricings();
+        if(auth.isLoggedIn() && auth.getUserRole().equals("ADMIN")) {
+            setUpPricings();
+        }
+        setChangeAccommodationFragment();
+        setAcceptRejectChangesButtons();
 
     }
 
@@ -128,6 +141,7 @@ public class AccommodationActivity extends AppCompatActivity {
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 setFavoriteButtonBackground(!isFavorite);
             }
         });
@@ -175,6 +189,65 @@ public class AccommodationActivity extends AppCompatActivity {
 
     }
 
+    void addToFavorites(){
+
+        Long userId = authManager.getUserIdLong();
+        FavoriteAccommodationDTO acc= new FavoriteAccommodationDTO();
+        acc.setAccommodationId(this.acc.getId());
+        acc.setUserId(userId);
+
+        Call call=favoriteAccommodationService.addFavoriteAccommodation(acc);
+
+        call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
+                if (response.code() == 200) {
+
+                    Log.d("REZ", "Meesage recieved");
+                } else {
+                    Log.d("REZ", "Meesage recieved: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationPreviewDTO>> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+
+    }
+
+    void removeFromFavorites(){
+
+        Long userId =authManager.getUserIdLong();
+
+        Call call=favoriteAccommodationService.deleteFavoritesAccommodation(this.acc.getId(),userId);
+
+        call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationPreviewDTO>> call, Response<List<AccommodationPreviewDTO>> response) {
+                if (response.code() == 200) {
+
+                    Log.d("REZ", "Meesage recieved");
+                } else {
+                    Log.d("REZ", "Meesage recieved: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationPreviewDTO>> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+
+        });
+
+    }
+
+
+
     void setFavoriteButton() {
 
         AuthManager auth = AuthManager.getInstance(this);
@@ -189,7 +262,7 @@ public class AccommodationActivity extends AppCompatActivity {
     void checkIfFavorite() {
 
         AuthManager auth = AuthManager.getInstance(this);
-        Long userId = Long.valueOf(auth.getUserId());
+        Long userId = auth.getUserIdLong();
 
         Call call = favoriteAccommodationService.isUsersFavorite(acc.getId(), userId);
 
@@ -219,8 +292,12 @@ public class AccommodationActivity extends AppCompatActivity {
 
         if (isFavorite) {
             this.favorite.setBackgroundResource(R.drawable.favorite_unselect_24px);
+            if(this.isFavorite!=null) {
+                addToFavorites();
+            }
         } else {
             this.favorite.setBackgroundResource(R.drawable.favorite_select_24px);
+            removeFromFavorites();
         }
 
         this.isFavorite = isFavorite;
@@ -255,7 +332,7 @@ public class AccommodationActivity extends AppCompatActivity {
 
     }
 
-    void setChangeAccommodationFragmentAndPricings() {
+    void setChangeAccommodationFragment() {
 
         AuthManager auth = AuthManager.getInstance(this);
 
@@ -263,7 +340,7 @@ public class AccommodationActivity extends AppCompatActivity {
             return;
         }
 
-        String email = auth.getUserId();
+        String email = auth.getUserEmail();
         Call<UserDTO> call = this.userService.getUser(email);
         call.enqueue(new Callback<UserDTO>() {
             @Override
@@ -275,36 +352,15 @@ public class AccommodationActivity extends AppCompatActivity {
                     if (!loggedInUser.getId().equals(acc.getOwnerId()))
                         return;
 
-                    Call<List<AccommodationPricing>> pricingsCall = pricingService
-                            .getPricingsForAccommodation(acc.getId());
-
-                    pricingsCall.enqueue(new Callback<List<AccommodationPricing>>() {
-                        @Override
-                        public void onResponse(Call<List<AccommodationPricing>> pricingsCall,
-                                Response<List<AccommodationPricing>> response) {
-                            if (response.isSuccessful()) {
-                                List<AccommodationPricing> pricings = response.body();
-                                PricingsListFragment fragment = new PricingsListFragment();
-                                fragment.setPricings(pricings);
-                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                                transaction.replace(R.id.pricings_container, fragment);
-                                transaction.commit();
-                            } else {
-                                Log.d("REZ", "Message received: " + response.code());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<AccommodationPricing>> pricingsCall, Throwable t) {
-                            t.printStackTrace();
-                        }
-                    });
+                    setUpPricings();
 
                     ChangeAccommodationButtonFragment fragment = new ChangeAccommodationButtonFragment();
                     fragment.setAccommodationDetails(acc);
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.change_accommodation_btn_container, fragment);
                     transaction.commit();
+
+
                 } else {
                     Log.d("REZ", "Message received: " + response.code());
                 }
@@ -315,6 +371,69 @@ public class AccommodationActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    private void setUpPricings() {
+        AuthManager auth = AuthManager.getInstance(this);
+
+        if (!(auth.isLoggedIn() && (auth.getUserRole().equals("OWNER") || auth.getUserRole().equals("ADMIN")))) {
+            return;
+        }
+
+        if (!auth.getUserRole().equals("ADMIN") && loggedInUser == null)
+            return;
+        if (auth.getUserRole().equals("OWNER") && !loggedInUser.getId().equals(acc.getOwnerId()))
+            return;
+
+        Call<List<AccommodationPricing>> pricingsCall = pricingService
+                .getPricingsForAccommodation(acc.getId());
+
+        pricingsCall.enqueue(new Callback<List<AccommodationPricing>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationPricing>> pricingsCall,
+                                   Response<List<AccommodationPricing>> response) {
+                if (response.isSuccessful()) {
+                    List<AccommodationPricing> pricings = response.body();
+                    PricingsListFragment fragment = new PricingsListFragment();
+                    fragment.setPricings(pricings);
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.pricings_container, fragment);
+                    transaction.commit();
+                } else {
+                    Log.d("REZ", "Message received: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AccommodationPricing>> pricingsCall, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+
+    }
+
+    private void setAcceptRejectChangesButtons() {
+        AuthManager auth = AuthManager.getInstance(this);
+
+        if (!(auth.isLoggedIn() && auth.getUserRole().equals("ADMIN"))) {
+            return;
+        }
+
+        if(acc.isEnabled()) {
+            return;
+        }
+
+        this.ownerReviews.setVisibility(View.GONE);
+        this.accomodationReviews.setVisibility(View.GONE);
+        this.availabilityDivider.setVisibility(View.GONE);
+        this.reviewsTextView.setVisibility(View.GONE);
+
+        AcceptRejectAccommodationButtons fragment = new AcceptRejectAccommodationButtons();
+        fragment.setAccommodationDetails(acc);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.accept_reject_accommodation_btn_container, fragment);
+        transaction.commit();
     }
 
     void setImageSlider(ViewPager imageSlider) {
@@ -345,4 +464,6 @@ public class AccommodationActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
     }
+
+
 }
