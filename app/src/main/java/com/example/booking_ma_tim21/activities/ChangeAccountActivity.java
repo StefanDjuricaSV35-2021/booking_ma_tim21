@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.UserDTO;
-import com.example.booking_ma_tim21.model.enumeration.Role;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
@@ -50,7 +49,7 @@ public class ChangeAccountActivity extends AppCompatActivity {
 
     public void setUpInputFields() {
         // Make a Retrofit API call to get the user information
-        String email = authManager.getUserId();
+        String email = authManager.getUserEmail();
 
         Call<UserDTO> call = service.getUser(email);
         call.enqueue(new Callback<UserDTO>() {

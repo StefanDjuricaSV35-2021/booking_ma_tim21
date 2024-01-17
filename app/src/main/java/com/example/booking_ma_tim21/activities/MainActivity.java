@@ -1,5 +1,7 @@
 package com.example.booking_ma_tim21.activities;
 
+import static com.example.booking_ma_tim21.MyApplication.getAppContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,14 +21,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.booking_ma_tim21.MyApplication;
 import com.example.booking_ma_tim21.R;
 
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
 import com.example.booking_ma_tim21.fragments.AccommodatioPreviewRecycleViewFragment;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.NotificationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
+import com.example.booking_ma_tim21.util.AppConfig;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 
 import com.example.booking_ma_tim21.adapter.PreviewAdapter;
@@ -49,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("BLA",String.valueOf(this.equals(getAppContext())));
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         authManager = AuthManager.getInstance(getApplicationContext());
         NavigationSetup.setupNavigation(this, authManager);

@@ -99,8 +99,8 @@ public class AnalyticsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_analytics);
         NavigationSetup.setupNavigation(this, auth);
 
-        ownerId = Long.getLong(auth.getUserId());
-        
+        ownerId = auth.getUserIdLong();
+
         RetrofitService retrofitService = new RetrofitService();
         analyticsService = retrofitService.getRetrofit().create(AnalyticsService.class);
         accService = retrofitService.getRetrofit().create(AccommodationService.class);
@@ -240,7 +240,7 @@ public class AnalyticsActivity extends AppCompatActivity {
         adapter.add("Select Accommodation");
 
 
-        Call call = accService.getOwnersAccommodations(3l);
+        Call call = accService.getOwnersAccommodations(ownerId);
 
         call.enqueue(new Callback<List<AccommodationPreviewDTO>>() {
             @Override
@@ -284,7 +284,7 @@ public class AnalyticsActivity extends AppCompatActivity {
     }
 
     void setProfitData(String dateFrom, String dateTo) {
-        Call call = analyticsService.getOwnerProfit(3L, dateFrom, dateTo);
+        Call call = analyticsService.getOwnerProfit(ownerId, dateFrom, dateTo);
 
         call.enqueue(new Callback<List<ChartData>>() {
             @Override
@@ -296,7 +296,6 @@ public class AnalyticsActivity extends AppCompatActivity {
                         getPiePdf.setVisibility(View.GONE);
                         pieChartProfit.setVisibility(View.GONE);
                         pieChartReservations.setVisibility(View.GONE);
-                        return;
                     }
                     profitData = setPieChartData(response.body());
                     setReservationsData(dateFrom, dateTo);
@@ -317,7 +316,7 @@ public class AnalyticsActivity extends AppCompatActivity {
     }
 
     void setReservationsData(String dateFrom, String dateTo) {
-        Call call = analyticsService.getOwnerReservationCount(3L, dateFrom, dateTo);
+        Call call = analyticsService.getOwnerReservationCount(ownerId, dateFrom, dateTo);
 
         call.enqueue(new Callback<List<ChartData>>() {
             @Override

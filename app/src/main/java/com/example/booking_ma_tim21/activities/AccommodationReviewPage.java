@@ -80,7 +80,7 @@ public class AccommodationReviewPage extends AppCompatActivity {
 
 
         role = authManager.getUserRole();
-        userEmail = authManager.getUserId();
+        userEmail = authManager.getUserEmail();
 
 
         getUserByEmail(this.userEmail);
