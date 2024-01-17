@@ -40,8 +40,10 @@ android {
 
 dependencies {
 
-    implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.0'
-    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
+    implementation 'androidx.core:core-ktx:1.7.0'  // Use the latest version
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'com.github.NaikSoftware:StompProtocolAndroid:+'
+    implementation 'org.java-websocket:Java-WebSocket:+'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'

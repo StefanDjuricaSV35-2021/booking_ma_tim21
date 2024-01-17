@@ -21,6 +21,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthManager {
+
+    NotificationService notifService;
     private static AuthManager instance;
     private static UserService userService;
     private static String secret = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
@@ -131,6 +133,8 @@ public class AuthManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("user");
         editor.apply();
+        notifService.closeSocket();
+
     }
 
     public void setUserIdFromEmail(){
@@ -145,7 +149,7 @@ public class AuthManager {
 
                     Log.d("REZ","Meesage recieved");
                     userIdLong=response.body().getId();
-                    NotificationService.getInstance(context);
+                    notifService=NotificationService.getInstance(context.getApplicationContext());
 
                 }else{
                     Log.d("REZ","Meesage recieved: "+response.code());
