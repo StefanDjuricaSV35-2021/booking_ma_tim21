@@ -31,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OwnerOwnerReview extends AppCompatActivity {
+public class OwnerOwnerReview extends AppCompatActivity implements OwnerReviewAdapter.OnReviewDeletedListener{
 
     private OwnerReviewService ownerReviewService;
     private UserService userService;
@@ -67,7 +67,7 @@ public class OwnerOwnerReview extends AppCompatActivity {
 
 
         role = authManager.getUserRole();
-        if(role != "OWNER"){
+        if(role== null || !role.equals("OWNER")){
             Toast.makeText(this, "You need to be a owner in order to see your reviews!!", Toast.LENGTH_SHORT).show();
             finish();
             return;
@@ -146,7 +146,7 @@ public class OwnerOwnerReview extends AppCompatActivity {
         return stars.toString();
     }
 
-    public void getUserByEmail(String email, Context context) {
+    public void getUserByEmail(String email, OwnerOwnerReview context) {
         Call<UserDTO> call = userService.getUser(email);
 
         call.enqueue(new Callback<UserDTO>() {
@@ -174,7 +174,7 @@ public class OwnerOwnerReview extends AppCompatActivity {
         });
     }
 
-    public void getOwnerReviews(Context context){
+    public void getOwnerReviews(OwnerOwnerReview context){
         Call<List<OwnerReviewDTO>> call = ownerReviewService.getOwnerReviews(userId);
         call.enqueue(new Callback<List<OwnerReviewDTO>>() {
             @Override
@@ -195,7 +195,9 @@ public class OwnerOwnerReview extends AppCompatActivity {
                     String starIcons = getStarIcons(averageGrade);
                     addStarsToLayout(starIcons);
 
+
                     reviewAdapter = new OwnerReviewAdapter(context,ownerReviews,role,userEmail);
+                    reviewAdapter.setOnReviewDeletedListener(context);
                     ownerReviewRecyclerView.setAdapter(reviewAdapter);
                     ownerReviewRecyclerView.setLayoutManager(new LinearLayoutManager(context));
 
@@ -210,5 +212,11 @@ public class OwnerOwnerReview extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public void onReviewDeleted() {
+        calculateAverage();
+        String starIcons = getStarIcons(averageGrade);
+        addStarsToLayout(starIcons);
     }
 }

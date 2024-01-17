@@ -37,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GuestOwnerReview extends AppCompatActivity {
+public class GuestOwnerReview extends AppCompatActivity implements OwnerReviewAdapter.OnReviewDeletedListener {
     private OwnerReviewService ownerReviewService;
     private UserService userService;
     private AuthManager authManager;
@@ -82,8 +82,8 @@ public class GuestOwnerReview extends AppCompatActivity {
 
 
         role = authManager.getUserRole();
-        if(role != "GUEST"){
-            Toast.makeText(this, "You need to be a guest in order to see owner reviews!!", Toast.LENGTH_SHORT).show();
+        if(role== null || !role.equals("GUEST")){
+            Toast.makeText(this, "You need to be a guest in order to see accommodation reviews!!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -94,17 +94,17 @@ public class GuestOwnerReview extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            ownerEmail = extras.getString("OWNER_ID", null);
+            ownerId = extras.getLong("OWNER_ID", -1);
 
-            if (ownerEmail == null) {
+            if (ownerId == -1) {
                 Toast.makeText(this, "Invalid Owner ID", Toast.LENGTH_SHORT).show();
                 finish();
                 return;
             }
         }
-        nameTextView.setText(ownerEmail);
 
-        getOwnerId(this);
+        getOwnerEmail();
+        getOwnerReviews(this);
 
         submitReviewButton.setOnClickListener(v -> {
             String ratingText = ratingEditText.getText().toString();
@@ -126,8 +126,8 @@ public class GuestOwnerReview extends AppCompatActivity {
 
             OwnerReviewDTO newReview = new OwnerReviewDTO();
             newReview.setId(0l);
-            newReview.setReviewerId(this.userId);
-            newReview.setReviewedId(this.ownerId);
+            newReview.setReviewerId(userId);
+            newReview.setReviewedId(ownerId);
             newReview.setComment(descriptionText);
             newReview.setRating(rating);
             newReview.setTimePosted(System.currentTimeMillis());
@@ -231,8 +231,8 @@ public class GuestOwnerReview extends AppCompatActivity {
         });
     }
 
-    public void getOwnerId(Context context){
-        Call<UserDTO> call = userService.getUser(ownerEmail);
+    public void getOwnerEmail(){
+        Call<UserDTO> call = userService.getUser(ownerId);
 
         call.enqueue(new Callback<UserDTO>() {
             @Override
@@ -240,9 +240,8 @@ public class GuestOwnerReview extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     UserDTO userDTO = response.body();
                     if (userDTO != null && userDTO.getEmail() != null) {
-                        ownerId = userDTO.getId();
-                        getOwnerReviews(context);
-
+                        ownerEmail = userDTO.getEmail();
+                        nameTextView.setText(ownerEmail);
                     } else {
                         Toast.makeText(GuestOwnerReview.this, "Can't load owner!! " + response.code(), Toast.LENGTH_SHORT).show();
                     }
@@ -307,6 +306,14 @@ public class GuestOwnerReview extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     OwnerReviewDTO result = response.body();
                     reviewAdapter.add(result);
+
+                    calculateAverage();
+                    String starIcons = getStarIcons(averageGrade);
+                    addStarsToLayout(starIcons);
+
+                    ratingEditText.setText("");
+                    descriptionEditText.setText("");
+                    
                     Toast.makeText(GuestOwnerReview.this, "Review added.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(GuestOwnerReview.this, "You are not eligible for a review.", Toast.LENGTH_SHORT).show();
@@ -318,5 +325,12 @@ public class GuestOwnerReview extends AppCompatActivity {
                 Toast.makeText(GuestOwnerReview.this, "Network error", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onReviewDeleted() {
+        calculateAverage();
+        String starIcons = getStarIcons(averageGrade);
+        addStarsToLayout(starIcons);
     }
 }
