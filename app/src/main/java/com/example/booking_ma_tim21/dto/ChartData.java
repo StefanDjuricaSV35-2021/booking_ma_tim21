@@ -1,6 +1,6 @@
 package com.example.booking_ma_tim21.dto;
 
-public abstract class ChartData {
+public class ChartData {
 
 
     String name;

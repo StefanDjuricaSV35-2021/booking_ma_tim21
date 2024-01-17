@@ -41,7 +41,7 @@
                     android:id="@+id/search_open_fragment"
                     />
 
-                <Space
+                <android.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="20dp" />
 

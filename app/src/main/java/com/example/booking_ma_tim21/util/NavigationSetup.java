@@ -13,6 +13,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.AccommodationCreation;
 import com.example.booking_ma_tim21.activities.AccountActivity;
+import com.example.booking_ma_tim21.activities.AnalyticsActivity;
+import com.example.booking_ma_tim21.activities.FavoritesActivity;
 import com.example.booking_ma_tim21.activities.LoginActivity;
 import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
@@ -44,7 +46,7 @@ public class NavigationSetup {
         LinearLayout log_out = activity.findViewById(R.id.log_out);
         LinearLayout loginScreen = activity.findViewById(R.id.loginScreen);
         LinearLayout registerScreen = activity.findViewById(R.id.registerScreen);
-        LinearLayout favoritesScreen=activity.findViewById(R.id.favoritesScreen);
+        LinearLayout analyticsScreen=activity.findViewById(R.id.analyticsScreen);
 
         String role = authManager.getUserRole() != null ? authManager.getUserRole() : "";
 
@@ -60,6 +62,7 @@ public class NavigationSetup {
                 your_accommodations.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
+                analyticsScreen.setVisibility(View.GONE);
                 break;
 
             case "ADMIN":
@@ -74,7 +77,7 @@ public class NavigationSetup {
                 your_accommodations.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
-                favoritesScreen.setVisibility(View.GONE);
+                analyticsScreen.setVisibility(View.GONE);
 
                 break;
             case "OWNER":
@@ -86,7 +89,6 @@ public class NavigationSetup {
                 accommodation_updating_requests.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
                 registerScreen.setVisibility(View.GONE);
-                favoritesScreen.setVisibility(View.GONE);
                 break;
             default:
                 owner_report.setVisibility(View.GONE);
@@ -103,7 +105,7 @@ public class NavigationSetup {
                 accommodation_updating_requests.setVisibility(View.GONE);
                 log_out.setVisibility(View.GONE);
                 account.setVisibility(View.GONE);
-                favoritesScreen.setVisibility(View.GONE);
+                analyticsScreen.setVisibility(View.GONE);
                 break;
         }
 
@@ -122,11 +124,11 @@ public class NavigationSetup {
         view_reservation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
-        favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
+        favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, FavoritesActivity.class));
         owner_reviews.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         guest_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
         owner_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));//promeniti
-
+        analyticsScreen.setOnClickListener(v->redirectActivity(activity,AnalyticsActivity.class));
         log_out.setOnClickListener(v -> {
             authManager.signOut();
             redirectActivity(activity, MainActivity.class);

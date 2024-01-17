@@ -86,7 +86,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
         RetrofitService retrofitService= new RetrofitService();
         service=retrofitService.getRetrofit().create(AccommodationService.class);
 
-        loadingPanel=getView().findViewById(R.id.loadingPanel);
         initializePreviews();
 
     }
@@ -151,8 +150,6 @@ public class AccommodatioPreviewRecycleViewFragment extends Fragment {
     }
 
     void showDetails(AccommodationDetailsDTO detailsDTO){
-
-
 
         Intent intent=new Intent(getActivity(), AccommodationActivity.class);
         intent.putExtra("accommodation",detailsDTO);
