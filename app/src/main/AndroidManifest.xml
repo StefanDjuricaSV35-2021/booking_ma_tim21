@@ -32,6 +32,12 @@
         <activity
             android:name=".activities.OwnerOwnerReview"
             android:exported="false" />
+        <activity
+            android:name=".activities.AccommodationUpdatingRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.UpdatingRequestsActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

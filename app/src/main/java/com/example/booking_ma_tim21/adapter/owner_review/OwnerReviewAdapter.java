@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.activities.OwnerOwnerReview;
 import com.example.booking_ma_tim21.dto.OwnerReviewDTO;
 import com.example.booking_ma_tim21.dto.ReviewReportDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
@@ -133,25 +134,15 @@ public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewViewHold
 
                 holder.email = email;
                 holder.textName.setText(holder.email);
-                Log.d("rez", "set email: "+email);
 
                 if(!isCurrentUser(holder.email)){
-
                     holder.btnDeleteReview.setVisibility(View.GONE);
                     Log.d("rez", "set btnDeleteReview to invisible.");
 
+                }
+                if(!isCurrentOwner()){
                     holder.btnReportReview.setVisibility(View.GONE);
                     Log.d("rez", "set btnDeleteReview to invisible.");
-                }else{
-                    if(role != "GUEST"){
-                        holder.btnDeleteReview.setVisibility(View.GONE);
-                        Log.d("rez", "set btnDeleteReview to invisible.");
-                    }
-
-                    if(role != "OWNER"){
-                        holder.btnReportReview.setVisibility(View.GONE);
-                        Log.d("rez", "set btnDeleteReview to invisible.");
-                    }
                 }
             }
 
@@ -164,7 +155,19 @@ public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewViewHold
     }
 
     public Boolean isCurrentUser(String email) {
+        Log.d("email",email);
+        Log.d("email",userEmail);
+        if(userEmail.equalsIgnoreCase(email) && "GUEST".equalsIgnoreCase(role)){
+            Log.d("email","yes");
+        }
         return userEmail.equalsIgnoreCase(email) && "GUEST".equalsIgnoreCase(role);
+    }
+    public Boolean isCurrentOwner() {
+        if("OWNER".equalsIgnoreCase(role)){
+            Log.d("email","owner");
+        }
+
+        return "OWNER".equalsIgnoreCase(role);
     }
 
     public void deleteOwnerReview(Long reviewId, int position) {
@@ -175,7 +178,11 @@ public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewViewHold
             public void onResponse(Call<Void> call, Response<Void> response) {
                 reviewList.remove(position);
                 notifyItemRemoved(position);
-                Log.d("rez", "deleted review: "+reviewId);
+
+                if (onReviewDeletedListener != null) {
+                    onReviewDeletedListener.onReviewDeleted();
+                }
+
                 Toast.makeText(context, "Deleted owner review.", Toast.LENGTH_SHORT).show();
 
             }
@@ -198,16 +205,16 @@ public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewViewHold
             public void onResponse(Call<ReviewReportDTO> call, Response<ReviewReportDTO> response) {
                 if (response.isSuccessful()) {
                     ReviewReportDTO result = response.body();
-                    Toast.makeText(context, "Owner reported.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "User review reported.", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(context, "Failed to report owner.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Failed to report user review.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ReviewReportDTO> call, Throwable t) {
-                Toast.makeText(context, "Failed to report owner.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Failed to report user review.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -221,4 +228,15 @@ public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewViewHold
         this.reviewList = reviewList;
         notifyDataSetChanged();
     }
+
+    public interface OnReviewDeletedListener {
+        void onReviewDeleted();
+    }
+
+    private OnReviewDeletedListener onReviewDeletedListener;
+
+    public void setOnReviewDeletedListener(OnReviewDeletedListener listener) {
+        this.onReviewDeletedListener = listener;
+    }
+
 }

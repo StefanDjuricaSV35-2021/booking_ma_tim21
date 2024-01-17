@@ -27,4 +27,8 @@ public class OwnerReviewViewHolder extends RecyclerView.ViewHolder{
         btnDeleteReview = itemView.findViewById(R.id.btnDeleteReview);
         btnReportReview = itemView.findViewById(R.id.btnReportReview);
     }
+
+    public String getEmail(){
+        return email;
+    }
 }

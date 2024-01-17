@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("REZ","userId: "+authManager.getUserEmail());
                     Log.d("REZ","userRole: "+authManager.getUserRole());
 
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
