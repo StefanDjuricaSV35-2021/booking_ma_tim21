@@ -77,29 +77,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp">
-                <Button
-                    android:id="@+id/accept_user_report"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/accept_user_report_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_round_corners_white"
+                    app:backgroundTint="@color/darkblue"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
                     android:text="Accept"
-                    tools:ignore="TextContrastCheck"
-                    android:visibility="visible"
                     />
 
-                <Space
-                    android:layout_width="15dp"
+                <android.widget.Space
+                    android:layout_width="20dp"
+                    app:backgroundTint="@null"
                     android:layout_height="match_parent"/>
 
-                <Button
-                    android:id="@+id/reject_user_report"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reject_user_report_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-
-                    android:text="Reject"
-                    tools:ignore="TextContrastCheck"
-                    android:visibility="visible"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_round_corners_white"
+                    app:backgroundTint="@color/darkblue"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:text="Decline"
                     />
             </LinearLayout>
 
