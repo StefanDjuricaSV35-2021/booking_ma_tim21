@@ -1,81 +1,84 @@
-package com.example.booking_ma_tim21.adapter.accommodation_review;
+package com.example.booking_ma_tim21.adapter.owner_review;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.content.Context;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.Visibility;
+
+import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.dto.OwnerReviewDTO;
+import com.example.booking_ma_tim21.dto.ReviewReportDTO;
+import com.example.booking_ma_tim21.dto.UserDTO;
+import com.example.booking_ma_tim21.retrofit.OwnerReviewService;
+import com.example.booking_ma_tim21.retrofit.RetrofitService;
+import com.example.booking_ma_tim21.retrofit.ReviewReportService;
+import com.example.booking_ma_tim21.retrofit.UserService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
-import com.example.booking_ma_tim21.R;
-import com.example.booking_ma_tim21.activities.AccommodationReviewPage;
-import com.example.booking_ma_tim21.dto.AccommodationReviewDTO;
-import com.example.booking_ma_tim21.dto.UserDTO;
-import com.example.booking_ma_tim21.retrofit.AccommodationReviewService;
-import com.example.booking_ma_tim21.retrofit.RetrofitService;
-import com.example.booking_ma_tim21.retrofit.UserService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccommodationReviewAdapter extends RecyclerView.Adapter<AccommodationReviewViewHolder> {
+public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewViewHolder>{
     private Context context;
-    private List<AccommodationReviewDTO> reviewList;
+    private List<OwnerReviewDTO> reviewList;
 
     private String role;
     private String userEmail;
     private String email;
     private UserService userService;
 
-    private AccommodationReviewService accommodationReviewService;
+    private OwnerReviewService ownerReviewService;
+    private ReviewReportService reviewReportService;
 
-    public AccommodationReviewAdapter(Context context, List<AccommodationReviewDTO> reviewList, String role, String userEmail) {
+    public OwnerReviewAdapter(Context context, List<OwnerReviewDTO> reviewList, String role, String userEmail) {
         this.context = context;
         this.reviewList = reviewList;
         RetrofitService retrofitService= new RetrofitService();
         userService=retrofitService.getRetrofit().create(UserService.class);
-        accommodationReviewService=retrofitService.getRetrofit().create(AccommodationReviewService.class);
+        ownerReviewService=retrofitService.getRetrofit().create(OwnerReviewService.class);
+        reviewReportService=retrofitService.getRetrofit().create(ReviewReportService.class);
         this.role = role;
         this.userEmail = userEmail;
-
     }
 
     @NonNull
     @Override
-    public AccommodationReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.accommodation_review, parent, false);
-        return new AccommodationReviewViewHolder(view);
+    public OwnerReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.owner_review, parent, false);
+        return new OwnerReviewViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AccommodationReviewViewHolder holder, int position) {
-        AccommodationReviewDTO revv = reviewList.get(position);
+    public void onBindViewHolder(@NonNull OwnerReviewViewHolder holder, int position) {
+        OwnerReviewDTO revv = reviewList.get(position);
 
         getUser(revv.getReviewerId(), holder);
         holder.textDate.setText(formatDate(revv.getTimePosted()) + " " +getStarIcons(revv.getRating()));
         holder.textComment.setText(revv.getComment());
 
         holder.btnDeleteReview.setOnClickListener(v -> {
-            deleteAccommodationReview(revv.getId(), position);
+            deleteOwnerReview(revv.getId(), position);
+        });
+
+        holder.btnReportReview.setOnClickListener(v -> {
+            reportOwnerReview(revv.getId(), revv.getReviewedId());
         });
     }
 
-    public void add(AccommodationReviewDTO accommodationReviewDTO){
-        reviewList.add(accommodationReviewDTO);
+    public void add(OwnerReviewDTO ownerReviewDTO){
+        reviewList.add(ownerReviewDTO);
         notifyDataSetChanged();
     }
-
     @Override
     public int getItemCount() {
         return reviewList.size();
@@ -107,7 +110,7 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
         this.role = role;
     }
 
-    public void getUser(Long userId, AccommodationReviewViewHolder holder) {
+    public void getUser(Long userId, OwnerReviewViewHolder holder) {
         Call<UserDTO> call = userService.getUser(userId);
 
         call.enqueue(new Callback<UserDTO>() {
@@ -133,9 +136,22 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
                 Log.d("rez", "set email: "+email);
 
                 if(!isCurrentUser(holder.email)){
+
                     holder.btnDeleteReview.setVisibility(View.GONE);
                     Log.d("rez", "set btnDeleteReview to invisible.");
 
+                    holder.btnReportReview.setVisibility(View.GONE);
+                    Log.d("rez", "set btnDeleteReview to invisible.");
+                }else{
+                    if(role != "GUEST"){
+                        holder.btnDeleteReview.setVisibility(View.GONE);
+                        Log.d("rez", "set btnDeleteReview to invisible.");
+                    }
+
+                    if(role != "OWNER"){
+                        holder.btnReportReview.setVisibility(View.GONE);
+                        Log.d("rez", "set btnDeleteReview to invisible.");
+                    }
                 }
             }
 
@@ -151,8 +167,8 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
         return userEmail.equalsIgnoreCase(email) && "GUEST".equalsIgnoreCase(role);
     }
 
-    public void deleteAccommodationReview(Long reviewId, int position) {
-        Call<Void> call = accommodationReviewService.deleteAccommodationReview(reviewId);
+    public void deleteOwnerReview(Long reviewId, int position) {
+        Call<Void> call = ownerReviewService.deleteReviewReport(reviewId);
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -160,21 +176,48 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
                 reviewList.remove(position);
                 notifyItemRemoved(position);
                 Log.d("rez", "deleted review: "+reviewId);
-                Toast.makeText(context, "Review deleted.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Deleted owner review.", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(context, "Failed to delete owner review.", Toast.LENGTH_SHORT).show();
                 Log.d("rez", "failed to delete review.");
             }
         });
     }
 
-    public List<AccommodationReviewDTO> getReviewList() {
+    public void reportOwnerReview(Long reviewId, Long reviewedId){
+        ReviewReportDTO reportDTO = new ReviewReportDTO(0l,reviewId,reviewedId);
+
+        Call<ReviewReportDTO> call = reviewReportService.createReviewReport(reportDTO);
+
+        call.enqueue(new Callback<ReviewReportDTO>() {
+            @Override
+            public void onResponse(Call<ReviewReportDTO> call, Response<ReviewReportDTO> response) {
+                if (response.isSuccessful()) {
+                    ReviewReportDTO result = response.body();
+                    Toast.makeText(context, "Owner reported.", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(context, "Failed to report owner.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewReportDTO> call, Throwable t) {
+                Toast.makeText(context, "Failed to report owner.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public List<OwnerReviewDTO> getReviewList() {
         return reviewList;
     }
 
-    public void setReviewList(List<AccommodationReviewDTO> reviewList) {
+    public void setReviewList(List<OwnerReviewDTO> reviewList) {
         this.reviewList = reviewList;
         notifyDataSetChanged();
     }

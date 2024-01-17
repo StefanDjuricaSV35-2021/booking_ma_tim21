@@ -176,6 +176,14 @@ public class AccommodationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(v.getContext(), GuestOwnerReview.class);
+
+                Bundle b = new Bundle();
+                b.putString("OWNER_ID", authManager.getUserId());
+                intent.putExtras(b);
+
+                v.getContext().startActivity(intent);
+
             }
         });
 

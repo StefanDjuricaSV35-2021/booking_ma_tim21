@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                     JWTAuthenticationResponse jwtResponse = response.body();
 
                     authManager.addUser(jwtResponse);
+
                     Log.d("REZ","userId: "+authManager.getUserEmail());
                     Log.d("REZ","userRole: "+authManager.getUserRole());
 
@@ -118,13 +119,15 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Log.d("REZ","Meesage recieved: "+response.code());
+                    Toast.makeText(getApplicationContext(), "Login failed.", Toast.LENGTH_SHORT).show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<JWTAuthenticationResponse> call, Throwable t) {
-                Log.d("REZ","Meesage failed to be received.");
+                Toast.makeText(getApplicationContext(), "Login failed.", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
