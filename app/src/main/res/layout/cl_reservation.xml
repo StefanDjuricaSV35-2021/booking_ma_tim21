@@ -1,0 +1,83 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:padding="16dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_round_corners_white"
+
+    >
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accommodation Name"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/dateFromTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="From: MM/dd/yyyy"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/dateToTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To: MM/dd/yyyy"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User: John Doe"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/guestsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guests: 2"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price: $100"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Pending"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_round_corners_white"
+            app:backgroundTint="@color/darkblue"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:text="Cancel"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

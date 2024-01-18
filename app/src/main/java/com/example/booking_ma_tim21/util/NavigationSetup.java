@@ -21,6 +21,7 @@ import com.example.booking_ma_tim21.activities.OwnerReportsAdminPageActivity;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
 import com.example.booking_ma_tim21.activities.RegisterActivity;
 import com.example.booking_ma_tim21.activities.AccommodationReportsAdminPageActivity;
+import com.example.booking_ma_tim21.activities.ReservationActivity;
 import com.example.booking_ma_tim21.activities.UpdatingRequestsActivity;
 import com.example.booking_ma_tim21.activities.UserReport;
 import com.example.booking_ma_tim21.activities.UserReportsAdminPageActivity;
@@ -43,8 +44,7 @@ public class NavigationSetup {
         LinearLayout owner_reports = activity.findViewById(R.id.owner_reports);
         LinearLayout accommodation_reports = activity.findViewById(R.id.accommodation_reports);
         LinearLayout user_reports = activity.findViewById(R.id.user_reports);
-        LinearLayout view_reservations_guest = activity.findViewById(R.id.view_reservations_guest);
-        LinearLayout view_reservations_owner = activity.findViewById(R.id.view_reservations_owner);
+        LinearLayout view_reservations = activity.findViewById(R.id.view_reservations);
         LinearLayout favorite_accommodations = activity.findViewById(R.id.favorite_accommodations);
         LinearLayout owner_reviews = activity.findViewById(R.id.owner_reviews);
         LinearLayout guest_report = activity.findViewById(R.id.guest_report);
@@ -61,7 +61,6 @@ public class NavigationSetup {
             case "GUEST":
                 guest_report.setVisibility(View.GONE);
                 owner_reviews.setVisibility(View.GONE);
-                view_reservations_owner.setVisibility(View.GONE);
                 owner_reports.setVisibility(View.GONE);
                 accommodation_reports.setVisibility(View.GONE);
                 user_reports.setVisibility(View.GONE);
@@ -78,9 +77,8 @@ public class NavigationSetup {
                 owner_report.setVisibility(View.GONE);
                 guest_report.setVisibility(View.GONE);
                 owner_reviews.setVisibility(View.GONE);
+                view_reservations.setVisibility(View.GONE);
                 favorite_accommodations.setVisibility(View.GONE);
-                view_reservations_owner.setVisibility(View.GONE);
-                view_reservations_guest.setVisibility(View.GONE);
                 create_accommodation.setVisibility(View.GONE);
                 your_accommodations.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
@@ -92,7 +90,6 @@ public class NavigationSetup {
             case "OWNER":
                 owner_report.setVisibility(View.GONE);
                 favorite_accommodations.setVisibility(View.GONE);
-                view_reservations_guest.setVisibility(View.GONE);
                 owner_reports.setVisibility(View.GONE);
                 accommodation_reports.setVisibility(View.GONE);
                 user_reports.setVisibility(View.GONE);
@@ -105,9 +102,8 @@ public class NavigationSetup {
                 owner_report.setVisibility(View.GONE);
                 guest_report.setVisibility(View.GONE);
                 owner_reviews.setVisibility(View.GONE);
+                view_reservations.setVisibility(View.GONE);
                 favorite_accommodations.setVisibility(View.GONE);
-                view_reservations_owner.setVisibility(View.GONE);
-                view_reservations_guest.setVisibility(View.GONE);
                 owner_reports.setVisibility(View.GONE);
                 accommodation_reports.setVisibility(View.GONE);
                 user_reports.setVisibility(View.GONE);
@@ -136,8 +132,7 @@ public class NavigationSetup {
         accommodation_reports.setOnClickListener(v -> redirectActivity(activity, AccommodationReportsAdminPageActivity.class));
         owner_reports.setOnClickListener(v -> redirectActivity(activity, OwnerReportsAdminPageActivity.class));
         user_reports.setOnClickListener(v -> redirectActivity(activity, UserReportsAdminPageActivity.class));
-        view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
-        view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
+        view_reservations.setOnClickListener(v -> redirectActivity(activity, ReservationActivity.class));
         favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, FavoritesActivity.class));
         owner_reviews.setOnClickListener(v -> redirectActivity(activity, OwnerOwnerReview.class));
         guest_report.setOnClickListener(v -> redirectActivity(activity, UserReport.class));
