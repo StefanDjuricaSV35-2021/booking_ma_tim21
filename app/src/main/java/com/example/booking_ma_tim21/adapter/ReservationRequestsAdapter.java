@@ -7,16 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booking_ma_tim21.R;
+import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.ReservationRequestDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.model.TimeSlot;
+import com.example.booking_ma_tim21.model.enumeration.ReservationRequestStatus;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.ReservationRequestService;
+import com.example.booking_ma_tim21.retrofit.ReservationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
 import com.example.booking_ma_tim21.util.AppConfig;
@@ -34,7 +39,7 @@ import retrofit2.Response;
 public class ReservationRequestsAdapter extends RecyclerView.Adapter<ReservationRequestsAdapter.ReservationRequestViewHolder> {
 
     Context context;
-    private List<ReservationRequestDTO> reservationList;
+    List<ReservationRequestDTO> reservationList;
 
     public List<ReservationRequestViewHolder> getHolders() {
         return holders;
@@ -68,10 +73,11 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
         return reservationList.size();
     }
 
-    public static class ReservationRequestViewHolder extends RecyclerView.ViewHolder {
-
+    public class ReservationRequestViewHolder extends RecyclerView.ViewHolder {
+        AuthManager auth;
         AccommodationService accService;
         UserService userService;
+        ReservationRequestService reservationRequestService;
 
         public TextView getNameTextView() {
             return nameTextView;
@@ -94,6 +100,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             RetrofitService ref=new RetrofitService();
             this.accService=ref.getRetrofit().create(AccommodationService.class);
             this.userService=ref.getRetrofit().create(UserService.class);
+            this.reservationRequestService=ref.getRetrofit().create(ReservationRequestService.class);
 
             // Initialize views
             nameTextView = itemView.findViewById(R.id.nameTextView);
@@ -107,29 +114,98 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             rejectButton = itemView.findViewById(R.id.decline_btn);
         }
 
-        public void bind(ReservationRequestDTO reservation) {
-            String[] dates=convertDates(reservation.getTimeSlot());
+        public void bind(ReservationRequestDTO reservationRequestDTO) {
+            String[] dates=convertDates(reservationRequestDTO.getTimeSlot());
             // Bind data to views
-            setAccommodationName(reservation.getAccommodationId());
+            setAccommodationName(reservationRequestDTO.getAccommodationId());
             dateFromTextView.setText("From: " + dates[0]);
             dateToTextView.setText("To: " + dates[1]);
-            setUserName(reservation.getUserId());
-            guestsTextView.setText("Guests: " + String.valueOf(reservation.getGuestsNumber()));
-            priceTextView.setText("Price: $" + String.valueOf(reservation.getPrice()));
-            statusTextView.setText("Status: " + reservation.getStatus());
+            setUserName(reservationRequestDTO.getUserId());
+            guestsTextView.setText("Guests: " + String.valueOf(reservationRequestDTO.getGuestsNumber()));
+            priceTextView.setText("Price: $" + String.valueOf(reservationRequestDTO.getPrice()));
+            statusTextView.setText("Status: " + reservationRequestDTO.getStatus());
 
             // Set up click listeners for accept and reject buttons
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Handle accept button click
+                    if(reservationRequestDTO.getStatus() != ReservationRequestStatus.Waiting) {
+                        Toast.makeText(context, "Can't Accept Request.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    reservationRequestDTO.setStatus(ReservationRequestStatus.Accepted);
+                    Call<ReservationRequestDTO> call = reservationRequestService.updateReservationRequest(reservationRequestDTO);
+                    call.enqueue(new Callback<ReservationRequestDTO>() {
+                        @Override
+                        public void onResponse(Call<ReservationRequestDTO> call, Response<ReservationRequestDTO> response) {
+                            if (response.isSuccessful()) {
+                                ReservationRequestDTO reservationRequest = response.body();
+                                updateRequests();
+//                                notifyDataSetChanged();
+//                                Toast.makeText(context, "Request Accepted.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("API Call", "Error: " + response.code());
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ReservationRequestDTO> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
                 }
             });
 
             rejectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Handle reject button click
+                    if(reservationRequestDTO.getStatus() != ReservationRequestStatus.Waiting) {
+                        Toast.makeText(context, "Can't Decline Request.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    reservationRequestDTO.setStatus(ReservationRequestStatus.Declined);
+
+                    Call<ReservationRequestDTO> call = reservationRequestService.updateReservationRequest(reservationRequestDTO);
+
+                    call.enqueue(new Callback<ReservationRequestDTO>() {
+                        @Override
+                        public void onResponse(Call<ReservationRequestDTO> call, Response<ReservationRequestDTO> response) {
+                            if (response.isSuccessful()) {
+                                ReservationRequestDTO reservationRequest = response.body();
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Request Declined.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("API Call", "Error: " + response.code());
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ReservationRequestDTO> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                }
+            });
+        }
+
+        private void updateRequests() {
+
+            auth=AuthManager.getInstance(context);
+            Call<List<ReservationRequestDTO>> call = reservationRequestService.getOwnerReservationRequests(auth.getUserIdLong());
+            call.enqueue(new Callback<List<ReservationRequestDTO>>() {
+                @Override
+                public void onResponse(Call<List<ReservationRequestDTO>> call, Response<List<ReservationRequestDTO>> response) {
+                    if (response.isSuccessful()) {
+                        List<ReservationRequestDTO> reservationRequests = response.body();
+                        reservationList.clear();
+                        reservationList.addAll(reservationRequests);
+                        notifyDataSetChanged();
+                        Toast.makeText(context, "Request Accepted.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e("API Call", "Error: " + response.code());
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<ReservationRequestDTO>> call, Throwable t) {
+                    t.printStackTrace();
                 }
             });
         }

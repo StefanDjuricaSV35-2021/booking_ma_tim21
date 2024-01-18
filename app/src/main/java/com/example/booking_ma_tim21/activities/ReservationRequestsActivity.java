@@ -27,6 +27,7 @@ import com.example.booking_ma_tim21.model.enumeration.ReservationRequestStatus;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.ReservationRequestService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
+import com.example.booking_ma_tim21.util.NavigationSetup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +58,8 @@ public class ReservationRequestsActivity extends AppCompatActivity {
 
 
         auth=AuthManager.getInstance(this);
+
+        NavigationSetup.setupNavigation(this, auth);
 
         RetrofitService ref=new RetrofitService();
         resService=ref.getRetrofit().create(ReservationRequestService.class);
@@ -227,5 +230,9 @@ public class ReservationRequestsActivity extends AppCompatActivity {
         recyclerView.setAdapter(reservationAdapter);
 
     }
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        NavigationSetup.closeDrawer(findViewById(R.id.drawerLayout));
+    }
 }

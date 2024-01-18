@@ -42,7 +42,6 @@ public class NavigationSetup {
         LinearLayout owner_reports = activity.findViewById(R.id.owner_reports);
         LinearLayout accommodation_reports = activity.findViewById(R.id.accommodation_reports);
         LinearLayout user_reports = activity.findViewById(R.id.user_reports);
-        LinearLayout view_reservation_requests = activity.findViewById(R.id.view_reservation_requests);
         LinearLayout view_reservations_guest = activity.findViewById(R.id.view_reservations_guest);
         LinearLayout view_reservations_owner = activity.findViewById(R.id.view_reservations_owner);
         LinearLayout favorite_accommodations = activity.findViewById(R.id.favorite_accommodations);
@@ -81,7 +80,6 @@ public class NavigationSetup {
                 favorite_accommodations.setVisibility(View.GONE);
                 view_reservations_owner.setVisibility(View.GONE);
                 view_reservations_guest.setVisibility(View.GONE);
-                view_reservation_requests.setVisibility(View.GONE);
                 create_accommodation.setVisibility(View.GONE);
                 your_accommodations.setVisibility(View.GONE);
                 loginScreen.setVisibility(View.GONE);
@@ -109,7 +107,6 @@ public class NavigationSetup {
                 favorite_accommodations.setVisibility(View.GONE);
                 view_reservations_owner.setVisibility(View.GONE);
                 view_reservations_guest.setVisibility(View.GONE);
-                view_reservation_requests.setVisibility(View.GONE);
                 owner_reports.setVisibility(View.GONE);
                 accommodation_reports.setVisibility(View.GONE);
                 user_reports.setVisibility(View.GONE);
@@ -138,7 +135,6 @@ public class NavigationSetup {
         accommodation_reports.setOnClickListener(v -> redirectActivity(activity, AccommodationReportsAdminPageActivity.class));
         owner_reports.setOnClickListener(v -> redirectActivity(activity, OwnerReportsAdminPageActivity.class));
         user_reports.setOnClickListener(v -> redirectActivity(activity, UserReportsAdminPageActivity.class));
-        view_reservation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, FavoritesActivity.class));
