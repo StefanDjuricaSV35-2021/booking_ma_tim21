@@ -21,6 +21,7 @@ import com.example.booking_ma_tim21.activities.OwnerOwnerReview;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
 import com.example.booking_ma_tim21.activities.RegisterActivity;
 import com.example.booking_ma_tim21.activities.UpdatingRequestsActivity;
+import com.example.booking_ma_tim21.activities.UserReport;
 import com.example.booking_ma_tim21.activities.UserReportsAdminPageActivity;
 import com.example.booking_ma_tim21.activities.ReservationRequestsActivity;
 import com.example.booking_ma_tim21.authentication.AuthManager;
@@ -131,14 +132,14 @@ public class NavigationSetup {
                 .setOnClickListener(v -> redirectActivity(activity, UpdatingRequestsActivity.class));
 
         review_reports.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
-        user_reports.setOnClickListener(v -> redirectActivity(activity, UserReportsAdminPageActivity.class));// promeniti
+        user_reports.setOnClickListener(v -> redirectActivity(activity, UserReportsAdminPageActivity.class));
         view_reservation_requests.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         view_reservations_guest.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         view_reservations_owner.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
         favorite_accommodations.setOnClickListener(v -> redirectActivity(activity, FavoritesActivity.class));
         owner_reviews.setOnClickListener(v -> redirectActivity(activity, OwnerOwnerReview.class));
-        guest_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
-        owner_report.setOnClickListener(v -> redirectActivity(activity, MainActivity.class));// promeniti
+        guest_report.setOnClickListener(v -> redirectActivity(activity, UserReport.class));
+        owner_report.setOnClickListener(v -> redirectActivity(activity, UserReport.class));
         analyticsScreen.setOnClickListener(v -> redirectActivity(activity, AnalyticsActivity.class));
         reservationRequestsScreen
                 .setOnClickListener(v -> redirectActivity(activity, ReservationRequestsActivity.class));
