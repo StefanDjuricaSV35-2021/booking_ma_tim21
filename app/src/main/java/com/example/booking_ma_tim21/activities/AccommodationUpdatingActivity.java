@@ -68,7 +68,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AccommodationUpdatingActivity extends AppCompatActivity {
-    private static final int PICK_IMAGE_REQUEST = 1;
     private AccommodationDetailsDTO accommodation;
     private AuthManager authManager;
     private UserService userService;
@@ -109,6 +108,8 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
 
     private RadioButton auto_accepting_on;
     private RadioButton auto_accepting_off;
+    private RecyclerView images;
+    private FileAdapter fileAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -259,6 +260,11 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.descriptionEditText);
         descriptionEditText.setText(accommodation.getDescription());
 
+        images = findViewById(R.id.images);
+        images.setLayoutManager(new LinearLayoutManager(this));
+
+        fileAdapter = new FileAdapter(selected_files,this);
+        images.setAdapter(fileAdapter);
 
         btnSelectFile = findViewById(R.id.btnSelectFile);
         selected_file_name = findViewById(R.id.selected_file_name);
@@ -347,9 +353,9 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
         });
     }
 
-    private List<String> getLoadedFileNames(){
+    private List<String> getLoadedFileNames() {
         List<String> ret = new ArrayList<>();
-        for(Uri uri: selected_files){
+        for (Uri uri : fileAdapter.getUriList()) {
             File file = new File(getPathFromUri(uri));
             ret.add(file.getName());
         }
@@ -448,11 +454,11 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
                         if (clipData != null){
                             for(int i = 0; i<clipData.getItemCount();i++){
                                 Uri selectedImageUri = clipData.getItemAt(i).getUri();
-                                selected_files.add(selectedImageUri);
+                                fileAdapter.addItem(selectedImageUri);
                             }
                         } else {
                             Uri selectedImageUri = data.getData();
-                            selected_files.add(selectedImageUri);
+                            fileAdapter.addItem(selectedImageUri);
                         }
                     }
                 }
@@ -558,7 +564,7 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
     private void uploadImages(){
         List<MultipartBody.Part> parts = new ArrayList<>();
 
-        for (Uri uri : selected_files) {
+        for (Uri uri : fileAdapter.getUriList()) {
             File file = new File(getPathFromUri(uri));
             RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), requestFile);

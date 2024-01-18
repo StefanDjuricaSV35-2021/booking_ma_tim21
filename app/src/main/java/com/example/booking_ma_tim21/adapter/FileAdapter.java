@@ -67,8 +67,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     }
 
     public boolean addItem(Uri newItem) {
-        for (Uri uri:uriList) {
-            if(uri.equals(newItem)){
+        for (Uri uri: uriList) {
+            if(getPathFromUri(uri).equals(getPathFromUri(newItem))){
                 return false;
             }
         }
@@ -77,17 +77,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
         return true;
     }
 
-    public List<Uri> getFileList() {
+    public List<Uri> getUriList() {
         return uriList;
-    }
-
-    public List<String> getFileNameList(){
-        ArrayList<String> fileNames = new ArrayList<>();
-        for (Uri uri:uriList) {
-            File file = new File(getPathFromUri(uri));
-            fileNames.add(file.getName());
-        }
-        return fileNames;
     }
 
     private String getPathFromUri(Uri uri) {

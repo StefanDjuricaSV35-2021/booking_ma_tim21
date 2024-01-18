@@ -406,13 +406,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:minHeight="200dp"
                     android:orientation="horizontal">
 
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/images"
                         android:layout_width="match_parent"
-                        android:layout_height="99dp" />
+                        android:layout_height="fill_parent" />
                 </LinearLayout>
             </LinearLayout>
 
