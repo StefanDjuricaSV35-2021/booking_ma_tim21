@@ -1,13 +1,21 @@
 package com.example.booking_ma_tim21.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -55,6 +63,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AccommodationCreation extends AppCompatActivity {
+    private static final int REQUEST_STORAGE_PERMISSION = 100;
+
     private static final int PICK_IMAGE_REQUEST = 1;
     AuthManager authManager;
     UserService userService;
@@ -81,17 +91,16 @@ public class AccommodationCreation extends AppCompatActivity {
     private Calendar endDate;
     private EditText price_input_field;
     private  Button submit_price;
-    private RecyclerView images;
-    private FileAdapter fileAdapter;
     private Button btnSelectFile;
-    private TextView selected_file_name;
-    private Button submit_file;
-    private File selected_file;
+    private final List<Uri> selected_files = new ArrayList<>();
     private Button submit_accommodation;
 
     private Long userId;
 
     private RadioButton radio_button_per_night;
+
+//    private RecyclerView images;
+//    private FileAdapter fileAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,130 +199,111 @@ public class AccommodationCreation extends AppCompatActivity {
         });
 
 //      image list
-        List<File> fileList = new ArrayList<>();
-
-        images = findViewById(R.id.images);
-        images.setLayoutManager(new LinearLayoutManager(this));
-
-        fileAdapter = new FileAdapter(fileList);
-        images.setAdapter(fileAdapter);
+        List<Uri> uriList = new ArrayList<>();
 
         btnSelectFile = findViewById(R.id.btnSelectFile);
-        selected_file_name = findViewById(R.id.selected_file_name);
-        submit_file = findViewById(R.id.submit_file);
 
         btnSelectFile.setOnClickListener(v -> openFilePicker());
-        submit_file.setOnClickListener(v -> {
-            if(selected_file != null){
-                if(fileAdapter.addItem(selected_file)){
-                    Toast.makeText(getApplicationContext(), "Added new photo!", Toast.LENGTH_SHORT).show();
-                    selected_file_name.setText("");
-                    selected_file = null;
-                }else{
-                    Toast.makeText(getApplicationContext(), "Can't add new photo since it shares a name with another added photo!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-//      submiting file
+
         submit_accommodation = findViewById(R.id.submit_accommodation);
         submit_accommodation.setOnClickListener(v -> {
 
-            String street = street_input_field.getText().toString().trim();
-            String city = city_input_field.getText().toString().trim();
-            String country = country_input_field.getText().toString().trim();
-            String name = accommodation_name.getText().toString().trim();
-            String description = descriptionEditText.getText().toString().trim();
-
-            String minGuestsText = min_guests.getText().toString().trim();
-            String maxGuestsText = max_guests.getText().toString().trim();
-            String cancellationDaysText = cancellation_days.getText().toString().trim();
-
-            String accommodationTypeString = accommodation_type.getSelectedItem().toString();
-            AccommodationType accommodationType;
-
-            if (accommodationTypeString == null) {
-                Toast.makeText(getApplicationContext(), "Accommodation type is required!", Toast.LENGTH_SHORT).show();
-                return;
-            }else{
-                accommodationType = AccommodationType.fromString(accommodationTypeString);
-                if(accommodationType == null){
-                    Toast.makeText(getApplicationContext(), "Something went wrong with accommodation type.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-
-            if (street.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Street is required!", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (city.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "City is required!", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (country.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Country is required!", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (name.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Accommodation name is required!", Toast.LENGTH_SHORT).show();
-                return;
-            } else if(userId == null){
-                Toast.makeText(getApplicationContext(), "Something went wrong with your id.", Toast.LENGTH_SHORT).show();
-                return;
-            } else if(description.isEmpty()){
-                Toast.makeText(getApplicationContext(), "Description is required!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-
-
-            int minGuests;
-            int maxGuests;
-            int cancellationDays;
-            try {
-                minGuests = Integer.parseInt(minGuestsText);
-
-                try {
-                    maxGuests = Integer.parseInt(maxGuestsText);
-
-                    try {
-                        cancellationDays = Integer.parseInt(cancellationDaysText);
-
-                        if (minGuests > maxGuests) {
-                            Toast.makeText(getApplicationContext(), "Min guests should be less than or equal to max guests!", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(getApplicationContext(), "Enter a valid number for cancellation days!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                } catch (NumberFormatException e) {
-                    Toast.makeText(getApplicationContext(), "Enter a valid number for max guests!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-            } catch (NumberFormatException e) {
-                Toast.makeText(getApplicationContext(), "Enter a valid number for min guests!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-
-            Accommodation accommodation = new Accommodation();
-            accommodation.setAmenities(amenitiesAdapter.getSelectedAmenities());
-            accommodation.setName(name);
-            accommodation.setId(0l);
-            accommodation.setType(accommodationType);
-            accommodation.setDescription(description);
-            accommodation.setPhotos(fileAdapter.getFileNameList());
-            accommodation.setDaysForCancellation(cancellationDays);
-            accommodation.setMaxGuests(maxGuests);
-            accommodation.setMinGuests(minGuests);
-            accommodation.setOwnerId(userId);
-            accommodation.setEnabled(false);
-            accommodation.setPerNight(radio_button_per_night.isChecked());
-            accommodation.setLocation(street + ',' + city + ',' + country);
-            accommodation.setDates(new ArrayList<>());
-
-
-            createAccommodation(accommodation);
+//            String street = street_input_field.getText().toString().trim();
+//            String city = city_input_field.getText().toString().trim();
+//            String country = country_input_field.getText().toString().trim();
+//            String name = accommodation_name.getText().toString().trim();
+//            String description = descriptionEditText.getText().toString().trim();
+//
+//            String minGuestsText = min_guests.getText().toString().trim();
+//            String maxGuestsText = max_guests.getText().toString().trim();
+//            String cancellationDaysText = cancellation_days.getText().toString().trim();
+//
+//            String accommodationTypeString = accommodation_type.getSelectedItem().toString();
+//            AccommodationType accommodationType;
+//
+//            if (accommodationTypeString == null) {
+//                Toast.makeText(getApplicationContext(), "Accommodation type is required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            }else{
+//                accommodationType = AccommodationType.fromString(accommodationTypeString);
+//                if(accommodationType == null){
+//                    Toast.makeText(getApplicationContext(), "Something went wrong with accommodation type.", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//            }
+//
+//            if (street.isEmpty()) {
+//                Toast.makeText(getApplicationContext(), "Street is required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            } else if (city.isEmpty()) {
+//                Toast.makeText(getApplicationContext(), "City is required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            } else if (country.isEmpty()) {
+//                Toast.makeText(getApplicationContext(), "Country is required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            } else if (name.isEmpty()) {
+//                Toast.makeText(getApplicationContext(), "Accommodation name is required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            } else if(userId == null){
+//                Toast.makeText(getApplicationContext(), "Something went wrong with your id.", Toast.LENGTH_SHORT).show();
+//                return;
+//            } else if(description.isEmpty()){
+//                Toast.makeText(getApplicationContext(), "Description is required!", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//
+//
+//            int minGuests;
+//            int maxGuests;
+//            int cancellationDays;
+//            try {
+//                minGuests = Integer.parseInt(minGuestsText);
+//
+//                try {
+//                    maxGuests = Integer.parseInt(maxGuestsText);
+//
+//                    try {
+//                        cancellationDays = Integer.parseInt(cancellationDaysText);
+//
+//                        if (minGuests > maxGuests) {
+//                            Toast.makeText(getApplicationContext(), "Min guests should be less than or equal to max guests!", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//                    } catch (NumberFormatException e) {
+//                        Toast.makeText(getApplicationContext(), "Enter a valid number for cancellation days!", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//
+//                } catch (NumberFormatException e) {
+//                    Toast.makeText(getApplicationContext(), "Enter a valid number for max guests!", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//            } catch (NumberFormatException e) {
+//                Toast.makeText(getApplicationContext(), "Enter a valid number for min guests!", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//
+//            Accommodation accommodation = new Accommodation();
+//            accommodation.setAmenities(amenitiesAdapter.getSelectedAmenities());
+//            accommodation.setName(name);
+//            accommodation.setId(0l);
+//            accommodation.setType(accommodationType);
+//            accommodation.setDescription(description);
+//            accommodation.setPhotos(getLoadedFileNames());
+//            accommodation.setDaysForCancellation(cancellationDays);
+//            accommodation.setMaxGuests(maxGuests);
+//            accommodation.setMinGuests(minGuests);
+//            accommodation.setOwnerId(userId);
+//            accommodation.setEnabled(false);
+//            accommodation.setPerNight(radio_button_per_night.isChecked());
+//            accommodation.setLocation(street + ',' + city + ',' + country);
+//            accommodation.setDates(new ArrayList<>());
+//
+//
+//            createAccommodation(accommodation);
             uploadImages();
         });
     }
@@ -381,24 +371,45 @@ public class AccommodationCreation extends AppCompatActivity {
         return calendar.getTime();
     }
     private void openFilePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            Uri selectedImageUri = data.getData();
-            if (selectedImageUri != null) {
-                File selectedImageFile = FileUtil.fromUri(selectedImageUri, this);
-                if (selectedImageFile != null) {
-                    selected_file = selectedImageFile;
-                    selected_file_name.setText(selected_file.getName());
+        uploadImagesLauncher.launch(intent);
+    }
+
+    private List<String> getLoadedFileNames() {
+        List<String> ret = new ArrayList<>();
+        for (Uri uri : selected_files) {
+            File file = new File(getPathFromUri(uri));
+            ret.add(file.getName());
+            Log.d("files",file.getName());
+        }
+        return ret;
+    }
+
+    ActivityResultLauncher<Intent> uploadImagesLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == Activity.RESULT_OK){
+                    Intent data = result.getData();
+                    if(data != null){
+                        ClipData clipData = data.getClipData();
+
+                        if (clipData != null){
+                            for(int i = 0; i<clipData.getItemCount();i++){
+                                Uri selectedImageUri = clipData.getItemAt(i).getUri();
+                                selected_files.add(selectedImageUri);
+                            }
+                        } else {
+                            Uri selectedImageUri = data.getData();
+                            selected_files.add(selectedImageUri);
+                        }
+                    }
                 }
             }
-        }
-    }
+    );
 
     private void getUserId(String email){
         retrofit2.Call<UserDTO> call = userService.getUser(email);
@@ -472,8 +483,9 @@ public class AccommodationCreation extends AppCompatActivity {
     private void uploadImages(){
         List<MultipartBody.Part> parts = new ArrayList<>();
 
-        for (File file : fileAdapter.getFileList()) {
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        for (Uri uri : selected_files) {
+            File file = new File(getPathFromUri(uri));
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part body = MultipartBody.Part.createFormData("images", file.getName(), requestFile);
             parts.add(body);
         }
@@ -487,10 +499,8 @@ public class AccommodationCreation extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 if (response.isSuccessful()) {
-                    List<String> fileNames = response.body();
-
+                    Toast.makeText(getApplicationContext(), "Uploaded images.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d("REZ","ne.");
                     Toast.makeText(getApplicationContext(), "Failed to create images.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -501,4 +511,32 @@ public class AccommodationCreation extends AppCompatActivity {
             }
         });
     }
+    private String getPathFromUri(Uri uri) {
+        String path = "";
+
+        if (uri == null) {
+            return path;
+        }
+
+        try {
+            // Check if the URI uses the content scheme
+            if ("content".equalsIgnoreCase(uri.getScheme())) {
+                // Use ContentResolver to open an InputStream for the URI
+                try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        path = cursor.getString(columnIndex);
+                    }
+                }
+            } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                // For file scheme, directly get the path
+                path = uri.getPath();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return path;
+    }
+
 }

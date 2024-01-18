@@ -10,6 +10,6 @@ import retrofit2.http.Part;
 
 public interface FileUploadService {
     @Multipart
-    @POST("/api/v1/auth/images/upload")
+    @POST("/api/v1/auth/images/upload/mobile")
     Call<List<String>> uploadFiles(@Part List<MultipartBody.Part> files);
 }

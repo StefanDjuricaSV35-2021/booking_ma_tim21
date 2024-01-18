@@ -378,7 +378,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pricing and availability"
+                    android:text="Image Input"
                     android:textSize="20sp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="20dp"
@@ -394,37 +394,12 @@
                     android:layout_marginRight="10dp">
                     <Button
                         android:id="@+id/btnSelectFile"
-                        android:layout_width="@dimen/text_margin"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Select File"/>
-
-                    <TextView
-                        android:id="@+id/selected_file_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="10dp"
-                        android:text="Selected File: "
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
-                    <Button
-                        android:id="@+id/submit_file"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="100dp"
                         android:layout_marginLeft="100dp"
                         android:layout_weight="1"
-                        android:text="Submit button"/>
+                        android:text="Select Files"/>
                 </LinearLayout>
 
                 <LinearLayout
