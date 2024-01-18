@@ -1,5 +1,9 @@
 package com.example.booking_ma_tim21.adapter;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +22,12 @@ import java.util.List;
 
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
-    private List<File> fileList;
+    private List<Uri> uriList;
+    private Context context;
 
-    public FileAdapter(List<File> fileList) {
-        this.fileList = fileList;
+    public FileAdapter(List<Uri> uriList, Context context) {
+        this.uriList = uriList;
+        this.context = context;
     }
 
     // ViewHolder class for your adapter
@@ -45,41 +51,62 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        File file = fileList.get(position);
+        Uri uri = uriList.get(position);
+        File file = new File(getPathFromUri(uri));
         holder.fileNameTextView.setText(file.getName());
 
         holder.removeButton.setOnClickListener(v -> {
-            fileList.remove(position);
-            notifyDataSetChanged();
+            uriList.remove(position);
+            notifyItemRemoved(position);
         });
     }
 
     @Override
     public int getItemCount() {
-        return fileList.size();
+        return uriList.size();
     }
 
-    public boolean addItem(File newItem) {
-        for (File file:fileList) {
-            if(file.getName().equals(newItem.getName())){
+    public boolean addItem(Uri newItem) {
+        for (Uri uri: uriList) {
+            if(getPathFromUri(uri).equals(getPathFromUri(newItem))){
                 return false;
             }
         }
-        fileList.add(newItem);
-        notifyItemInserted(fileList.size() - 1);
+        uriList.add(newItem);
+        notifyItemInserted(uriList.size() - 1);
         return true;
     }
 
-    public List<File> getFileList() {
-        return fileList;
+    public List<Uri> getUriList() {
+        return uriList;
     }
 
-    public List<String> getFileNameList(){
-        ArrayList<String> fileNames = new ArrayList<>();
-        for (File file:fileList) {
-            fileNames.add(file.getName());
+    private String getPathFromUri(Uri uri) {
+        String path = "";
+
+        if (uri == null) {
+            return path;
         }
-        return fileNames;
+
+        try {
+            // Check if the URI uses the content scheme
+            if ("content".equalsIgnoreCase(uri.getScheme())) {
+                // Use ContentResolver to open an InputStream for the URI
+                try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        path = cursor.getString(columnIndex);
+                    }
+                }
+            } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+                // For file scheme, directly get the path
+                path = uri.getPath();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return path;
     }
 }
 
