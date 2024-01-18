@@ -29,7 +29,7 @@ public interface UserReportService {
             "Content-Type:application/json"
     })
     @POST("/api/v1/auth/reports/users")
-    Call<UserReportDTO> createAccommodation(@Body UserReportDTO userReportDTO);
+    Call<UserReportDTO> createUserReport(@Body UserReportDTO userReportDTO);
 
     @DELETE("/api/v1/auth/reports/users/{id}")
     Call<Void> deleteReport(@Path("id") Long id);
