@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="Request for deleting accommodation review: "
+            android:text="Request for deleting owner review: "
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -30,29 +30,29 @@
             android:padding="16dp"
             android:layout_marginLeft="22dp">
 
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="@string/email_not_found"
-            android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/text_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/email_not_found"
+                android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/accommodation_review_text_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#555"
-            android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/accommodation_review_text_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="#555"
+                android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/accommodation_review_comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:lineSpacingMultiplier="1.5"/>
+            <TextView
+                android:id="@+id/accommodation_review_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.5"/>
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"

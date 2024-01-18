@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.dto.AccommodationReviewDTO;
+import com.example.booking_ma_tim21.dto.OwnerReviewDTO;
 import com.example.booking_ma_tim21.dto.ReviewReportDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.retrofit.AccommodationReviewService;
+import com.example.booking_ma_tim21.retrofit.OwnerReviewService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.ReviewReportService;
 import com.example.booking_ma_tim21.retrofit.UserService;
@@ -25,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewReportViewHolder> {
+public class OwnerReportAdapter extends RecyclerView.Adapter<ReviewReportViewHolder> {
     private Context context;
     private List<ReviewReportDTO> reviewReports;
     private String reporterEmail = "";
@@ -34,15 +36,15 @@ public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewRepor
     private String comment = "";
     private int stars = 0;
     private UserService userService;
-    private AccommodationReviewService accommodationReviewService;
+    private OwnerReviewService ownerReviewService;
     private ReviewReportService reviewReportService;
 
-    public AccommodationReportAdapter(Context context, List<ReviewReportDTO> reviewReports) {
+    public OwnerReportAdapter(Context context, List<ReviewReportDTO> reviewReports) {
         this.context = context;
         this.reviewReports = reviewReports;
         RetrofitService retrofitService= new RetrofitService();
         userService=retrofitService.getRetrofit().create(UserService.class);
-        accommodationReviewService=retrofitService.getRetrofit().create(AccommodationReviewService.class);
+        ownerReviewService=retrofitService.getRetrofit().create(OwnerReviewService.class);
         reviewReportService=retrofitService.getRetrofit().create(ReviewReportService.class);
 
     }
@@ -50,7 +52,7 @@ public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewRepor
     @NonNull
     @Override
     public ReviewReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.cl_accommodation_report_preview, parent, false); // change accommodation_review
+        View view = LayoutInflater.from(context).inflate(R.layout.cl_owner_report_preview, parent, false);
         return new ReviewReportViewHolder(view);
     }
 
@@ -84,6 +86,7 @@ public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewRepor
                     notifyDataSetChanged();
                     notifyItemRemoved(position);
                 }
+                notifyItemRemoved(position);
                 Toast.makeText(context, "Report Rejected.", Toast.LENGTH_SHORT).show();
             }
 
@@ -95,7 +98,7 @@ public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewRepor
     }
 
     public void acceptRequest(ReviewReportDTO reviewReportDTO, int position) {
-        Call<Void> newCall = accommodationReviewService.deleteAccommodationReview(reviewReportDTO.getReportedReviewId());
+        Call<Void> newCall = ownerReviewService.deleteOwnerReview(reviewReportDTO.getReportedReviewId());
         newCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -143,12 +146,12 @@ public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewRepor
     }
 
     public void getReview(Long reviewId, ReviewReportViewHolder holder) {
-        Call<AccommodationReviewDTO> call = accommodationReviewService.getAccommodationReview(reviewId);
-        call.enqueue(new Callback<AccommodationReviewDTO>() {
+        Call<OwnerReviewDTO> call = ownerReviewService.getOwnerReview(reviewId);
+        call.enqueue(new Callback<OwnerReviewDTO>() {
             @Override
-            public void onResponse(Call<AccommodationReviewDTO> call, Response<AccommodationReviewDTO> response) {
+            public void onResponse(Call<OwnerReviewDTO> call, Response<OwnerReviewDTO> response) {
                 if (response.isSuccessful()) {
-                    AccommodationReviewDTO reviewDTO = response.body();
+                    OwnerReviewDTO reviewDTO = response.body();
                     if (reviewDTO != null) {
                         reviewerId = reviewDTO.getReviewerId();
                         comment = reviewDTO.getComment();
@@ -160,7 +163,7 @@ public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewRepor
                 getReviewer(reviewerId, holder);
             }
             @Override
-            public void onFailure(Call<AccommodationReviewDTO> call, Throwable t) {
+            public void onFailure(Call<OwnerReviewDTO> call, Throwable t) {
                 System.out.println("HTTP Error!");
             }
         });

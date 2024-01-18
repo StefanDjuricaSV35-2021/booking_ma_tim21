@@ -8,12 +8,12 @@ import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 
-public class ReviewReportsAdminPageActivity extends AppCompatActivity {
+public class OwnerReportsAdminPageActivity extends AppCompatActivity {
     AuthManager authManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_review_reports_admin_page);
+        setContentView(R.layout.activity_owner_reports_admin_page);
         authManager = AuthManager.getInstance(getApplicationContext());
         NavigationSetup.setupNavigation(this, authManager);
     }

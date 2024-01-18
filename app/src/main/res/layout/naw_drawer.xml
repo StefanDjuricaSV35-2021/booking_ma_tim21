@@ -160,7 +160,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/review_reports"
+        android:id="@+id/owner_reports"
         android:layout_marginStart="12dp"
         android:orientation="horizontal">
         <TextView
@@ -168,7 +168,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/grey"
-            android:text="@string/review_reports"
+            android:text="Owner Review Reports"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accommodation_reports"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="Accommodation Review Reports"
             android:textSize="20sp"
             android:drawablePadding="8dp"
             app:drawableLeftCompat="@drawable/baseline_logout_24"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
-    tools:context=".activities.AccommodationReportsAdminPageActivity">
+    tools:context=".activities.OwnerReportsAdminPageActivity">
 
 
     <LinearLayout
@@ -28,15 +28,13 @@
                 android:gravity="center"
                 android:paddingBottom="30dp"
                 android:paddingTop="30dp">
-
                 <androidx.fragment.app.FragmentContainerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/accommodation_reports_recycle_view"
-                    android:name="com.example.booking_ma_tim21.fragments.AccommodationReportRecycleViewFragment"
+                    android:id="@+id/owner_reports_recycle_view"
+                    android:name="com.example.booking_ma_tim21.fragments.OwnerReportRecycleViewFragment"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -53,4 +51,3 @@
     </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
-
