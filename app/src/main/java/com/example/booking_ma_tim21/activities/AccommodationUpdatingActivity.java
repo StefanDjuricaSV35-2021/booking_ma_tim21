@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.adapter.AmenityCheckBoxAdapter;
 import com.example.booking_ma_tim21.adapter.FileAdapter;
+import com.example.booking_ma_tim21.adapter.OldPhotosAdapter;
 import com.example.booking_ma_tim21.adapter.PricingAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationChangeRequestDTO;
@@ -108,8 +109,10 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
 
     private RadioButton auto_accepting_on;
     private RadioButton auto_accepting_off;
+    private RecyclerView oldPhotos;
     private RecyclerView images;
     private FileAdapter fileAdapter;
+    private OldPhotosAdapter oldPhotosAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -260,6 +263,12 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.descriptionEditText);
         descriptionEditText.setText(accommodation.getDescription());
 
+        oldPhotos = findViewById(R.id.oldPhotos);
+        oldPhotos.setLayoutManager(new LinearLayoutManager(this));
+
+        oldPhotosAdapter = new OldPhotosAdapter(accommodation.getPhotos(),this);
+        oldPhotos.setAdapter(oldPhotosAdapter);
+
         images = findViewById(R.id.images);
         images.setLayoutManager(new LinearLayoutManager(this));
 
@@ -267,7 +276,6 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
         images.setAdapter(fileAdapter);
 
         btnSelectFile = findViewById(R.id.btnSelectFile);
-        selected_file_name = findViewById(R.id.selected_file_name);
 
         btnSelectFile.setOnClickListener(v -> openFilePicker());
 
@@ -329,6 +337,12 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
                 return;
             }
 
+            List<String> allPhotos = oldPhotosAdapter.getPhotosList();
+            List<String> newPhotos = getLoadedFileNames();
+            for (String photo : newPhotos) {
+                if (!allPhotos.contains(photo)) allPhotos.add(photo);
+            }
+
 
             Accommodation changedAccommodation = new Accommodation();
             changedAccommodation.setAmenities(amenitiesAdapter.getSelectedAmenities());
@@ -336,7 +350,7 @@ public class AccommodationUpdatingActivity extends AppCompatActivity {
             changedAccommodation.setId(accommodation.getId());
             changedAccommodation.setType(accommodationType);
             changedAccommodation.setDescription(description);
-            changedAccommodation.setPhotos(getLoadedFileNames());
+            changedAccommodation.setPhotos(allPhotos);
             changedAccommodation.setDaysForCancellation(cancellationDays);
             changedAccommodation.setMaxGuests(maxGuests);
             changedAccommodation.setMinGuests(minGuests);
