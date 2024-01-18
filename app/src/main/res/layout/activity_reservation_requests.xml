@@ -1,40 +1,61 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/drawerLayout"
+    tools:context=".activities.ReservationRequestsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar" />
 
-        <!-- Search EditText -->
-        <EditText
-            android:id="@+id/searchEditText"
-            android:layout_width="200dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search"
-            android:layout_margin="16dp"
-            android:inputType="text"
-            android:imeOptions="actionDone"/>
+            android:orientation="horizontal">
+            <!-- Search EditText -->
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="Search"
+                android:layout_margin="16dp"
+                android:inputType="text"
+                android:imeOptions="actionDone"/>
 
-        <!-- Filter Button -->
-        <Spinner
-            android:id="@+id/spinnerDataset"
-            android:layout_width="160dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            />
+            <!-- Filter Button -->
+            <Spinner
+                android:id="@+id/spinnerDataset"
+                android:layout_width="160dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                />
+
+        </LinearLayout>
+
+
+        <!-- Reservation RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reservationRequestsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"/>
+
+
 
     </LinearLayout>
-
-
-    <!-- Reservation RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reservationRequestsRecyclerView"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"/>
-
-</LinearLayout>
+        android:background="@color/white"
+        android:layout_gravity="start">
+        <include
+            layout="@layout/naw_drawer"/>
+    </RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

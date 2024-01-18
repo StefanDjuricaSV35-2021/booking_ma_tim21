@@ -171,7 +171,7 @@ public class OwnerReviewAdapter extends RecyclerView.Adapter<OwnerReviewViewHold
     }
 
     public void deleteOwnerReview(Long reviewId, int position) {
-        Call<Void> call = ownerReviewService.deleteReviewReport(reviewId);
+        Call<Void> call = ownerReviewService.deleteOwnerReview(reviewId);
 
         call.enqueue(new Callback<Void>() {
             @Override

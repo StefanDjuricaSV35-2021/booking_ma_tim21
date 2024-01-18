@@ -21,6 +21,12 @@
             android:name=".activities.UserReport"
             android:exported="false" />
         <activity
+            android:name=".activities.OwnerReportsAdminPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AccommodationReportsAdminPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.UserReportsAdminPageActivity"
             android:exported="false" />
         <activity

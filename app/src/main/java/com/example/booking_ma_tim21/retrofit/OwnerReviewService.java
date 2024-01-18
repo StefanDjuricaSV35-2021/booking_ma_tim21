@@ -31,5 +31,5 @@ public interface OwnerReviewService {
     Call<OwnerReviewDTO> createOwnerReview(@Body OwnerReviewDTO ownerReviewDTO);
 
     @DELETE("/api/v1/auth/reviews/owners/{id}")
-    Call<Void> deleteReviewReport(@Path("id") Long id);
+    Call<Void> deleteOwnerReview(@Path("id") Long id);
 }

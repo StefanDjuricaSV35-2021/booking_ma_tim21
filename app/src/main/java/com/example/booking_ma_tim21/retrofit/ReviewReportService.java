@@ -20,10 +20,10 @@ public interface ReviewReportService {
     Call<ReviewReportDTO> getReviewReport(@Path("id") Long id);
 
     @GET("/api/v1/auth/reports/reviews/owner")
-    Call<List<ReviewReportDTO>> findAllOwnerReports(@Path("id") Long id);
+    Call<List<ReviewReportDTO>> getOwnerReviewReports();
 
     @GET("/api/v1/auth/reports/reviews/accommodation")
-    Call<List<ReviewReportDTO>> findAllAccommodationReports(@Path("id") Long id);
+    Call<List<ReviewReportDTO>> getAccommodationReviewReports();
 
     @Headers({
             "User-Agent: Mobile-Android",

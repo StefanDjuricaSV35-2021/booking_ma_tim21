@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -202,6 +203,7 @@ public class UserReportsAdapter extends RecyclerView.Adapter<UserReportsAdapter.
                             if (response.isSuccessful()) {
                                 userReports.remove(userReport);
                                 updateDataset();
+                                Toast.makeText(context, "Report Accepted.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.e("API Call", "Error: " + response.code());
                             }
@@ -224,6 +226,7 @@ public class UserReportsAdapter extends RecyclerView.Adapter<UserReportsAdapter.
                             if (response.isSuccessful()) {
                                 userReports.remove(userReport);
                                 updateDataset();
+                                Toast.makeText(context, "Report Rejected.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.e("API Call", "Error: " + response.code());
                             }
