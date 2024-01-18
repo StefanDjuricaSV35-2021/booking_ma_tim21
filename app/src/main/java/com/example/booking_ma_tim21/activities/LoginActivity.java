@@ -16,7 +16,6 @@ import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.model.JWTAuthenticationResponse;
 import com.example.booking_ma_tim21.model.SignInRequest;
 import com.example.booking_ma_tim21.retrofit.AuthService;
-import com.example.booking_ma_tim21.retrofit.NotificationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 

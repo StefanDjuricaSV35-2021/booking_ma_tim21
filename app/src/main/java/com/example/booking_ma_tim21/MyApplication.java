@@ -1,23 +1,48 @@
 package com.example.booking_ma_tim21;
 
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK;
+
 import android.app.Application;
+import android.app.NotificationChannel;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.booking_ma_tim21.retrofit.NotificationService;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
-public class MyApplication extends Application implements NotificationService.NotificationTrigger {
+import com.example.booking_ma_tim21.services.NotificationService;
+
+import java.util.List;
+
+
+public class MyApplication extends Application {
 
     private static MyApplication instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("REZ","Application start");
-        //Parse SDK stuff goes here
+        startService();
+
+    }
+
+    public void startService() {
+        Intent serviceIntent = new Intent(this, NotificationService.class);
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+
+        startService(serviceIntent);
+
+    }
+
+    public void stopService() {
+        Intent serviceIntent = new Intent(this, NotificationService.class);
+        stopService(serviceIntent);
     }
 
     public MyApplication() {
@@ -28,24 +53,4 @@ public class MyApplication extends Application implements NotificationService.No
         return instance;
     }
 
-    @Override
-    public void displayNotif(String message) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            // We are on the main thread, safe to display the Toast
-            showToast(message);
-        } else {
-            // We are not on the main thread, post to the main thread to display the Toast
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
-                    showToast(message);
-                }
-            });
-        }
-    }
-
-    private void showToast(String message) {
-        // Replace 'getApplicationContext()' with the actual context if needed
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
 }

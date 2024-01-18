@@ -1,5 +1,9 @@
 package com.example.booking_ma_tim21.authentication;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.util.Log;
@@ -7,9 +11,9 @@ import android.util.Log;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.model.JWTAuthenticationResponse;
 import com.example.booking_ma_tim21.model.User;
-import com.example.booking_ma_tim21.retrofit.NotificationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
+import com.example.booking_ma_tim21.services.NotificationService;
 
 import java.util.List;
 import java.util.Map;
@@ -31,18 +35,19 @@ public class AuthManager {
 
     Context context;
 
-
     private Long userIdLong;
     private SharedPreferences sharedPreferences;
 
     private AuthManager(Context context) {
         this.context=context;
         sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
+
     }
 
     public static AuthManager getInstance(Context context) {
         if (instance == null) {
             instance = new AuthManager(context);
+
         }
         return instance;
     }
@@ -149,7 +154,8 @@ public class AuthManager {
 
                     Log.d("REZ","Meesage recieved");
                     userIdLong=response.body().getId();
-                    notifService=NotificationService.getInstance(context.getApplicationContext());
+                    notifService=NotificationService.getInstance();
+                    notifService.openSocket();
 
                 }else{
                     Log.d("REZ","Meesage recieved: "+response.code());
