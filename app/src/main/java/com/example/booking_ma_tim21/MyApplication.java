@@ -29,15 +29,20 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         startService();
-
+//
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//        List<NotificationChannel> channel=notificationManager.getNotificationChannels();
+//
+//        for (NotificationChannel c:channel){
+//            notificationManager.deleteNotificationChannel(c.getId());
+//        }
     }
+
+
 
     public void startService() {
         Intent serviceIntent = new Intent(this, NotificationService.class);
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
-
         startService(serviceIntent);
-
     }
 
     public void stopService() {

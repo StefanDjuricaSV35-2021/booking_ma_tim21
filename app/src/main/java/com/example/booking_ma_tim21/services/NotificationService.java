@@ -9,8 +9,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -82,22 +87,6 @@ public class NotificationService extends Service {
         authManager = AuthManager.getInstance(this);
         createNotificationChannel();
         initializeWebSocketConnection();
-//        Intent notificationIntent = new Intent(this, MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-//                0, notificationIntent, FLAG_IMMUTABLE);
-//
-//        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setContentTitle("Foreground Service")
-//                .setContentText(input)
-//                .setSmallIcon(R.drawable.ic_filter)
-//                .setContentIntent(pendingIntent)
-//                .build();
-//
-//        startForeground(1, notification);
-
-
-        // Here is a good place to handle the location consent.
-        // You can already start the LocationEngine here.
 
         return START_NOT_STICKY;
     }
@@ -118,13 +107,20 @@ public class NotificationService extends Service {
     }
 
     private void createNotificationChannel() {
+
+        Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + this.getPackageName() + "/" + R.raw.don_pollo);
+        Log.d("AA",sound.toString());
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
                     "Foreground Service Channel",
                     NotificationManager.IMPORTANCE_DEFAULT
             );
-
+            serviceChannel.setSound(sound,attributes);
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
         }
@@ -147,6 +143,7 @@ public class NotificationService extends Service {
 
 
     public void showNotification(String message) {
+        Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + this.getPackageName() + "/" + R.raw.don_pollo);
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -156,13 +153,19 @@ public class NotificationService extends Service {
                 .setContentTitle("New notification")
                 .setContentText(message)
                 .setSmallIcon(R.drawable.idwin)
+                .setSound(null) // Set custom sound here
                 .setContentIntent(pendingIntent)
                 .build();
+
+        Ringtone r = RingtoneManager.getRingtone(this, sound);
+        r.play();
+
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
 
         notificationManager.notify(0, notification);
     }
