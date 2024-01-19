@@ -81,7 +81,6 @@ public class NotificationService extends Service {
         String input = intent.getStringExtra("inputExtra");
         authManager = AuthManager.getInstance(this);
         createNotificationChannel();
-        initializeWebSocketConnection();
 
         return START_NOT_STICKY;
     }
@@ -122,6 +121,7 @@ public class NotificationService extends Service {
     }
 
     public void openSocket() {
+        initializeWebSocketConnection();
         String loggedUserId = authManager.getUserIdLong().toString();
         String destination = "/user/" + loggedUserId + "/specific";
 
