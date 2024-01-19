@@ -71,14 +71,9 @@ public class NotificationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return binder;
+        return null;
     }
 
-    public class Binder extends android.os.Binder {
-        public NotificationService getService() {
-            return NotificationService.this;
-        }
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

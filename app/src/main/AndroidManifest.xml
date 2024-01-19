@@ -23,6 +23,9 @@
             android:name=".activities.ReservationActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.ReservationRequestsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.UserReport"
             android:exported="false" />
         <activity
