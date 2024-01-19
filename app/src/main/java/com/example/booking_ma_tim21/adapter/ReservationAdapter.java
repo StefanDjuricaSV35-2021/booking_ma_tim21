@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
+import com.example.booking_ma_tim21.dto.NotificationDTO;
+import com.example.booking_ma_tim21.dto.NotificationType;
 import com.example.booking_ma_tim21.dto.ReservationDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.model.TimeSlot;
@@ -21,6 +23,7 @@ import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.ReservationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
+import com.example.booking_ma_tim21.services.NotificationService;
 import com.example.booking_ma_tim21.util.AppConfig;
 import com.google.android.material.button.MaterialButton;
 
@@ -36,6 +39,8 @@ import retrofit2.Response;
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ReservationViewHolder> {
 
     Context context;
+
+
     List<ReservationDTO> reservationList;
 
     public List<ReservationAdapter.ReservationViewHolder> getHolders() {
@@ -75,7 +80,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         AccommodationService accService;
         UserService userService;
         ReservationService reservationService;
+        public String name;
 
+        public Long ownerId;
 
         private TextView nameTextView;
         private TextView dateFromTextView;
@@ -141,6 +148,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                         public void onResponse(Call<ReservationDTO> call, Response<ReservationDTO> response) {
                             if (response.isSuccessful()) {
                                 ReservationDTO reservationDTO1 = response.body();
+                                NotificationDTO notification = new NotificationDTO(0l, NotificationType.RESERVATION_CANCELLATION,"Your reservation got canceled for accommodation: " + name, ownerId);
+                                NotificationService.getInstance().sendNotification(notification);
                                 notifyDataSetChanged();
                                 Toast.makeText(context, "Request Declined.", Toast.LENGTH_SHORT).show();
                             } else {
@@ -167,6 +176,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
                         Log.d("REZ","Meesage recieved");
                         AccommodationDetailsDTO detailsDTO = response.body();
+                        name = detailsDTO.getName();
+                        ownerId = detailsDTO.getOwnerId();
                         nameTextView.setText("Accommodation name: "+detailsDTO.getName());
                         daysForCancellation = detailsDTO.getDaysForCancellation();
                     }else{

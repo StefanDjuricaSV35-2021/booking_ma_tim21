@@ -21,11 +21,14 @@ import com.example.booking_ma_tim21.adapter.accommodation_review.AccommodationRe
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.AccommodationReviewDTO;
+import com.example.booking_ma_tim21.dto.NotificationDTO;
+import com.example.booking_ma_tim21.dto.NotificationType;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.retrofit.AccommodationReviewService;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
+import com.example.booking_ma_tim21.services.NotificationService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 
 import java.util.ArrayList;
@@ -45,6 +48,7 @@ public class AccommodationReviewPage extends AppCompatActivity {
     public Long userId;
     private String role;
     private String userEmail;
+    private Long ownerId;
     private List<AccommodationReviewDTO> accommodationReviews;
     private double averageGrade;
     private String name = "Email not found";
@@ -239,8 +243,9 @@ public class AccommodationReviewPage extends AppCompatActivity {
             public void onResponse(Call<AccommodationDetailsDTO> call, Response<AccommodationDetailsDTO> response) {
                 if (response.isSuccessful()) {
                     AccommodationDetailsDTO data = response.body();
-                    if (data != null && data.getName() != null) {
+                    if (data != null && data.getName() != null && data.getOwnerId()!=null) {
                         name = data.getName();
+                        ownerId = data.getOwnerId();
                         nameTextView.setText(name);
                     }
                 } else {
@@ -301,6 +306,9 @@ public class AccommodationReviewPage extends AppCompatActivity {
             @Override
             public void onResponse(Call<AccommodationReviewDTO> call, Response<AccommodationReviewDTO> response) {
                 if (response.isSuccessful()) {
+                    NotificationDTO notification = new NotificationDTO(0l, NotificationType.ACCOMMODATION_REVIEW,"Your accommodation :"+reviewDTO.getAccommodationId()+" got reviewed by an user with id: "+reviewDTO.getReviewerId(), ownerId);
+                    NotificationService.getInstance().sendNotification(notification);
+
                     AccommodationReviewDTO result = response.body();
                     reviewAdapter.add(result);
                     Toast.makeText(AccommodationReviewPage.this, "Review added.", Toast.LENGTH_SHORT).show();
