@@ -80,9 +80,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         AccommodationService accService;
         UserService userService;
         ReservationService reservationService;
-        public String name;
+        private String name;
 
-        public Long ownerId;
+        private Long ownerId;
 
         private TextView nameTextView;
         private TextView dateFromTextView;

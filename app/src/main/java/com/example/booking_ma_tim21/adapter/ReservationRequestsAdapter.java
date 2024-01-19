@@ -80,13 +80,12 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
         AuthManager auth;
         AccommodationService accService;
         UserService userService;
-        public String name;
         ReservationRequestService reservationRequestService;
 
         public TextView getNameTextView() {
             return nameTextView;
         }
-
+        private String name;
         private TextView nameTextView;
         private TextView dateFromTextView;
         private TextView dateToTextView;
