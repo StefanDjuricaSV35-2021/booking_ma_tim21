@@ -145,7 +145,7 @@ public class ReservationBarFragment extends Fragment {
                 TimeSlot ts=new TimeSlot(dateFrom.atStartOfDay(zoneId).toEpochSecond(),dateTo.atStartOfDay(zoneId).toEpochSecond());
                 ReservationRequestStatus reqStauts=ReservationRequestStatus.Waiting;
 
-                Long ownerId=resParams.getLong("owner");
+                Long ownerId=resRestrictions.getLong("owner");
 
                 NotificationDTO notif=new NotificationDTO(NotificationType.RESERVATION_REQUEST,"You have a new reservation request",ownerId);
                 NotificationService.getInstance().sendNotification(notif);
