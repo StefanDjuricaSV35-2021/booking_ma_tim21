@@ -323,6 +323,7 @@ public class AccommodationActivity extends AppCompatActivity {
         resRestrictions.putInt("min", acc.getMinGuests());
         resRestrictions.putInt("max", acc.getMaxGuests());
         resRestrictions.putParcelableArrayList("dates", (ArrayList) acc.getDates());
+        resRestrictions.putLong("owner",acc.getOwnerId());
 
         ReservationBarFragment fragment = ReservationBarFragment.newInstance(searchParams, resRestrictions);
 

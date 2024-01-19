@@ -18,6 +18,12 @@ public class NotificationDTO {
         this.recipientId = recipientId;
     }
 
+    public NotificationDTO(NotificationType type, String message, Long recipientId) {
+        this.type = type;
+        this.message = message;
+        this.recipientId = recipientId;
+    }
+
     public Long getId() {
         return id;
     }

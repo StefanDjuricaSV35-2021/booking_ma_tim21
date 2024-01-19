@@ -29,13 +29,13 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         startService();
-//
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//        List<NotificationChannel> channel=notificationManager.getNotificationChannels();
-//
-//        for (NotificationChannel c:channel){
-//            notificationManager.deleteNotificationChannel(c.getId());
-//        }
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        List<NotificationChannel> channel=notificationManager.getNotificationChannels();
+
+        for (NotificationChannel c:channel){
+            notificationManager.deleteNotificationChannel(c.getId());
+        }
     }
 
 

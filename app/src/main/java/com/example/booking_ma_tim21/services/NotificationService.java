@@ -104,8 +104,8 @@ public class NotificationService extends Service {
     private void createNotificationChannel() {
 
         Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + this.getPackageName() + "/" + R.raw.don_pollo);
-        Log.d("AA",sound.toString());
-        AudioAttributes attributes = new AudioAttributes.Builder()
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .build();
 
@@ -115,7 +115,7 @@ public class NotificationService extends Service {
                     "Foreground Service Channel",
                     NotificationManager.IMPORTANCE_DEFAULT
             );
-            serviceChannel.setSound(sound,attributes);
+            serviceChannel.setSound(sound,audioAttributes);
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
         }
@@ -148,7 +148,7 @@ public class NotificationService extends Service {
                 .setContentTitle("New notification")
                 .setContentText(message)
                 .setSmallIcon(R.drawable.idwin)
-                .setSound(null) // Set custom sound here
+                .setSound(sound) // Set custom sound here
                 .setContentIntent(pendingIntent)
                 .build();
 
