@@ -17,12 +17,16 @@ import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.activities.MainActivity;
 import com.example.booking_ma_tim21.activities.ReservationSuccessActivity;
 import com.example.booking_ma_tim21.authentication.AuthManager;
+import com.example.booking_ma_tim21.dto.NotificationDTO;
+import com.example.booking_ma_tim21.dto.NotificationType;
 import com.example.booking_ma_tim21.dto.ReservationRequestDTO;
 import com.example.booking_ma_tim21.model.TimeSlot;
 import com.example.booking_ma_tim21.model.enumeration.ReservationRequestStatus;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
+import com.example.booking_ma_tim21.retrofit.NotificationsService;
 import com.example.booking_ma_tim21.retrofit.ReservationRequestService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
+import com.example.booking_ma_tim21.services.NotificationService;
 import com.google.android.material.button.MaterialButton;
 
 import java.sql.Time;
@@ -142,6 +146,8 @@ public class ReservationBarFragment extends Fragment {
                 ReservationRequestStatus reqStauts=ReservationRequestStatus.Waiting;
 
                 ReservationRequestDTO req=new ReservationRequestDTO(userId,accId,noGuests,priceVal,ts,reqStauts);
+//                NotificationDTO notification = new NotificationDTO(0l, NotificationType.RESERVATION_REQUEST,"You have a new reservation request!",);
+//                NotificationService.getInstance();
                 Call call=serviceResReq.createReservationRequest(req);
                 enqueueResReqCall(call);
 

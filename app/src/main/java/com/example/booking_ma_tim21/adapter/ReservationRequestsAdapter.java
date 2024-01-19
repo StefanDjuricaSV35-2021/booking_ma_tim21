@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.booking_ma_tim21.R;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
+import com.example.booking_ma_tim21.dto.NotificationDTO;
+import com.example.booking_ma_tim21.dto.NotificationType;
 import com.example.booking_ma_tim21.dto.ReservationRequestDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.model.TimeSlot;
@@ -24,6 +26,7 @@ import com.example.booking_ma_tim21.retrofit.ReservationRequestService;
 import com.example.booking_ma_tim21.retrofit.ReservationService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
+import com.example.booking_ma_tim21.services.NotificationService;
 import com.example.booking_ma_tim21.util.AppConfig;
 import com.google.android.material.button.MaterialButton;
 
@@ -77,6 +80,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
         AuthManager auth;
         AccommodationService accService;
         UserService userService;
+        public String name;
         ReservationRequestService reservationRequestService;
 
         public TextView getNameTextView() {
@@ -140,9 +144,11 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
                         public void onResponse(Call<ReservationRequestDTO> call, Response<ReservationRequestDTO> response) {
                             if (response.isSuccessful()) {
                                 ReservationRequestDTO reservationRequest = response.body();
+                                NotificationDTO notification = new NotificationDTO(0l, NotificationType.RESERVATION_REQUEST_RESPONSE,"Your reservation got accepted for accommodation: " + name, reservationRequestDTO.getUserId());
+                                NotificationService.getInstance().sendNotification(notification);
                                 updateRequests();
-//                                notifyDataSetChanged();
-//                                Toast.makeText(context, "Request Accepted.", Toast.LENGTH_SHORT).show();
+
+
                             } else {
                                 Log.e("API Call", "Error: " + response.code());
                             }
@@ -171,6 +177,8 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
                         public void onResponse(Call<ReservationRequestDTO> call, Response<ReservationRequestDTO> response) {
                             if (response.isSuccessful()) {
                                 ReservationRequestDTO reservationRequest = response.body();
+                                NotificationDTO notification = new NotificationDTO(0l, NotificationType.RESERVATION_REQUEST_RESPONSE,"Your reservation got rejected for accommodation: " + name, reservationRequestDTO.getUserId());
+                                NotificationService.getInstance().sendNotification(notification);
                                 notifyDataSetChanged();
                                 Toast.makeText(context, "Request Declined.", Toast.LENGTH_SHORT).show();
                             } else {
@@ -221,6 +229,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
 
                         Log.d("REZ","Meesage recieved");
                         AccommodationDetailsDTO detailsDTO = response.body();
+                        name = detailsDTO.getName();
                         nameTextView.setText("Accommodation name: "+detailsDTO.getName());
 
                     }else{

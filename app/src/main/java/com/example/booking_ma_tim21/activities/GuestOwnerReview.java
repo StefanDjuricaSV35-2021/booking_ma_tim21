@@ -21,6 +21,8 @@ import com.example.booking_ma_tim21.adapter.owner_review.OwnerReviewAdapter;
 import com.example.booking_ma_tim21.authentication.AuthManager;
 import com.example.booking_ma_tim21.dto.AccommodationDetailsDTO;
 import com.example.booking_ma_tim21.dto.AccommodationReviewDTO;
+import com.example.booking_ma_tim21.dto.NotificationDTO;
+import com.example.booking_ma_tim21.dto.NotificationType;
 import com.example.booking_ma_tim21.dto.OwnerReviewDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.retrofit.AccommodationReviewService;
@@ -28,6 +30,7 @@ import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.OwnerReviewService;
 import com.example.booking_ma_tim21.retrofit.RetrofitService;
 import com.example.booking_ma_tim21.retrofit.UserService;
+import com.example.booking_ma_tim21.services.NotificationService;
 import com.example.booking_ma_tim21.util.NavigationSetup;
 
 import java.util.ArrayList;
@@ -306,6 +309,8 @@ public class GuestOwnerReview extends AppCompatActivity implements OwnerReviewAd
                 if (response.isSuccessful()) {
                     OwnerReviewDTO result = response.body();
                     reviewAdapter.add(result);
+                    NotificationDTO notification = new NotificationDTO(0l, NotificationType.OWNER_REVIEW,"You got reviewed by an user with id: "+reviewDTO.getReviewerId(), reviewDTO.getReviewedId());
+                    NotificationService.getInstance().sendNotification(notification);
 
                     calculateAverage();
                     String starIcons = getStarIcons(averageGrade);
