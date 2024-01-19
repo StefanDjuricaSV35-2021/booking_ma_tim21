@@ -318,6 +318,23 @@
             app:drawableLeftCompat="@drawable/baseline_logout_24"
             android:visibility="visible"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notificationScreen"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="Notifications"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:visibility="visible"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -373,6 +390,7 @@
             app:drawableLeftCompat="@drawable/baseline_logout_24"
             android:visibility="visible"/>
     </LinearLayout>
+
 
 
 

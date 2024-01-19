@@ -1,6 +1,8 @@
 package com.example.booking_ma_tim21.retrofit;
 
 
+import com.example.booking_ma_tim21.dto.NotificationType;
+import com.example.booking_ma_tim21.dto.NotificationTypeUpdateRequestDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 
 import java.util.List;
@@ -29,5 +31,11 @@ public interface UserService {
 
     @PUT("/api/v1/auth/users")
     Call<UserDTO> updateUser(@Body UserDTO userDTO);
+
+    @GET("/api/v1/auth/users/notification/{email}")
+    Call<List<NotificationType>> getUserNotificationTypes(@Path("email") String email);
+
+    @PUT("/api/v1/auth/users/notification")
+    Call<UserDTO> updateUserNotificationTypes(@Body NotificationTypeUpdateRequestDTO request);
 
 }

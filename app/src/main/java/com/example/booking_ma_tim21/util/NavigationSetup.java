@@ -16,6 +16,7 @@ import com.example.booking_ma_tim21.activities.AnalyticsActivity;
 import com.example.booking_ma_tim21.activities.FavoritesActivity;
 import com.example.booking_ma_tim21.activities.LoginActivity;
 import com.example.booking_ma_tim21.activities.MainActivity;
+import com.example.booking_ma_tim21.activities.NotificationsPageActivity;
 import com.example.booking_ma_tim21.activities.OwnerOwnerReview;
 import com.example.booking_ma_tim21.activities.OwnerReportsAdminPageActivity;
 import com.example.booking_ma_tim21.activities.OwnersAccommodationsActivity;
@@ -54,6 +55,7 @@ public class NavigationSetup {
         LinearLayout registerScreen = activity.findViewById(R.id.registerScreen);
         LinearLayout analyticsScreen = activity.findViewById(R.id.analyticsScreen);
         LinearLayout reservationRequestsScreen = activity.findViewById(R.id.view_reservations_requests);
+        LinearLayout notifications = activity.findViewById(R.id.notificationScreen);
 
         String role = authManager.getUserRole() != null ? authManager.getUserRole() : "";
 
@@ -85,7 +87,7 @@ public class NavigationSetup {
                 registerScreen.setVisibility(View.GONE);
                 analyticsScreen.setVisibility(View.GONE);
                 reservationRequestsScreen.setVisibility(View.GONE);
-
+                notifications.setVisibility(View.GONE);
                 break;
             case "OWNER":
                 owner_report.setVisibility(View.GONE);
@@ -115,6 +117,7 @@ public class NavigationSetup {
                 account.setVisibility(View.GONE);
                 analyticsScreen.setVisibility(View.GONE);
                 reservationRequestsScreen.setVisibility(View.GONE);
+                notifications.setVisibility(View.GONE);
                 break;
         }
 
@@ -148,6 +151,7 @@ public class NavigationSetup {
 
         loginScreen.setOnClickListener(v -> redirectActivity(activity, LoginActivity.class));
         registerScreen.setOnClickListener(v -> redirectActivity(activity, RegisterActivity.class));
+        notifications.setOnClickListener(v -> redirectActivity(activity, NotificationsPageActivity.class));
     }
 
     public static void openDrawer(DrawerLayout drawerLayout) {
