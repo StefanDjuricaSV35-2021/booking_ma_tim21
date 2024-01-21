@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_bg_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:strokeWidth="4dp"
+    app:strokeColor="@color/darkblue"
+
+
+
+
+    >
+
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+
+
+        android:id="@+id/search_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/lightblue"
+        android:text="Location | Guests | Date"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textAllCaps="false"
+
+        />
+
+
+
+
+</com.google.android.material.card.MaterialCardView>

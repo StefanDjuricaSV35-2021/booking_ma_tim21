@@ -8,5 +8,15 @@
         <item name="colorSecondary">@color/softgrey</item>
     </style>
 
+    <style name="CustomThemeOverlay_MaterialCalendar_Fullscreen" parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen">
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/darkblue</item>
+    </style>
+
     <style name="Theme.Booking_ma_tim21" parent="Base.Theme.Booking_ma_tim21" />
+
+    <style name="ThemeOverlay.Booking_ma_tim21.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>

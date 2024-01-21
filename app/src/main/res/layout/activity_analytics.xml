@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AnalyticsActivity">
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AnalyticsActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+        >
+
+    <TextView
+        android:id="@+id/multiple_acc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:text="Multiple Accommodations Analytics"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:textAlignment="center"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/pieCharts_selected_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:text="Select Date Range"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:background="@drawable/bg_round_corners_white"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/multiple_acc_tv"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartProfit"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieCharts_selected_date_tv"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartReservations"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieChartProfit"/>
+
+    <Button
+        android:id="@+id/pie_pdf_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_corners_white"
+        app:backgroundTint="@null"
+        android:visibility="gone"
+        android:text="Get Pdf"
+        android:textColor="@color/black"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pieChartReservations"
+
+        />
+
+    <TextView
+        android:id="@+id/single_acc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:text="Single Accommodations Analytics"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:textAlignment="center"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pie_pdf_btn"/>
+
+    <Spinner
+        android:id="@+id/spinnerDataset"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+
+
+        app:layout_constraintEnd_toStartOf="@id/selected_year_et"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/single_acc_tv"/>
+
+    <EditText
+        android:id="@+id/selected_year_et"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:inputType="number"
+        android:hint="Year"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:background="@drawable/bg_round_corners_white"
+
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/spinnerDataset"
+        app:layout_constraintTop_toBottomOf="@id/single_acc_tv"/>
+
+
+
+    <com.github.mikephil.charting.charts.CombinedChart
+        android:id="@+id/combinedChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:visibility="gone"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinnerDataset"
+        />
+
+    <Button
+        android:id="@+id/combined_pdf_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Pdf"
+        android:background="@drawable/bg_round_corners_white"
+        app:backgroundTint="@null"
+        android:visibility="gone"
+        android:textColor="@color/black"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/combinedChart"
+
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+
+
+</ScrollView>
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_gravity="start">
+        <include
+            layout="@layout/naw_drawer"/>
+    </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

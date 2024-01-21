@@ -34,19 +34,21 @@
                 android:paddingBottom="30dp"
                 android:paddingTop="30dp">
 
-                <include layout="@layout/cl_search"/>
+                <androidx.fragment.app.FragmentContainerView
+                    android:name="com.example.booking_ma_tim21.fragments.SearchFragment"
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/search_open_fragment"
+                    />
 
-                <Space
+                <android.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="20dp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/preview_recycler"
+                <androidx.fragment.app.FragmentContainerView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/search"/>
+                    android:id="@+id/preview_recycler_fragment_main"/>
 
             </LinearLayout>
 

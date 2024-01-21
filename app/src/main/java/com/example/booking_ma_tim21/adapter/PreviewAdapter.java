@@ -1,6 +1,10 @@
 package com.example.booking_ma_tim21.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import com.example.booking_ma_tim21.R;
-import com.example.booking_ma_tim21.model.AccommodationPreview;
+import com.example.booking_ma_tim21.dto.AccommodationPreviewDTO;
+import com.squareup.picasso.Picasso;
 
 public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
 
     Context context;
-    List<AccommodationPreview> accommodationPreviews;
+    List<AccommodationPreviewDTO> accommodationPreviews;
     private ItemClickListener itemListener;
 
-    public PreviewAdapter(Context context, List<AccommodationPreview> accommodationPreviews,ItemClickListener itemListener) {
+    public PreviewAdapter(Context context, List<AccommodationPreviewDTO> accommodationPreviews, ItemClickListener itemListener) {
         this.context = context;
         this.accommodationPreviews = accommodationPreviews;
         this.itemListener=itemListener;
@@ -39,8 +44,13 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
 
         holder.name.setText(accommodationPreviews.get(position).getName());
         holder.location.setText(accommodationPreviews.get(position).getLocation());
-        holder.image.setImageResource(accommodationPreviews.get(position).getImageUrl());
-        holder.price.setText(accommodationPreviews.get(position).getPrice());
+        Picasso.get().load("http://10.0.2.2:8080/images/"+accommodationPreviews.get(position).getImage()).into(holder.image);
+
+        try {
+            holder.price.setText(accommodationPreviews.get(position).getPrice().toString());
+        }catch (Exception e){
+            holder.price.setVisibility(View.GONE);
+        }
 
         holder.itemView.setOnClickListener(view -> {
             itemListener.onItemClick(accommodationPreviews.get(position));
@@ -49,7 +59,7 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
     }
 
     public interface ItemClickListener{
-        void onItemClick(AccommodationPreview previews);
+        void onItemClick(AccommodationPreviewDTO previews);
     }
 
     @Override
@@ -65,11 +75,11 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewViewHolder> {
         this.context = context;
     }
 
-    public List<AccommodationPreview> getAccommodationPreviews() {
+    public List<AccommodationPreviewDTO> getAccommodationPreviews() {
         return accommodationPreviews;
     }
 
-    public void setAccommodationPreviews(List<AccommodationPreview> accommodationPreviews) {
+    public void setAccommodationPreviews(List<AccommodationPreviewDTO> accommodationPreviews) {
         this.accommodationPreviews = accommodationPreviews;
     }
 }
