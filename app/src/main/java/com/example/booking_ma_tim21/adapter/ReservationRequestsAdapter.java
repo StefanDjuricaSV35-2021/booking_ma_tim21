@@ -96,6 +96,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
         private TextView statusTextView;
         private MaterialButton acceptButton;
         private MaterialButton rejectButton;
+        private MaterialButton cancelButton;
 
         public ReservationRequestViewHolder(@NonNull View itemView) {
 
@@ -116,6 +117,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             statusTextView = itemView.findViewById(R.id.statusTextView);
             acceptButton = itemView.findViewById(R.id.accept_btn);
             rejectButton = itemView.findViewById(R.id.decline_btn);
+            cancelButton = itemView.findViewById(R.id.cancel_btn_guest);
         }
 
         public void bind(ReservationRequestDTO reservationRequestDTO) {
@@ -131,11 +133,15 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             if (reservationRequestDTO.getStatus() != ReservationRequestStatus.Waiting) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
+                cancelButton.setVisibility(View.GONE);
             }
             auth=AuthManager.getInstance(context);
             if (auth.isLoggedIn() && auth.getUserRole().equals("GUEST")) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
+            }
+            if (auth.isLoggedIn() && auth.getUserRole().equals("OWNER")) {
+                cancelButton.setVisibility(View.GONE);
             }
 
             // Set up click listeners for accept and reject buttons
@@ -156,7 +162,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
                                 NotificationDTO notification = new NotificationDTO(0l, NotificationType.RESERVATION_REQUEST_RESPONSE,"Your reservation got accepted for accommodation: " + name, reservationRequestDTO.getUserId());
                                 NotificationService.getInstance().sendNotification(notification);
                                 updateRequests();
-
+                                Toast.makeText(context, "Request Accepted.", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 Log.e("API Call", "Error: " + response.code());
@@ -190,6 +196,36 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
                                 NotificationService.getInstance().sendNotification(notification);
                                 notifyDataSetChanged();
                                 Toast.makeText(context, "Request Declined.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("API Call", "Error: " + response.code());
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ReservationRequestDTO> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                }
+            });
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(reservationRequestDTO.getStatus() != ReservationRequestStatus.Waiting) {
+                        Toast.makeText(context, "Can't Cancel Request.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    reservationRequestDTO.setStatus(ReservationRequestStatus.Cancelled);
+
+                    Call<ReservationRequestDTO> call = reservationRequestService.updateReservationRequest(reservationRequestDTO);
+
+                    call.enqueue(new Callback<ReservationRequestDTO>() {
+                        @Override
+                        public void onResponse(Call<ReservationRequestDTO> call, Response<ReservationRequestDTO> response) {
+                            if (response.isSuccessful()) {
+                                ReservationRequestDTO reservationRequest = response.body();
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Request Canceled.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.e("API Call", "Error: " + response.code());
                             }

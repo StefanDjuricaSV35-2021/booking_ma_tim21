@@ -95,6 +95,24 @@
             android:text="Decline"
             />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_btn_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_round_corners_white"
+            app:backgroundTint="@color/darkblue"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:text="Cancel"
+            />
+    </LinearLayout>
 
 
 </LinearLayout>
