@@ -99,26 +99,13 @@ public class AccommodationReportAdapter extends RecyclerView.Adapter<ReviewRepor
         newCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.d("rez", "Deleted review.");
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.d("rez", "failed to delete review.");
-            }
-        });
-
-
-        Call<Void> call = reviewReportService.deleteReviewReport(reviewReportDTO.getId());
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!reviewReports.isEmpty()) {
                     reviewReports.remove(position);
                     notifyDataSetChanged();
                     notifyItemRemoved(position);
                 }
                 Toast.makeText(context, "Report Accepted.", Toast.LENGTH_SHORT).show();
+                Log.d("rez", "Deleted review.");
             }
 
             @Override
