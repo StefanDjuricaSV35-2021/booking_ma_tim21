@@ -51,7 +51,7 @@ public class TimeSlot implements Serializable,Parcelable {
     }
 
     public boolean overlapsWith(TimeSlot timeSlot) {
-        return !(this.endDate < timeSlot.startDate || timeSlot.endDate < this.startDate);
+        return !(this.endDate <= timeSlot.startDate || timeSlot.endDate <= this.startDate);
     }
 
     @Override
