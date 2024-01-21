@@ -39,6 +39,12 @@
         <activity
             android:name=".activities.UserReportsAdminPageActivity"
             android:exported="false" />
+        <activity
+            android:name=".activities.GuestOwnerReview"
+            android:exported="false" />
+        <activity
+            android:name=".activities.OwnerOwnerReview"
+            android:exported="false" />
 
         <service
             android:name=".services.NotificationService"
