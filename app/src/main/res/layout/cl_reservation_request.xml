@@ -40,6 +40,13 @@
         android:textSize="20sp"/>
 
     <TextView
+        android:id="@+id/cancels_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancels:"
+        android:textSize="20sp"/>
+
+    <TextView
         android:id="@+id/guestsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

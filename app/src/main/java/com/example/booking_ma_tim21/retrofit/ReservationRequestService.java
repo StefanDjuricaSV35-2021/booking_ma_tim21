@@ -27,6 +27,9 @@ public interface ReservationRequestService {
     @GET("/api/v1/auth/reservationRequests/{userId}/reservationRequests")
     Call<List<ReservationRequestDTO>> getUserReservationRequests(@Path("userId") Long userId);
 
+    @GET("/api/v1/auth/reservationRequests/{userId}/cancel-count")
+    Call<Integer> getUserCancels(@Path("userId") Long userId);
+
     @PUT("/api/v1/auth/reservationRequests")
     Call<ReservationRequestDTO> updateReservationRequest(@Body ReservationRequestDTO req);
 

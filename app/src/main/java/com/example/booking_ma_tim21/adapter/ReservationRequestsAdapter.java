@@ -94,6 +94,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
         private TextView guestsTextView;
         private TextView priceTextView;
         private TextView statusTextView;
+        private TextView cancels;
         private MaterialButton acceptButton;
         private MaterialButton rejectButton;
         private MaterialButton cancelButton;
@@ -118,6 +119,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             acceptButton = itemView.findViewById(R.id.accept_btn);
             rejectButton = itemView.findViewById(R.id.decline_btn);
             cancelButton = itemView.findViewById(R.id.cancel_btn_guest);
+            cancels=itemView.findViewById(R.id.cancels_tv);
         }
 
         public void bind(ReservationRequestDTO reservationRequestDTO) {
@@ -127,6 +129,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             dateFromTextView.setText("From: " + dates[0]);
             dateToTextView.setText("To: " + dates[1]);
             setUserName(reservationRequestDTO.getUserId());
+            setCancelNumber(reservationRequestDTO.getUserId());
             guestsTextView.setText("Guests: " + String.valueOf(reservationRequestDTO.getGuestsNumber()));
             priceTextView.setText("Price: $" + String.valueOf(reservationRequestDTO.getPrice()));
             statusTextView.setText("Status: " + reservationRequestDTO.getStatus());
@@ -139,6 +142,7 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             if (auth.isLoggedIn() && auth.getUserRole().equals("GUEST")) {
                 acceptButton.setVisibility(View.GONE);
                 rejectButton.setVisibility(View.GONE);
+                cancels.setVisibility(View.GONE);
             }
             if (auth.isLoggedIn() && auth.getUserRole().equals("OWNER")) {
                 cancelButton.setVisibility(View.GONE);
@@ -284,6 +288,34 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
 
                 @Override
                 public void onFailure(Call<AccommodationDetailsDTO> call, Throwable t) {
+                    t.printStackTrace();
+                }
+
+
+            });
+
+
+        }
+
+        void setCancelNumber(Long userId){
+
+            Call call=this.reservationRequestService.getUserCancels(userId);
+
+            call.enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if (response.code() == 200){
+
+                        Log.d("REZ","Meesage recieved");
+                        cancels.setText("Cancels: "+response.body().toString());
+
+                    }else{
+                        Log.d("REZ","Meesage recieved: "+response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
                     t.printStackTrace();
                 }
 
