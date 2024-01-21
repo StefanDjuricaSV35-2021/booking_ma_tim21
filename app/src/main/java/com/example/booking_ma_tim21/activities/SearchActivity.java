@@ -175,7 +175,7 @@ public class SearchActivity extends AppCompatActivity implements SearchClosedFra
         String date= intent.getStringExtra("date");
         String location=intent.getStringExtra("location");
 
-        getPreviews(location,guests,date,filter);
+        getPreviews(location,guests,date,data);
 
     }
 }

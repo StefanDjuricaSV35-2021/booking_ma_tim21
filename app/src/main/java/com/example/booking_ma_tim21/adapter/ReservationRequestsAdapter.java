@@ -357,12 +357,12 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
 
             String[] dates= new String[2];
 
-            long dv = Long.valueOf(ts.getStartDate())* AppConfig.UNIX_DIFF;// its need to be in milisecond
+            long dv = Long.valueOf(ts.getStartDate())*AppConfig.UNIX_DIFF;// its need to be in milisecond
             Date df = new java.util.Date(dv);
             String vv = new SimpleDateFormat("yyyy-MM-dd").format(df);
             dates[0]=vv;
 
-            dv = Long.valueOf(ts.getEndDate())* AppConfig.UNIX_DIFF;// its need to be in milisecond
+            dv = Long.valueOf(ts.getEndDate())*AppConfig.UNIX_DIFF;// its need to be in milisecond
             df = new java.util.Date(dv);
             vv = new SimpleDateFormat("yyyy-MM-dd").format(df);
             dates[1]=vv;

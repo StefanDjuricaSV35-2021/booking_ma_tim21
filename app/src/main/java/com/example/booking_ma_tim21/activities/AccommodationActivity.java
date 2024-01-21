@@ -116,12 +116,14 @@ public class AccommodationActivity extends AppCompatActivity {
         favorite = findViewById(R.id.favorite_btn);
         availabilityDivider = findViewById(R.id.availability_div);
         reviewsTextView = findViewById(R.id.reviews_tv);
+        TextView description=findViewById(R.id.description_tv);
 
         setImageSlider(imageSlider);
         name.setText(acc.getName());
         location.setText(acc.getLocation());
         type.setText(acc.getType().toString());
         guests.setText(acc.getMinGuests() + "-" + acc.getMaxGuests() + " Guests");
+        description.setText(acc.getDescription());
 
         setAmenityList((ArrayList<Amenity>) acc.getAmenities());
         setMapFragment();

@@ -167,6 +167,42 @@
                     app:layout_constraintTop_toBottomOf="@id/amenities_lv" />
 
                 <TextView
+                    android:id="@+id/description_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Description"
+                    android:textSize="25dp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/amenities_div" />
+
+                <TextView
+                    android:id="@+id/description_tv"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="15dp"
+                    android:text="something"
+                    android:textSize="18dp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description_name_tv" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/description_div"
+                    android:layout_width="380dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="25dp"
+                    app:dividerColor="@color/darkblue"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description_tv" />
+
+
+                <TextView
                     android:id="@+id/map_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,7 +212,7 @@
                     android:textSize="25dp"
 
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/amenities_div" />
+                    app:layout_constraintTop_toBottomOf="@id/description_div" />
 
                 <androidx.cardview.widget.CardView
                     xmlns:android="http://schemas.android.com/apk/res/android"
