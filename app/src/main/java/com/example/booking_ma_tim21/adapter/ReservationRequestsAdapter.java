@@ -21,6 +21,7 @@ import com.example.booking_ma_tim21.dto.ReservationRequestDTO;
 import com.example.booking_ma_tim21.dto.UserDTO;
 import com.example.booking_ma_tim21.model.TimeSlot;
 import com.example.booking_ma_tim21.model.enumeration.ReservationRequestStatus;
+import com.example.booking_ma_tim21.model.enumeration.Role;
 import com.example.booking_ma_tim21.retrofit.AccommodationService;
 import com.example.booking_ma_tim21.retrofit.ReservationRequestService;
 import com.example.booking_ma_tim21.retrofit.ReservationService;
@@ -127,6 +128,15 @@ public class ReservationRequestsAdapter extends RecyclerView.Adapter<Reservation
             guestsTextView.setText("Guests: " + String.valueOf(reservationRequestDTO.getGuestsNumber()));
             priceTextView.setText("Price: $" + String.valueOf(reservationRequestDTO.getPrice()));
             statusTextView.setText("Status: " + reservationRequestDTO.getStatus());
+            if (reservationRequestDTO.getStatus() != ReservationRequestStatus.Waiting) {
+                acceptButton.setVisibility(View.GONE);
+                rejectButton.setVisibility(View.GONE);
+            }
+            auth=AuthManager.getInstance(context);
+            if (auth.isLoggedIn() && auth.getUserRole().equals("GUEST")) {
+                acceptButton.setVisibility(View.GONE);
+                rejectButton.setVisibility(View.GONE);
+            }
 
             // Set up click listeners for accept and reject buttons
             acceptButton.setOnClickListener(new View.OnClickListener() {

@@ -122,6 +122,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             guestsTextView.setText("Guests: " + String.valueOf(reservationDTO.getGuestsNumber()));
             priceTextView.setText("Price: $" + String.valueOf(reservationDTO.getPrice()));
             statusTextView.setText("Status: " + reservationDTO.getStatus());
+            if(reservationDTO.getStatus() != ReservationStatus.Active) {
+                cancelButton.setVisibility(View.GONE);
+            }
 
             cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
